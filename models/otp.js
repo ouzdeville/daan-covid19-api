@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const OTP = sequelize.define('OTP', {
-    idUser: DataTypes.INTEGER,
+    associatedPhoneNumber: DataTypes.STRING,
     code: DataTypes.STRING
   }, {});
   OTP.associate = function(models) {
