@@ -1,8 +1,11 @@
 const { User } = require('./../models');
+const { otpProvider } = require('./../providers');
 
 module.exports = {
-  create(req, res) {
+  async create(req, res) {
+    await otpProvider.generateOTP(req.body.phone);
     User.create({
+      active: false,
       phone: req.body.phone,
     }).then(user => {
       res.status(201).send({
