@@ -9,17 +9,17 @@
   },
   "test": {
     "username": "daancovid19sn",
-    "password": "4rn37byqxZT8gkABCG",
+    "password": "CGPQLqvHkCVfFYsgNKnV",
     "database": "daancovid19sn",
-    "host": "127.0.0.1",
+    "host": "daancovid19sn.ca0gpetnruab.us-east-1.rds.amazonaws.com",
     "dialect": "postgres",
     "operatorsAliases": false
   },
   "production": {
     "username": "daancovid19sn",
-    "password": null,
+    "password": "CGPQLqvHkCVfFYsgNKnV",
     "database": "daancovid19sn",
-    "host": "127.0.0.1",
+    "host": "daancovid19sn.ca0gpetnruab.us-east-1.rds.amazonaws.com",
     "dialect": "postgres",
     "operatorsAliases": false
   }
