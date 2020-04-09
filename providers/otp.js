@@ -1,7 +1,7 @@
 const Chance = require('chance');
-const chance = new Chance();
 const { OTP } = require('./../models');
 const { sendSms } = require('./smsProvider');
+const chance = new Chance();
 
 module.exports = {
   async generateOTP(phoneNumber) {
