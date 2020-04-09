@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "daan-covid19-api-executor",
+    "name": "daan-covid19-api",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "jmgnwcu4wf"
+  }
+}
