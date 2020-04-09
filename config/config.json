@@ -1,24 +1,24 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
+    "username": "daancovid19sn",
+    "password": "4rn37byqxZT8gkABCG",
+    "database": "daancovid19sn",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "operatorsAliases": false
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
+    "username": "daancovid19sn",
+    "password": "4rn37byqxZT8gkABCG",
+    "database": "daancovid19sn",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "operatorsAliases": false
   },
   "production": {
-    "username": "root",
+    "username": "daancovid19sn",
     "password": null,
-    "database": "database_production",
+    "database": "daancovid19sn",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "operatorsAliases": false
