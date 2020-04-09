@@ -1,3 +1,4 @@
+require('dotenv').config();
 const http = require('http');
 const express = require('express');
 const logger = require('morgan');
@@ -15,6 +16,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+require('./routes')(app);
 app.get('*', (req, res) =>
   res.status(200).send({
     message: 'Stop covid19 :( :)',
