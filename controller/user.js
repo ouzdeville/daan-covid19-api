@@ -38,7 +38,18 @@ module.exports = {
     });
   },
 
+  async verifyCode(req, res) {
+    const verification = await otpProvider.verifyOtp({
+      code: req.body.code,
+      phone: req.phone,
+    });
+    if (verification) {
+      res.send({ success: true, message: 'Successfully verified.' });
+    }
+    res.status(401).send({ message: 'verification error' });
+  },
+
   get(req, res) {
-    res.send({ message: 'hi :)'});
-  }
-}
+    res.send({ message: 'hi :)' });
+  },
+};

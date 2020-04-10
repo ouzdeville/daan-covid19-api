@@ -1,5 +1,5 @@
 const Chance = require('chance');
-const { OTP } = require('./../models');
+const { OTP, User } = require('./../models');
 const { sendSms } = require('./smsProvider');
 const chance = new Chance();
 
@@ -20,6 +20,27 @@ module.exports = {
     });
     await sendSms(phoneNumber, `Bienvenue sur Daan Covid19 votre code est: ${code}`);
     return otp;
+  },
+
+  async verifyOtp({ code, phone}) {
+    const exist = await OTP.findAll({
+      where: {
+        associatedPhoneNumber: phone,
+        code
+      },
+    });
+    if (exist && exist.length) {
+      User.update(
+        { active: 'active' },
+        {
+          where: {
+            phone,
+          },
+        },
+      );
+      return true;
+    }
+    return false;
   }
 }
 
