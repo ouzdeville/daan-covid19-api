@@ -1,5 +1,5 @@
 {
-  "development": {
+  "development1": {
     "username": "daancovid19sn",
     "password": "4rn37byqxZT8gkABCG",
     "database": "daancovid19sn",
@@ -7,7 +7,7 @@
     "dialect": "postgres",
     "operatorsAliases": false
   },
-  "test": {
+  "development": {
     "username": "daancovid19sn",
     "password": "RDuOHdjNSDfAD5WqtQgg",
     "database": "daancovid19sn",

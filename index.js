@@ -23,8 +23,8 @@ app.get('*', (req, res) =>
   }),
 );
 
-// server.listen(port, () => {
-//   console.log('server started ', port);
-// });
+server.listen(port, () => {
+  console.log('server started ', port);
+});
 
-module.exports = app;
+// module.exports = app;
