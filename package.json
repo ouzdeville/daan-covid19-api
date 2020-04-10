@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon index.js",
-    "deploy:production": "claudia update --set-env-from-json prodEnv.json NODE_ENV=production --version production"
+    "deploy:production": "claudia update --set-env-from-json prodEnv.json NODE_ENV=production --version production",
+    "deploy:production:create": "claudia create  --set-env-from-json prodEnv.json NODE_ENV=production --version production --handler lambda.handler --deploy-proxy-api --region us-east-1"
   },
   "author": "digital-sn covid19",
   "license": "ISC",

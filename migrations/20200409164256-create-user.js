@@ -23,7 +23,7 @@ module.exports = {
       },
       active: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.STRING,
       },
     });
   },

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     'User',
     {
       phone: DataTypes.STRING,
-      active: DataTypes.BOOLEAN,
+      active: DataTypes.STRING,
       id: {
         type: DataTypes.UUID,
         primaryKey: true,

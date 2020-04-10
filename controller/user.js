@@ -9,7 +9,7 @@ module.exports = {
       });
       return;
     }
-    await otpProvider.generateOTP(req.body.phone);
+    const otp = await otpProvider.generateOTP(req.body.phone);
     const token = jwt.sign({ phone: req.body.phone });
     const exist = await User.findAll({
       where: {
@@ -18,7 +18,7 @@ module.exports = {
     });
     if (exist && !exist.length) {
       User.create({
-        active: false,
+        active: 'pending',
         phone: req.body.phone,
       })
         .then((user) => {
