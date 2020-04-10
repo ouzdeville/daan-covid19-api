@@ -30,6 +30,11 @@ module.exports = {
       },
     });
     if (exist && exist.length) {
+      await OTP.destroy({
+        where: {
+          associatedPhoneNumber: phone,
+        },
+      });
       User.update(
         { active: 'active' },
         {
