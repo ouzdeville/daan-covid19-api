@@ -5,6 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       phone: DataTypes.STRING,
       active: DataTypes.BOOLEAN,
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
+      },
     },
     {},
   );
