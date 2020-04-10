@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const port = parseInt(process.env.PORT, 10) || 8000;
 
@@ -12,6 +13,7 @@ const server = http.createServer(app);
 
 // Log requests to the console.
 app.use(logger('dev'));
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
