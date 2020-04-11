@@ -57,6 +57,15 @@ module.exports = {
     }
   },
 
+  async refreshToken(req, res) {
+    const token = jwt.sign({ phone: req.phone });
+    res.status(201).send({
+      success: true,
+      message: 'Successfully created.',
+      token,
+    });
+  },
+
   get(req, res) {
     res.send({ message: 'hi :)' });
   },
