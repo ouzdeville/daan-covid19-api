@@ -11,6 +11,8 @@ module.exports = {
         timestamp: req.body.timestamp,
         position: req.body.position,
       };
+      // logs requests
+      console.log(payload);
       await awsClients.writeToKinesis(payload);
       res.status(201).send({
         success: true,
