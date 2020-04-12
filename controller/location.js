@@ -9,8 +9,8 @@ module.exports = {
         id: userID,
         imei: req.body.imei,
         timestamp: req.body.timestamp,
-        position: `${req.body.position.lat},${req.body.position.lon}`,
-        status: req.body.status || 'unknown',
+        position: req.body.position,
+        status: req.body.status || 'unknown'
       };
       // logs requests
       console.log(payload);
