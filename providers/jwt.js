@@ -6,9 +6,9 @@ module.exports = {
     const token = jwt.sign(
       { ...payload, expiresIn: 86400, createdAt },
       process.env.JWT_SECRET,
-      {
-        expiresIn: 86400, // expires in 24 hours
-      },
+      // {
+      //   expiresIn: 86400, // expires in 24 hours
+      // },
     );
     return {
       token,
