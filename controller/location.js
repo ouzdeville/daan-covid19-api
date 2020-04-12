@@ -10,6 +10,7 @@ module.exports = {
         imei: req.body.imei,
         timestamp: req.body.timestamp,
         position: req.body.position,
+        status: req.body.status || ''
       };
       // logs requests
       console.log(payload);
