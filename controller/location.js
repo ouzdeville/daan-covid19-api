@@ -9,8 +9,7 @@ module.exports = {
         id: userID,
         imei: req.body.imei,
         timestamp: req.body.timestamp,
-        lng: req.body.lng,
-        lat: req.body.lat,
+        position: req.body.position,
       };
       await awsClients.writeToKinesis(payload);
       res.status(201).send({
