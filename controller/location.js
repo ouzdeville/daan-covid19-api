@@ -8,7 +8,7 @@ module.exports = {
       const payload = {
         id: userID,
         imei: req.body.imei,
-        timestamp: req.body.timestamp,
+        created_date: req.body.timestamp,
         position: req.body.position,
         status: req.body.status || 'unknown'
       };
