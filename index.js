@@ -5,7 +5,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 var CronJob = require('cron').CronJob;
-const {  contactService} = require('./utils');
+const {contactService} = require('./utils');
 
 const port = parseInt(process.env.PORT, 10) || 8000;
 
@@ -18,17 +18,17 @@ app.use(logger('dev'));
 app.use(cors());
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 require('./routes')(app);
 app.get('*', (req, res) =>
-  res.status(200).send({
-    message: 'Stop covid19 :( :)',
-  }),
+    res.status(200).send({
+        message: 'Stop covid19 :( :)',
+    }),
 );
 
 server.listen(port, () => {
-  console.log('server started ', port);
+    console.log('server started ', port);
 });
 contactService.data.runCronContact();
 
