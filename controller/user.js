@@ -69,4 +69,54 @@ module.exports = {
   get(req, res) {
     res.send({ message: 'hi :)' });
   },
+  /**
+   * Renvoie la liste de tous les users qui ont été en contact avec id.
+   * Les Contacts se trouvent sur deux listes: Contact1 et Contact2
+   * @param  {idUser} req
+   * @param  {} res
+   */
+  getContact(req, res) {
+    const { idUser } = req.params; 
+    User.findOne({ 
+      where: {
+        id: idUser
+      }, include: [{
+        model: User,
+        as: 'Contact1'
+      },{
+        model: User,
+        as: 'Contact2'
+      }]
+    }).then((user) => {
+        res.status(200).send({
+          user,
+        });
+      
+      
+    })
+    .catch((error) => res.status(400).send(error));;;
+  },
+  
+  
+  /**
+   * @param  {id,debutincubation,finincubation} req
+   * @param  {} res
+   */
+  async signaler(req, res) {
+    debutincubation=req.body.debutincubation;
+    finincubation=req.body.finincubation;
+    id=req.body.id;
+    await User.update({ debutincubation:debutincubation, finincubation:finincubation}, {
+      where: {
+        id: id
+      }
+    }).then(() => {
+      res.status(200).send({
+        success: true,
+        message: 'Successfully created.'
+      });
+    })
+    .catch((error) => res.status(400).send(error));
+  return;
+  },
 };

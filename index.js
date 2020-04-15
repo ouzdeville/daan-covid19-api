@@ -4,6 +4,8 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+var CronJob = require('cron').CronJob;
+const {  contactService} = require('./utils');
 
 const port = parseInt(process.env.PORT, 10) || 8000;
 
@@ -28,5 +30,6 @@ app.get('*', (req, res) =>
 server.listen(port, () => {
   console.log('server started ', port);
 });
+contactService.data.runCronContact();
 
 // module.exports = app;
