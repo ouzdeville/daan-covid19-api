@@ -4,12 +4,11 @@ module.exports = {
     return queryInterface.createTable('Locations', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       idUser: {
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       lat: {
         type: Sequelize.STRING

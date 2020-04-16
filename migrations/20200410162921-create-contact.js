@@ -4,15 +4,14 @@ module.exports = {
     return queryInterface.createTable('Contacts', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       idUser1: {
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       idUser2: {
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       debut: {
         type: Sequelize.DATE

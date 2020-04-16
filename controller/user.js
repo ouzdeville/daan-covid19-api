@@ -38,7 +38,9 @@ module.exports = {
                 token,
             });
         } catch (error) {
+            console.log(error);
             res.status(500).send(error);
+
         }
     },
 
@@ -94,7 +96,10 @@ module.exports = {
 
 
         })
-            .catch((error) => res.status(400).send(error));
+            .catch((error) => {
+                console.log(error);
+                res.status(400).send(error);
+            });
     },
 
 
@@ -105,15 +110,15 @@ module.exports = {
     async signaler(req, res) {
         debutincubation = req.body.debutincubation;
         finincubation = req.body.finincubation;
-        id = req.body.id;
+        phone = req.body.phone;
         await User.update({debutincubation: debutincubation, finincubation: finincubation}, {
             where: {
-                id: id
+                phone: phone
             }
         }).then(() => {
             res.status(200).send({
                 success: true,
-                message: 'Successfully created.'
+                message: 'Successfully updated.'
             });
         })
             .catch((error) => res.status(400).send(error));

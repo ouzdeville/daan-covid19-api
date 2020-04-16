@@ -1,7 +1,7 @@
 {
   "local": {
     "username": "daancovid19sn",
-    "password": "4rn37byqxZT8gkABCG",
+    "password": "",
     "database": "daancovid19sn",
     "host": "127.0.0.1",
     "dialect": "postgres",
@@ -9,7 +9,7 @@
   },
   "development": {
     "username": "daancovid19sn",
-    "password": "RDuOHdjNSDfAD5WqtQgg",
+    "password": "",
     "database": "daancovid19sn",
     "host": "daancovid19sn.ca0gpetnruab.us-east-1.rds.amazonaws.com",
     "dialect": "postgres",
@@ -17,7 +17,7 @@
   },
   "production": {
     "username": "daancovid19sn",
-    "password": "RDuOHdjNSDfAD5WqtQgg",
+    "password": "",
     "database": "daancovid19sn",
     "host": "daancovid19sn.ca0gpetnruab.us-east-1.rds.amazonaws.com",
     "dialect": "postgres",

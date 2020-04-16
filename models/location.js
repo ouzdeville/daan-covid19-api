@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Location = sequelize.define('Location', {
-    idUser: DataTypes.INTEGER,
+    idUser: DataTypes.UUID,
     lat: DataTypes.STRING,
     lng: DataTypes.STRING,
     imei:DataTypes.STRING,

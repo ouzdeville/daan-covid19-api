@@ -7,6 +7,7 @@ Pour tracer ....
 | Route           | HTTP Verb   | Description                          |
 | --------------- | ---------  | ------------------------------------ |
 | /user/contacts/:idUser  | GET  | Pour recuperer tous les contacts d'un user |
+| /user/signaler  | POST  | Pour signaler positif un user  |
 | /zone      | POST                    | Ajouter une zone à signaler         |
 | /zone      | GET                    | Recupérer toutes les zones         |
 | /zone/:id      | GET                   | Recupérer une zone à partir de l'id                  |
@@ -46,6 +47,22 @@ Response:
 }
 ```
 
+### Example **Signaler un utilisateur** `/user/signaler`:
+
+Request Body:
+```
+phone:776359893
+debutincubation:2020-04-01
+finincubation:2020-04-15
+```
+
+Response:
+```json
+{
+    "success": true,
+    "message": "Successfully updated."
+}
+```
 
 ## Getting Started
 
@@ -57,9 +74,12 @@ Response:
 ### Developing
 
 1. Run `npm install` to install server dependencies.
-2. Run `npm run start:dev` to start the development server. It should automatically open the client in your browser when ready.
+2. If You use local database:
+    2.0 create new file `/config/config.json` from `config/config.sample.json` (for dev instance ask credential to the team)
+    2.1 Run `sequelize db:migrate` 
+3. Run `npm run start:dev` to start the development server. It should automatically open the client in your browser when ready.
 
-3. Open browser `https://`.
+3. Open browser `https://localhost:8000`.
 
 
 

@@ -41,7 +41,6 @@ methods.runCronContact = function () {
                             && duree <= 5 //process.env.DUREE
                         ) {
                             Contact.create({
-                                id: 0,
                                 idUser1: location1.idUser,
                                 idUser2: location2.idUser,
                                 debut: location1.timestamp,
@@ -68,7 +67,7 @@ methods.runCronContact = function () {
                 });
 
             });//Fin location1
-        }).catch((error) => res.status(400).send(error));
+        }).catch((error) => console.log(error));
 
     });
     job.start();
