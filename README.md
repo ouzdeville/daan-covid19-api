@@ -14,6 +14,9 @@ Pour tracer ....
 | /contact  | GET  | Recupérer tous les contacts entre devices |
 | /contact/:id | GET  | Recupérer un contact entre deux device à partir de l'id du contact |
 | /contact/users/:idUser | GET  | Recupérer tous les users qui ont été en contact avec idUser |
+| /prevalence_zone | POST | Ajouter les statistiques sur une zone (zoneId, date, numberOfConfirmedCases, numberOfSuspectedCases, numberOfContactsCases, numberOfImportedCases, numberOfCommunityCases, numberOfRecoveredCases, numberOfDeathsCases, numberOfEvacueesCases) |
+| /prevalence_zone | GET | Récupérer la prévalence |
+| /prevalence_zone/:idZone | GET | Récupérer la prévalence d'une zone |
 
 
 
