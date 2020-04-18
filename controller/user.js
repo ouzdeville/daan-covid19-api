@@ -69,4 +69,24 @@ module.exports = {
   get(req, res) {
     res.send({ message: 'hi :)' });
   },
+
+  /**
+   * Renvoie la liste de tous les users de l'app.
+   * @param {*} req 
+   * @param {*} res 
+   */
+  getAllUsers(req, res) {
+    //res.send({message: 'hi :)'});
+    User.findAll()
+    .then(data=>{
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+},
+
 };
