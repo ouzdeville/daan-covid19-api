@@ -4,19 +4,19 @@ Pour tracer ....
 
 ## Express Router and Routes
 
-| Route           | HTTP Verb   | Description                          |
+| Route           | HTTP Verb   |Auth| Description                          |
 | --------------- | ---------  | ------------------------------------ |
-| /user/contacts/:idUser  | GET  | Pour recuperer tous les contacts d'un user |
-| /zone      | POST                    | Ajouter une zone à signaler         |
-| /zone      | GET                    | Recupérer toutes les zones         |
-| /zone/:id      | GET                   | Recupérer une zone à partir de l'id                  |
-| /zone/inside/:latitude/:longitude  | GET   | Verifier si le device est rentré dans une zone dangereuse                |
-| /contact  | GET  | Recupérer tous les contacts entre devices |
-| /contact/:id | GET  | Recupérer un contact entre deux device à partir de l'id du contact |
-| /contact/users/:idUser | GET  | Recupérer tous les users qui ont été en contact avec idUser |
-| /prevalence_zone | POST | Ajouter les statistiques sur une zone (zoneId, date, numberOfConfirmedCases, numberOfSuspectedCases, numberOfContactsCases, numberOfImportedCases, numberOfCommunityCases, numberOfRecoveredCases, numberOfDeathsCases, numberOfEvacueesCases) |
-| /prevalence_zone | GET | Récupérer la prévalence |
-| /prevalence_zone/:idZone | GET | Récupérer la prévalence d'une zone |
+| /user/contacts/:idUser  | GET  |yes| Pour recuperer tous les contacts d'un user |
+| /zone      | POST                    |yes| Ajouter une zone à signaler         |
+| /zone      | GET                    |yes| Recupérer toutes les zones         |
+| /zone/:id      | GET                   |yes| Recupérer une zone à partir de l'id                  |
+| /zone/inside/:latitude/:longitude  | GET   |yes| Verifier si le device est rentré dans une zone dangereuse                |
+| /contact  | GET |yes | Recupérer tous les contacts entre devices |
+| /contact/:id | GET  |yes| Recupérer un contact entre deux device à partir de l'id du contact |
+| /contact/users/:idUser | GET |yes | Recupérer tous les users qui ont été en contact avec idUser |
+| /prevalence_zone | POST |yes | Ajouter les statistiques sur une zone (zoneId, date, numberOfConfirmedCases, numberOfSuspectedCases, numberOfContactsCases, numberOfImportedCases, numberOfCommunityCases, numberOfRecoveredCases, numberOfDeathsCases, numberOfEvacueesCases) |
+| /prevalence_zone | GET |yes| Récupérer la prévalence |
+| /prevalence_zone/:idZone | GET |yes| Récupérer la prévalence d'une zone |
 
 
 
