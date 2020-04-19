@@ -18,6 +18,9 @@ Pour tracer ....
 | /prevalence | POST                    | Ajouter les statistiques sur une zone                              |
 | /prevalence | GET                     | Récupérer la prévalence                                            |
 | /prevalence/:idZone | GET             | Récupérer la prévalence d'une zone                                 |
+| /daily-report | POST                    | Ajouter les statistiques d'un jour                              |
+| /daily-report | GET                     | Récupérer les statistiques                                            |
+| /daily-report/last | GET             | Récupérer les derniers chiffres                                |
 
 
 
