@@ -1,4 +1,4 @@
-const {User} = require('./../models');
+const {User,Incubation} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
 
 module.exports = {
@@ -110,18 +110,21 @@ module.exports = {
     async signaler(req, res) {
         debutincubation = req.body.debutincubation;
         finincubation = req.body.finincubation;
-        phone = req.body.phone;
-        await User.update({debutincubation: debutincubation, finincubation: finincubation}, {
-            where: {
-                phone: phone
-            }
-        }).then(() => {
-            res.status(200).send({
+        idUser = req.body.idUser;
+        await Incubation.create({
+            id:0,
+                incubationStartedAt: debutincubation,
+                incubationEndedAt: finincubation,
+                idUser:idUser}, {})
+        .then(() => {
+            res.status(201).send({
                 success: true,
                 message: 'Successfully updated.'
             });
         })
-            .catch((error) => res.status(400).send(error));
+            .catch((error) =>{ 
+                console.log(error);
+                res.status(400).send(error)});
         return;
     },
 };

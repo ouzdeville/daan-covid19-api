@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
     },
     name: DataTypes.STRING,
-    obersvation: DataTypes.JSON,
+    description: DataTypes.JSON,
     polygon: DataTypes.JSON
   }, {});
   Zone.associate = function(models) {

@@ -4,12 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     idUser: DataTypes.UUID,
     lat: DataTypes.STRING,
     lng: DataTypes.STRING,
-    imei:DataTypes.STRING,
-    timestamp: DataTypes.DATE,
-    computed:{
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    }
+    timestamp: DataTypes.DATE
   }, {});
   Location.associate = function(models) {
     // associations can be defined here
