@@ -5,7 +5,7 @@ module.exports = {
     createZone(req, res) {
         const zone = req.body;
         //lat,lon;lat,lon;lat,lon;lat,lon
-        var polygon = []
+        var polygon = [];
         const spolygone = zone.polygon + '';
         latlons = spolygone.split(";");
         latlons.forEach(latlon => {

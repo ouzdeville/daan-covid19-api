@@ -98,3 +98,4 @@ fabric.properties
 # End of https://www.gitignore.io/api/webstorm
 config.json
 /docs
+/http_request_test/
