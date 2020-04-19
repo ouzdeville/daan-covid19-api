@@ -2,7 +2,8 @@ const {
     UserController, LocationController,
     ZoneController, ContactController,
     BarrierGestureController, 
-    GreenNumberController, SymptomInfoController
+    GreenNumberController, SymptomInfoController,
+    PrevalenceController
 } = require('./../controller');
 const {auth} = require('./../middlewares');
 
@@ -22,6 +23,11 @@ module.exports = (app) => {
     app.get('/contact', ContactController.getContacts);
     app.get('/contact/:id', ContactController.getContact);
     app.get('/contact/users/:idUser', ContactController.getIncubContact);
+
+    // Prévalence
+    app.post('/prevalence', PrevalenceController.create);
+    app.get('/prevalence', PrevalenceController.getAll);
+    app.get('/prevalence/:idZone', PrevalenceController.getByZone);
 
     // Route Barrier Gesture
   app.post('/barrier-gesture', auth, BarrierGestureController.create);

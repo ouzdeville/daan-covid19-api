@@ -6,4 +6,5 @@ module.exports = {
   BarrierGestureController: require('./barrier-gesture'),
   GreenNumberController: require('./green-number'),
   SymptomInfoController: require('./symptom-info'),
-}
+  PrevalenceController: require('./prevalence')
+};
