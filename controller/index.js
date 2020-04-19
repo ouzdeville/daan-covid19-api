@@ -3,4 +3,7 @@ module.exports = {
   LocationController: require('./location'),
   ZoneController: require('./zone'),
   ContactController: require('./contact'),
+  BarrierGestureController: require('./barrier-gesture'),
+  GreenNumberController: require('./green-number'),
+  SymptomInfoController: require('./symptom-info'),
 }

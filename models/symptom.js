@@ -1,0 +1,25 @@
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const Symptom = sequelize.define('Symptom', {
+    
+    name: {
+      type:DataTypes.STRING,
+      allowNull: true
+    },
+    description: {
+      type:DataTypes.TEXT,
+      allowNull: true
+    },
+    major: {
+      type:DataTypes.BOOLEAN,
+      allowNull: true
+    },
+  }, {});
+  Symptom.associate = function(models) {
+    // associations can be defined here
+    Symptom.belongsToMany(models.SelfReporting, 
+      { through: models.SelfReporting_Symptom, as: 'SelfReporting',
+       foreignKey: 'idSelfReporting' });
+  };
+  return Symptom;
+};
