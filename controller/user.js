@@ -94,37 +94,27 @@ module.exports = {
                 user,
             });
 
+  get(req, res) {
+    res.send({ message: 'hi :)' });
+  },
 
-        })
-            .catch((error) => {
-                console.log(error);
-                res.status(400).send(error);
-            });
-    },
+  /**
+   * Renvoie la liste de tous les users de l'app.
+   * @param {*} req 
+   * @param {*} res 
+   */
+  getAllUsers(req, res) {
+    //res.send({message: 'hi :)'});
+    User.findAll()
+    .then(data=>{
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+},
 
-
-    /**
-     * @param  {id,debutincubation,finincubation} req
-     * @param  {} res
-     */
-    async signaler(req, res) {
-        debutincubation = req.body.debutincubation;
-        finincubation = req.body.finincubation;
-        idUser = req.body.idUser;
-        await Incubation.create({
-            id:0,
-                incubationStartedAt: debutincubation,
-                incubationEndedAt: finincubation,
-                idUser:idUser}, {})
-        .then(() => {
-            res.status(201).send({
-                success: true,
-                message: 'Successfully updated.'
-            });
-        })
-            .catch((error) =>{ 
-                console.log(error);
-                res.status(400).send(error)});
-        return;
-    },
 };
