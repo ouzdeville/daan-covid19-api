@@ -1,20 +1,23 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Locations', {
+    return queryInterface.createTable('Incubations', {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.INTEGER
+      },
+      incubationStartedAt: {
+        allowNull: true,
+        type: Sequelize.DATEONLY
+      },
+      incubationEndedAt: {
+        allowNull: true,
+        type: Sequelize.DATEONLY
       },
       idUser: {
         type: Sequelize.UUID
-      },
-      lat: {
-        type: Sequelize.STRING
-      },
-      lng: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -27,6 +30,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Locations');
+    return queryInterface.dropTable('Incubations');
   }
 };

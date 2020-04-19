@@ -16,17 +16,17 @@ app.use(logger('dev'));
 app.use(cors());
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 require('./routes')(app);
 app.get('*', (req, res) =>
-  res.status(200).send({
-    message: 'Stop covid19 :( :)',
-  }),
+    res.status(200).send({
+        message: 'Stop covid19 :( :)',
+    }),
 );
 
 server.listen(port, () => {
-  console.log('server started ', port);
+    console.log('server started ', port);
 });
 
 // module.exports = app;

@@ -1,12 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const BarrierGesture = sequelize.define('BarrierGesture', {
+  const SymptomInfo = sequelize.define('SymptomInfo', {
     title: DataTypes.STRING,
     img: DataTypes.STRING,
     content: DataTypes.TEXT
   }, {});
-  BarrierGesture.associate = function(models) {
+  SymptomInfo.associate = function(models) {
     // associations can be defined here
   };
-  return BarrierGesture;
+  return SymptomInfo;
 };

@@ -1,19 +1,23 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Locations', {
+    return queryInterface.createTable('RiskFactors', {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.INTEGER
       },
-      idUser: {
-        type: Sequelize.UUID
-      },
-      lat: {
+      name: {
+        allowNull: true,
         type: Sequelize.STRING
       },
-      lng: {
+      description: {
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
+      type: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {
@@ -27,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Locations');
+    return queryInterface.dropTable('RiskFactors');
   }
 };
