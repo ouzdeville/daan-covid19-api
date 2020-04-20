@@ -25,7 +25,7 @@ Pour tracer ....
 
 
 
-
+| /users| GET | Récuperer tous les users|
 
 
 ## Usage
