@@ -7,5 +7,6 @@ module.exports = {
   GreenNumberController: require('./green-number'),
   SymptomInfoController: require('./symptom-info'),
   PrevalenceController: require('./prevalence'),
-  DailyReportController: require('./daily-report')
+  DailyReportController: require('./daily-report'),
+  SelfReportingController: require('./self-reporting'),
 };

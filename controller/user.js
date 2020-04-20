@@ -1,4 +1,4 @@
-const {User,Incubation, SelfReporting} = require('./../models');
+const {User,Incubation, SelfReporting,} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
 const { Client } = require('@elastic/elasticsearch')
 const client = new Client({ node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' })
@@ -117,7 +117,8 @@ module.exports = {
   getAllUsers(req, res) {
     //res.send({message: 'hi :)'});
     User.findAll({include: [{
-        model: SelfReporting
+        attribute:['id','phone','active'],
+        model: SelfReporting, attribute: ['firstname','lastname','email','adresse','department','region','lng','lat']
     }]
     }).then(data=>{
       res.send(data);
@@ -223,6 +224,12 @@ module.exports = {
         begin = req.params.begin;
 
     },
+
+    /**
+ * Renvoie la liste de tous les autosignalements
+ * @param {*} req 
+ * @param {*} res 
+ */
 
 
 };
