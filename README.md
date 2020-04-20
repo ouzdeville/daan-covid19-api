@@ -21,9 +21,8 @@ Pour tracer ....
 | /daily-report | POST                    | Ajouter les statistiques d'un jour                              |
 | /daily-report | GET                     | Récupérer les statistiques                                            |
 | /daily-report/last | GET             | Récupérer les derniers chiffres                                |
-
-| /users| GET | Récuperer tous les users|
-
+| /users        | GET       |   Récuperer tous les users|
+| /self-reports | GET | Récuperer tous les autosignalement|
 
 ## Usage
 

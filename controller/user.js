@@ -1,4 +1,4 @@
-const {User,Incubation, SelfReporting} = require('./../models');
+const {User,Incubation, SelfReporting,} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
 
 /**
@@ -115,7 +115,8 @@ module.exports = {
   getAllUsers(req, res) {
     //res.send({message: 'hi :)'});
     User.findAll({include: [{
-        model: SelfReporting
+        attribute:['id','phone','active'],
+        model: SelfReporting, attribute: ['firstname','lastname','email','adresse','department','region','lng','lat']
     }]
     }).then(data=>{
       res.send(data);
@@ -152,6 +153,12 @@ module.exports = {
                 res.status(400).send(error)});
         return;
     },
+
+    /**
+ * Renvoie la liste de tous les autosignalements
+ * @param {*} req 
+ * @param {*} res 
+ */
 
 
 };
