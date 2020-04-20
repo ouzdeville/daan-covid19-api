@@ -213,5 +213,16 @@ module.exports = {
 
     },
 
+    /** Get All location whose distance from a given is les than a fixed value and
+     * the duration of created date less than a fixed value.
+     * @param  {Request} req
+     * @param  {Response} res
+     */
+    async getContactsAtPositionAndDate(req, res){
+        id = req.params.id;
+        begin = req.params.begin;
+
+    },
+
 
 };
