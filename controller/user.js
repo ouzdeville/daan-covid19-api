@@ -1,5 +1,7 @@
 const {User,Incubation} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
+const { Client } = require('@elastic/elasticsearch')
+const client = new Client({ node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' })
 
 /**
  * User.
@@ -151,6 +153,64 @@ module.exports = {
                 console.log(error);
                 res.status(400).send(error)});
         return;
+    },
+    /** Find all GPS coordinates of a User from begin date to end date on ElasticSearch
+     * Date "format":"yyyy-mm-dd" 
+     * @param  {Request} req 
+     * @param  {Response} res
+     */
+    async getUserTrace(req, res){
+        id = req.params.id;
+        begin = req.params.begin;
+        end = req.params.end;
+        // Let's search!
+        const { body } = await client.search({
+            index: 'dc19',
+            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+            body: {
+                "query" : {
+                  "bool" : {
+                    "must" : [
+                      {
+                        "term" : {
+                          "id" : {
+                            "value" :id,
+                            "boost" : 1.0
+                          }
+                        }
+                      },
+                      {
+                        "range" : {
+                          "created_date":{  
+                                  "gte":begin,
+                                  "lte":end,
+                                  "format":"yyyy-mm-dd"
+                               }
+                        }
+                      }
+                    ],
+                    "adjust_pure_negative" : true,
+                    "boost" : 1.0
+                  }
+                },
+                "sort" : [
+                  {
+                    "_doc" : {
+                      "order" : "asc"
+                    }
+                  }
+                ]
+              }
+        });
+        
+        console.log(body.hits.hits)
+            res.status(200).send({
+                success: true,
+                resust:body.hits.hits,
+            });
+    
+        
+
     },
 
 

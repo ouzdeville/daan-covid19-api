@@ -21,6 +21,9 @@ Pour tracer ....
 | /daily-report | POST                    | Ajouter les statistiques d'un jour                              |
 | /daily-report | GET                     | Récupérer les statistiques                                            |
 | /daily-report/last | GET             | Récupérer les derniers chiffres                                |
+| /user/trace/:id/:begin/:end | GET             | Get all GPS coordinates of :id from :begin to :end                                 |
+
+
 
 
 

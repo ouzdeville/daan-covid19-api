@@ -48,4 +48,8 @@ module.exports = (app) => {
   app.post('/symptom', auth, SymptomInfoController.create);
   app.get('/symptom/:id', auth, SymptomInfoController.get);
   app.get('/symptoms', auth, SymptomInfoController.getAllSymptom);
+
+
+  //elastic search
+  app.get('/user/trace/:id/:begin/:end', UserController.getUserTrace);
 };
