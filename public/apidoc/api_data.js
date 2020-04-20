@@ -55,74 +55,296 @@ define({ "api": [
     },
     "success": {
       "fields": {
-        "Success 200": [
+        "Success 201": [
           {
-            "group": "Success 200",
+            "group": "Success 201",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If it works ot not</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Response message</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "prevalence",
+            "description": "<p>Prevalence object</p>"
+          },
+          {
+            "group": "Success 201",
             "type": "Number",
             "optional": false,
-            "field": "idZone",
+            "field": "prevalence.id",
+            "description": "<p>Prevalence id</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalence.idZone",
             "description": "<p>Zone id</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Success 201",
             "type": "Date",
             "optional": false,
-            "field": "date",
+            "field": "prevalence.date",
             "description": "<p>date</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Success 201",
             "type": "Number",
             "optional": false,
-            "field": "numberOfConfirmedCases",
+            "field": "prevalence.numberOfConfirmedCases",
             "description": "<p>number of confirmed cases</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Success 201",
             "type": "Number",
             "optional": false,
-            "field": "numberOfSupectedCases",
+            "field": "prevalence.numberOfSupectedCases",
             "description": "<p>number of supected cases</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Success 201",
             "type": "Number",
             "optional": false,
-            "field": "numberOfContactsCases",
+            "field": "prevalence.numberOfContactsCases",
             "description": "<p>number of contacts cases</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Success 201",
             "type": "Number",
             "optional": false,
-            "field": "numberOfRecoveredCases",
+            "field": "prevalence.numberOfRecoveredCases",
             "description": "<p>number of recovered cases</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalence.updatedAt",
+            "description": "<p>Creation date</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalence.createdAt",
+            "description": "<p>Modification date</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\"\n}",
+          "content": "HTTP/1.1 201 Created\n{\n  \"success\": true,\n  \"message\": \"Successfully created.\",\n  \"prevalence\": {\n    \"id\": 6,\n    \"idZone\": \"b967a828-7df4-459b-906d-f3ff4f8a05be\",\n    \"date\": \"2020-04-19\",\n    \"numberOfConfirmedCases\": 10,\n    \"numberOfSupectedCases\": 47,\n    \"numberOfContactsCases\": 8,\n    \"numberOfRecoveredCases\": 12,\n    \"updatedAt\": \"2020-04-20T22:55:41.419Z\",\n    \"createdAt\": \"2020-04-20T22:55:41.419Z\"\n  }\n}",
           "type": "json"
         }
       ]
     },
-    "error": {
+    "version": "0.0.0",
+    "filename": "controller/prevalence.js",
+    "groupTitle": "Prevalence"
+  },
+  {
+    "type": "get",
+    "url": "/prevalence",
+    "title": "Get all prevalence",
+    "name": "GetPrevalence",
+    "group": "Prevalence",
+    "success": {
       "fields": {
-        "Error 4xx": [
+        "Success 200": [
           {
-            "group": "Error 4xx",
+            "group": "Success 200",
+            "type": "Object[]",
             "optional": false,
-            "field": "UserNotFound",
-            "description": "<p>The id of the User was not found.</p>"
+            "field": "prevalences",
+            "description": "<p>List of prevalences</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.id",
+            "description": "<p>Prevalence id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.idZone",
+            "description": "<p>Zone id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalences.date",
+            "description": "<p>date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfConfirmedCases",
+            "description": "<p>number of confirmed cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfSupectedCases",
+            "description": "<p>number of supected cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfContactsCases",
+            "description": "<p>number of contacts cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfRecoveredCases",
+            "description": "<p>number of recovered cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalences.updatedAt",
+            "description": "<p>Creation date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalences.createdAt",
+            "description": "<p>Modification date</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"error\": \"UserNotFound\"\n}",
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"prevalences\": [\n    {\n      \"id\": 5,\n      \"idZone\": \"b967a828-7df4-459b-906d-f3ff4f8a05be\",\n      \"date\": \"2020-04-19\",\n      \"numberOfConfirmedCases\": 10,\n      \"numberOfSupectedCases\": 47,\n      \"numberOfContactsCases\": 8,\n      \"numberOfRecoveredCases\": 12,\n      \"createdAt\": \"2020-04-19T15:54:16.521Z\",\n      \"updatedAt\": \"2020-04-19T15:54:16.521Z\"\n    },\n    {\n      \"id\": 6,\n      \"idZone\": \"b967a828-7dp4-459b-906a-f3ffdf8a05be\",\n      \"date\": \"2020-04-19\",\n      \"numberOfConfirmedCases\": 10,\n      \"numberOfSupectedCases\": 47,\n      \"numberOfContactsCases\": 8,\n      \"numberOfRecoveredCases\": 12,\n      \"createdAt\": \"2020-04-20T22:55:41.419Z\",\n      \"updatedAt\": \"2020-04-20T22:55:41.419Z\"\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/prevalence.js",
+    "groupTitle": "Prevalence"
+  },
+  {
+    "type": "get",
+    "url": "/prevalence/:idZone",
+    "title": "Get all prevalence by Zone",
+    "name": "GetPrevalenceByZone",
+    "group": "Prevalence",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "idZone",
+            "description": "<p>id of the zone</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "prevalences",
+            "description": "<p>List of prevalences</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.id",
+            "description": "<p>Prevalence id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.idZone",
+            "description": "<p>Zone id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalences.date",
+            "description": "<p>date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfConfirmedCases",
+            "description": "<p>number of confirmed cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfSupectedCases",
+            "description": "<p>number of supected cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfContactsCases",
+            "description": "<p>number of contacts cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "prevalences.numberOfRecoveredCases",
+            "description": "<p>number of recovered cases</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalences.updatedAt",
+            "description": "<p>Creation date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "prevalences.createdAt",
+            "description": "<p>Modification date</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"prevalences\": [\n    {\n      \"id\": 5,\n      \"idZone\": \"b967a828-7df4-459b-906d-f3ff4f8a05be\",\n      \"date\": \"2020-04-20\",\n      \"numberOfConfirmedCases\": 10,\n      \"numberOfSupectedCases\": 47,\n      \"numberOfContactsCases\": 8,\n      \"numberOfRecoveredCases\": 12,\n      \"createdAt\": \"2020-04-19T15:54:16.521Z\",\n      \"updatedAt\": \"2020-04-19T15:54:16.521Z\"\n    },\n    {\n      \"id\": 6,\n      \"idZone\": \"b967a828-7df4-459b-906d-f3ff4f8a05be\",\n      \"date\": \"2020-04-19\",\n      \"numberOfConfirmedCases\": 10,\n      \"numberOfSupectedCases\": 47,\n      \"numberOfContactsCases\": 8,\n      \"numberOfRecoveredCases\": 12,\n      \"createdAt\": \"2020-04-20T22:55:41.419Z\",\n      \"updatedAt\": \"2020-04-20T22:55:41.419Z\"\n    }\n  ]\n}",
           "type": "json"
         }
       ]
