@@ -1,6 +1,40 @@
 const {Prevalence} = require('./../models');
 
 module.exports = {
+    /**
+     * @api {post} /prevalence Add Prevalence
+     * @apiName CreatePrevalence
+     * @apiGroup Prevalence
+     *
+     * @apiParam {Number} idZone Zone id
+     * @apiParam {Date} date date
+     * @apiParam {Number} numberOfConfirmedCases number of confirmed cases
+     * @apiParam {Number} numberOfSupectedCases number of supected cases
+     * @apiParam {Number} numberOfContactsCases number of contacts cases
+     * @apiParam {Number} numberOfRecoveredCases number of recovered cases
+     *
+     * @apiSuccess {Number} idZone Zone id
+     * @apiSuccess {Date} date date
+     * @apiSuccess {Number} numberOfConfirmedCases number of confirmed cases
+     * @apiSuccess {Number} numberOfSupectedCases number of supected cases
+     * @apiSuccess {Number} numberOfContactsCases number of contacts cases
+     * @apiSuccess {Number} numberOfRecoveredCases number of recovered cases
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "firstname": "John",
+     *       "lastname": "Doe"
+     *     }
+     *
+     * @apiError UserNotFound The id of the User was not found.
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "UserNotFound"
+     *     }
+     */
     create(req, res) {
         const data = {
             idZone: req.body.idZone,
