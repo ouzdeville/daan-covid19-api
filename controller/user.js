@@ -1,4 +1,4 @@
-const {User,Incubation} = require('./../models');
+const {User,Incubation, SelfReporting} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
 
 /**

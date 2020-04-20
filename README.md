@@ -22,7 +22,7 @@ Pour tracer ....
 | /daily-report | GET                     | Récupérer les statistiques                                            |
 | /daily-report/last | GET             | Récupérer les derniers chiffres                                |
 
-
+| /users| GET | Récuperer tous les users|
 
 
 ## Usage
