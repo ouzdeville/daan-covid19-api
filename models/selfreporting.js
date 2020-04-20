@@ -57,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
     SelfReporting.belongsToMany(models.RiskFactor, 
     { through: models.SelfReporting_RiskFactor, as: 'RiskFactor',
       foreignKey: 'idRiskFactor' });
+    SelfReporting.belongsTo(models.User, {foreignKey: 'idUser' });
 
   };
   return SelfReporting;

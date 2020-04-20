@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     User.belongsToMany(models.User, { through: models.Contact, as: 'Contact1', foreignKey: 'idUser1' });
     User.belongsToMany(models.User, { through: models.Contact, as: 'Contact2', foreignKey: 'idUser2' });
-    User.hasMany(models.Incubation)
+    User.hasMany(models.Incubation,{foreignKey: 'idUser'});
+    User.hasMany(models.SelfReporting, {foreignKey: 'idUser'});
   };
   return User;
 };

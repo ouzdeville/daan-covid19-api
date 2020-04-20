@@ -1,7 +1,17 @@
 const {User,Incubation} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
 
+/**
+ * User.
+ * @module User management
+ */
+
 module.exports = {
+    
+    /** Creating user by genrating first an otp and jwt token
+     * @param  {} req
+     * @param  {} res
+     */
     async create(req, res) {
         try {
             if (req.headers.issuer !== process.env.OAUTH_SECRET) {
@@ -74,7 +84,7 @@ module.exports = {
     /**
      * Renvoie la liste de tous les users qui ont été en contact avec id.
      * Les Contacts se trouvent sur deux listes: Contact1 et Contact2
-     * @param  {idUser} req
+     * @param  {int} req
      * @param  {} res
      */
     getContact(req, res) {
@@ -104,8 +114,10 @@ module.exports = {
    */
   getAllUsers(req, res) {
     //res.send({message: 'hi :)'});
-    User.findAll()
-    .then(data=>{
+    User.findAll({include: [{
+        model: SelfReporting
+    }]
+    }).then(data=>{
       res.send(data);
     })
     .catch(err => {
@@ -116,10 +128,10 @@ module.exports = {
     });
 },
 
-/**
-     * @param  {id,debutincubation,finincubation} req
+    /**
+     * @param  {} req
      * @param  {} res
- */
+     */
     async signaler(req, res) {
         debutincubation = req.body.debutincubation;
         finincubation = req.body.finincubation;
