@@ -554,8 +554,8 @@
   },
   {
     "type": "post",
-    "url": "/sefreport/create",
-    "title": "Get contacts at Position",
+    "url": "/user/selfreport",
+    "title": "Create seflReport",
     "name": "CreateSelfReporting",
     "group": "Reporting",
     "parameter": {
@@ -670,7 +670,169 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"id\":1\n     \n  \n}",
+          "content": "HTTP/1.1 201 OK\n{\n  \"success\": true,\n  \"id\":1\n     \n  \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/self-reporting.js",
+    "groupTitle": "Reporting"
+  },
+  {
+    "type": "post",
+    "url": "/selfreport-symptom/create",
+    "title": "create self-report-symptom",
+    "name": "CreateSelfReportingSymptom",
+    "group": "Reporting",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idreport",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idsymptom",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If it works ot not</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "message",
+            "description": ""
+          }
+        ],
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>of the created object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"success\": true,\n  \"id\":1,\n  \"message\":\n     \n  \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/self-reporting.js",
+    "groupTitle": "Reporting"
+  },
+  {
+    "type": "post",
+    "url": "/selfreport-risk/create",
+    "title": "create self-report-risk",
+    "name": "createSelfReportRisk",
+    "group": "Reporting",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idreport",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idrisque",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If it works ot not</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "message",
+            "description": ""
+          }
+        ],
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>of the created object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"success\": true,\n  \"id\":1,\n  \"message\":\n     \n  \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/self-reporting.js",
+    "groupTitle": "Reporting"
+  },
+  {
+    "type": "get",
+    "url": "/riskfactor/create",
+    "title": "get all risk-factor",
+    "name": "getAllRiskFactor",
+    "group": "Reporting",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "result",
+            "description": "<p>risk-factors list</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"success\": true,\n  \"id\":1,\n  \"message\":\n     \n  \n}",
           "type": "json"
         }
       ]
