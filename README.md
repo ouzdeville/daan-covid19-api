@@ -23,7 +23,15 @@ Pour tracer ....
 | /daily-report/last | GET             | Récupérer les derniers chiffres                                |
 | /users        | GET       |   Récuperer tous les users|
 | /user/trace/:id/:begin/:end | GET             | Get all GPS coordinates of :id from :begin to :end                                 |
-| /self-reports | GET | Récuperer tous les autosignalement|
+| /user/contact/:id/:begin/:end | GET             | Get all contacts GPS coordinates of :id from :begin to :end                                 |
+| /user/contact/position | POST             | Get all contacts GPS coordinates at a specific postion of a user                                 |
+| /self-reports | GET | (deprecaed) Récuperer tous les autosignalement|
+| /reporting/self-reports | GET | Récuperer tous les autosignalement|
+| /reporting/riskfactors | GET | get all risk factors|
+| /reporting/self-report | POST | create a self report|
+| /reporting/selfreport-symptom | POST | create a  SelfReport-Symptom|
+| /reporting/selfreport-risk | POST | create SelfReport-Risk|
+
 
 ## Usage
 

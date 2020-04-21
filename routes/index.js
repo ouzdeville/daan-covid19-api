@@ -13,7 +13,6 @@ module.exports = (app) => {
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
   app.get('/users', UserController.getAllUsers);
-  app.get('/self-reports', SelfReportingController.getAllSelfReports);
   app.get('/user/refresh_token', auth, UserController.refreshToken);
   app.post('/user/verify_code', auth, UserController.verifyCode);
   app.post('/location', auth, LocationController.registerLocation);
@@ -58,5 +57,13 @@ module.exports = (app) => {
   app.get('/user/contact/:id/:begin/:end', ElasticCallController.getUserContacts);
   app.get('/user/trace/:id/:begin/:end', ElasticCallController.getUserTrace);
   app.post('/user/contact/position', ElasticCallController.getContactsAtPositionAndDate);
-  app.post('/user/selfreport', SelfReportingController.create);
+
+  //reporting symptom and risk factor
+  //deprecated
+  app.get('/self-reports', SelfReportingController.getAllSelfReports);
+  app.get('/reporting/self-reports', SelfReportingController.getAllSelfReports);
+  app.get('/reporting/riskfactors', SelfReportingController.getAllRiskFactors);
+  app.post('/reporting/self-report', SelfReportingController.createSelfReporting);
+  app.post('/reporting/selfreport-symptom', SelfReportingController.createSelfReportSymptom);
+  app.post('/reporting/selfreport-risk', SelfReportingController.createSelfReportRisk);
 };

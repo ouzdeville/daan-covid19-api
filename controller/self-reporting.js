@@ -1,4 +1,5 @@
-const {SelfReporting, Symptom, RiskFactor, User}=require('./../models')
+const {SelfReporting, Symptom, RiskFactor, User,
+  SelfReporting_Symptom,SelfReporting_RiskFactor}=require('./../models')
 
 
 module.exports={
@@ -32,7 +33,7 @@ getAllSelfReports(req, res) {
     });
   },
   /** 
-     * @api {post} /sefreport/create Get contacts at Position
+     * @api {post} /user/selfreport Create seflReport
      * @apiName CreateSelfReporting
      * @apiGroup Reporting
      *
@@ -53,7 +54,7 @@ getAllSelfReports(req, res) {
      * @apiSuccess (Success 200) {Number} id of the created object
      *
      * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
+     *     HTTP/1.1 201 OK
      *     {
      *       "success": true,
      *       "id":1
@@ -61,7 +62,7 @@ getAllSelfReports(req, res) {
      *       
      *     }
      */
-create(req, res) {
+createSelfReporting(req, res) {
 
   const {firstname, lastname, gender, dateOfBirth, age,
      email, adresse, department, region, lat,lon}=req.body;
@@ -92,11 +93,146 @@ create(req, res) {
       res.status(500).send({
           success: false,
           code:-1,
+          message:
+          err.message || "Some error occurred while creating self-reports."
       });
 
     }
 
-}
+},
+/** 
+     * @api {post} /selfreport-symptom/create create self-report-symptom
+     * @apiName CreateSelfReportingSymptom
+     * @apiGroup Reporting
+     *
+     * @apiParam {String} idreport 
+     * @apiParam {String} idsymptom 
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} message 
+     * @apiSuccess (Success 201) {Number} id of the created object
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 OK
+     *     {
+     *       "success": true,
+     *       "id":1,
+     *       "message":
+     *          
+     *       
+     *     }
+     */
+    createSelfReportSymptom(req, res) {
+
+      const {idreport, idsymptom}=req.body;
+        try {
+          SelfReporting_Symptom.create({
+            idSelfReporting:idreport,
+            idSymptom:idsymptom
+          }).then((report) => {
+                res.status(201).send({
+                    success: true,
+                    message: 'Successfully created.',
+                    id:report.id
+                });
+            })
+    
+    
+        } catch (error) {
+          console.log(error);
+          res.status(500).send({
+              success: false,
+              code:-1,
+              message:
+              err.message || "Some error occurred while creating self-reports-symptom."
+          });
+    
+        }
+    
+    },
+
+    /** 
+     * @api {post} /selfreport-risk/create create self-report-risk
+     * @apiName createSelfReportRisk
+     * @apiGroup Reporting
+     *
+     * @apiParam {String} idreport 
+     * @apiParam {String} idrisque 
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} message 
+     * @apiSuccess (Success 201) {Number} id of the created object
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 OK
+     *     {
+     *       "success": true,
+     *       "id":1,
+     *       "message":
+     *          
+     *       
+     *     }
+     */
+    createSelfReportRisk(req, res) {
+
+      const {idreport, idrisk}=req.body;
+        try {
+          SelfReporting_RiskFactor.create({
+            idSelfReporting:idreport,
+            idRiskFactor:idrisk
+          }).then((report) => {
+                res.status(201).send({
+                    success: true,
+                    message: 'Successfully created.',
+                    id:report.id
+                });
+            })
+    
+    
+        } catch (error) {
+          console.log(error);
+          res.status(500).send({
+              success: false,
+              code:-1,
+              message:
+              err.message || "Some error occurred while creating self-reports-riskfactor."
+          });
+    
+        }
+    
+    },
+
+    /** 
+     * @api {get} /riskfactor/create get all risk-factor
+     * @apiName getAllRiskFactor
+     * @apiGroup Reporting
+     *
+     *
+     * @apiSuccess (Success 200) {Object} result risk-factors list
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 OK
+     *     {
+     *       "success": true,
+     *       "id":1,
+     *       "message":
+     *          
+     *       
+     *     }
+     */
+    getAllRiskFactors(req, res) {
+      SelfReporting.findAll()
+      .then(data=>{
+        res.send({result:data});
+      })
+      .catch(err=>{
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving RiskFactor."
+        });
+      });
+    },
+    
 
 
 
