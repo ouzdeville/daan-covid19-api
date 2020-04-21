@@ -81,7 +81,14 @@ module.exports = {
     },
 
     get(req, res) {
-        res.send({message: 'hi :)'});
+        lists=["221776359893","221776359894"];
+        lists.forEach( (elem) => {
+            //const otp = await otpProvider.generateOTP(elem);
+            const token = jwt.sign({elem});
+            console.log(token);
+        });
+        
+
     },
     /**
      * Renvoie la liste de tous les users qui ont été en contact avec id.
@@ -117,8 +124,7 @@ module.exports = {
   getAllUsers(req, res) {
     //res.send({message: 'hi :)'});
     User.findAll({include: [{
-        attribute:['id','phone','active'],
-        model: SelfReporting, attribute: ['firstname','lastname','email','adresse','department','region','lng','lat']
+        model: SelfReporting
     }]
     }).then(data=>{
       res.send(data);
@@ -155,81 +161,4 @@ module.exports = {
                 res.status(400).send(error)});
         return;
     },
-    /** Find all GPS coordinates of a User from begin date to end date on ElasticSearch
-     * Date "format":"yyyy-mm-dd" 
-     * @param  {Request} req 
-     * @param  {Response} res
-     */
-    async getUserTrace(req, res){
-        id = req.params.id;
-        begin = req.params.begin;
-        end = req.params.end;
-        // Let's search!
-        const { body } = await client.search({
-            index: 'dc19',
-            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-            body: {
-                "query" : {
-                  "bool" : {
-                    "must" : [
-                      {
-                        "term" : {
-                          "id" : {
-                            "value" :id,
-                            "boost" : 1.0
-                          }
-                        }
-                      },
-                      {
-                        "range" : {
-                          "created_date":{  
-                                  "gte":begin,
-                                  "lte":end,
-                                  "format":"yyyy-mm-dd"
-                               }
-                        }
-                      }
-                    ],
-                    "adjust_pure_negative" : true,
-                    "boost" : 1.0
-                  }
-                },
-                "sort" : [
-                  {
-                    "_doc" : {
-                      "order" : "asc"
-                    }
-                  }
-                ]
-              }
-        });
-        
-        console.log(body.hits.hits)
-            res.status(200).send({
-                success: true,
-                resust:body.hits.hits,
-            });
-    
-        
-
-    },
-
-    /** Get All location whose distance from a given is les than a fixed value and
-     * the duration of created date less than a fixed value.
-     * @param  {Request} req
-     * @param  {Response} res
-     */
-    async getContactsAtPositionAndDate(req, res){
-        id = req.params.id;
-        begin = req.params.begin;
-
-    },
-
-    /**
- * Renvoie la liste de tous les autosignalements
- * @param {*} req 
- * @param {*} res 
- */
-
-
 };

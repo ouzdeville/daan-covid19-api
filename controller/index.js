@@ -9,4 +9,5 @@ module.exports = {
   PrevalenceController: require('./prevalence'),
   DailyReportController: require('./daily-report'),
   SelfReportingController: require('./self-reporting'),
+  ElasticCallController: require('./elastic-call'),
 };
