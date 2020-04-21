@@ -10,10 +10,11 @@ module.exports={
 getAllSelfReports(req, res) {
     //res.send({ message: 'hi :)' });
     SelfReporting.findAll({
+      attributes: ['reportingDate','firstname','lastname','email','adresse','department','region'],
       include: [{
-        model: User,attributes: ['id','reportingDate','firstname','lastname','email','adresse','department','region']
+        model: User,attributes: ['id','phone','active']
       },{
-        model: Symptom, attributes: ['id','name','description','major'],
+        model: Symptom, attributes: ['id','title','content','major'],
         as: 'Symptom'
     },{
         model: RiskFactor, attributes: ['id','name','description','type'],
