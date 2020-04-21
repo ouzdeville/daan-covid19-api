@@ -1,6 +1,49 @@
 const {Prevalence} = require('./../models');
 
 module.exports = {
+    /**
+     * @api {post} /prevalence Add Prevalence
+     * @apiName CreatePrevalence
+     * @apiGroup Prevalence
+     *
+     * @apiParam {Number} idZone Zone id
+     * @apiParam {Date} date date
+     * @apiParam {Number} numberOfConfirmedCases number of confirmed cases
+     * @apiParam {Number} numberOfSupectedCases number of supected cases
+     * @apiParam {Number} numberOfContactsCases number of contacts cases
+     * @apiParam {Number} numberOfRecoveredCases number of recovered cases
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {String} message Response message
+     * @apiSuccess (Success 201) {Object} prevalence Prevalence object
+     * @apiSuccess (Success 201) {Number} prevalence.id Prevalence id
+     * @apiSuccess (Success 201) {Number} prevalence.idZone Zone id
+     * @apiSuccess (Success 201) {Date} prevalence.date date
+     * @apiSuccess (Success 201) {Number} prevalence.numberOfConfirmedCases number of confirmed cases
+     * @apiSuccess (Success 201) {Number} prevalence.numberOfSupectedCases number of supected cases
+     * @apiSuccess (Success 201) {Number} prevalence.numberOfContactsCases number of contacts cases
+     * @apiSuccess (Success 201) {Number} prevalence.numberOfRecoveredCases number of recovered cases
+     * @apiSuccess (Success 201) {Date} prevalence.updatedAt Creation date
+     * @apiSuccess (Success 201) {Date} prevalence.createdAt Modification date
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully created.",
+     *       "prevalence": {
+     *         "id": 6,
+     *         "idZone": "b967a828-7df4-459b-906d-f3ff4f8a05be",
+     *         "date": "2020-04-19",
+     *         "numberOfConfirmedCases": 10,
+     *         "numberOfSupectedCases": 47,
+     *         "numberOfContactsCases": 8,
+     *         "numberOfRecoveredCases": 12,
+     *         "updatedAt": "2020-04-20T22:55:41.419Z",
+     *         "createdAt": "2020-04-20T22:55:41.419Z"
+     *       }
+     *     }
+     */
     create(req, res) {
         const data = {
             idZone: req.body.idZone,
@@ -22,6 +65,51 @@ module.exports = {
             .catch((error) => res.status(400).send(error));
     },
 
+    /**
+     * @api {get} /prevalence Get all prevalence
+     * @apiName GetPrevalence
+     * @apiGroup Prevalence
+     *
+     * @apiSuccess (Success 200) {Object[]} prevalences List of prevalences
+     * @apiSuccess (Success 200) {Number} prevalences.id Prevalence id
+     * @apiSuccess (Success 200) {Number} prevalences.idZone Zone id
+     * @apiSuccess (Success 200) {Date} prevalences.date date
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfConfirmedCases number of confirmed cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfSupectedCases number of supected cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfContactsCases number of contacts cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfRecoveredCases number of recovered cases
+     * @apiSuccess (Success 200) {Date} prevalences.updatedAt Creation date
+     * @apiSuccess (Success 200) {Date} prevalences.createdAt Modification date
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "prevalences": [
+     *         {
+     *           "id": 5,
+     *           "idZone": "b967a828-7df4-459b-906d-f3ff4f8a05be",
+     *           "date": "2020-04-19",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-19T15:54:16.521Z",
+     *           "updatedAt": "2020-04-19T15:54:16.521Z"
+     *         },
+     *         {
+     *           "id": 6,
+     *           "idZone": "b967a828-7dp4-459b-906a-f3ffdf8a05be",
+     *           "date": "2020-04-19",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-20T22:55:41.419Z",
+     *           "updatedAt": "2020-04-20T22:55:41.419Z"
+     *         }
+     *       ]
+     *     }
+     */
     getAll(req, res) {
         Prevalence.findAll()
             .then((prevalences) => {
@@ -31,6 +119,54 @@ module.exports = {
             })
             .catch((error) => res.status(400).send(error));
     },
+
+    /**
+     * @api {get} /prevalence/:idZone Get all prevalence by Zone
+     * @apiName GetPrevalenceByZone
+     * @apiGroup Prevalence
+     *
+     * @apiParam {UUID} idZone id of the zone
+     *
+     * @apiSuccess (Success 200) {Object[]} prevalences List of prevalences
+     * @apiSuccess (Success 200) {Number} prevalences.id Prevalence id
+     * @apiSuccess (Success 200) {Number} prevalences.idZone Zone id
+     * @apiSuccess (Success 200) {Date} prevalences.date date
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfConfirmedCases number of confirmed cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfSupectedCases number of supected cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfContactsCases number of contacts cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfRecoveredCases number of recovered cases
+     * @apiSuccess (Success 200) {Date} prevalences.updatedAt Creation date
+     * @apiSuccess (Success 200) {Date} prevalences.createdAt Modification date
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "prevalences": [
+     *         {
+     *           "id": 5,
+     *           "idZone": "b967a828-7df4-459b-906d-f3ff4f8a05be",
+     *           "date": "2020-04-20",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-19T15:54:16.521Z",
+     *           "updatedAt": "2020-04-19T15:54:16.521Z"
+     *         },
+     *         {
+     *           "id": 6,
+     *           "idZone": "b967a828-7df4-459b-906d-f3ff4f8a05be",
+     *           "date": "2020-04-19",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-20T22:55:41.419Z",
+     *           "updatedAt": "2020-04-20T22:55:41.419Z"
+     *         }
+     *       ]
+     *     }
+     */
 
     getByZone(req, res) {
         const {idZone} = req.params;
