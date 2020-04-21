@@ -25,19 +25,6 @@ Pour tracer ....
 | /user/trace/:id/:begin/:end | GET             | Get all GPS coordinates of :id from :begin to :end                                 |
 | /self-reports | GET | Récuperer tous les autosignalement|
 
-<<<<<<< .mine
-
-
-| /users| GET | Récuperer tous les users|
-
-
-=======
-
-
-
-
-
->>>>>>> .theirs
 ## Usage
 
 ### Example **Ajouter une nouvelle zone** `/zone`:
