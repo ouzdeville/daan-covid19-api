@@ -65,9 +65,18 @@ getAllSelfReports(req, res) {
 createSelfReporting(req, res) {
 
   const {firstname, lastname, gender, dateOfBirth, age,
-     email, adresse, department, region, lat,lon}=req.body;
+     email, adresse, department, region, lat,lng,idUser}=req.body;
     try {
+      if(idUser==null){
+        res.status(400).send({
+          success: false,
+          message: 'idUser is wrong',
+          idUser:idUser,
+      });
+      return;
+      } 
       SelfReporting.create({
+          idUser,  
           firstname,
           lastname,
           gender,
@@ -78,14 +87,15 @@ createSelfReporting(req, res) {
           department, 
           region,
           lat,
-          lon
+          lng
       }).then((report) => {
             res.status(201).send({
                 success: true,
                 message: 'Successfully created.',
                 id:report.id,
             });
-        })
+      });
+      
 
 
     } catch (error) {

@@ -404,8 +404,90 @@ module.exports = {
 
             
         });
+        res.status(200).send({
+            success: true,
+            resust:body.hits.hits,
+        });
 
     },
+
+
+    /** 
+     * @api {get} /user/zone/inside/:latitude/:longitude Inside zone
+     * @apiName isInAZoneElastic
+     * @apiGroup Zone
+     *
+     * @apiParam {Number} latitude GPS latitude
+     * @apiParam {Number} longitude GPS longitude
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} resust Location objects
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "resust":[
+     *              {
+     *                  "_index": "dc19",
+     *                  "_type": "_doc",
+     *                   "_id": "uYT5mXEB0m4T_0Lwe8LZ",
+     *                   "_score": null,
+     *                   "_source": {
+     *                       "imei": "",
+     *                       "position": {
+     *                           "lat": 14.750403052963359,
+     *                           "lon": -17.37935504970754
+     *                       },
+     *                       "status": "unknown",
+     *                       "id": "dc0fc6c9-425d-4a23-89e1-ff238542a02e",
+     *                       "created_date": 1586782662538
+     *                   },
+     *                   "sort": [
+     *                       1586782662538
+     *                   ]
+     *               }
+     *           ]
+     *          
+     *       
+     *     }
+     */
+    async isInAZoneElastic(req, res) {
+        var area = {};
+        const {latitude, longitude} = req.params;
+        var location = [parseFloat(longitude),parseFloat(latitude)];
+        //location=[[-17.468653,14.711750],[-17.468653,14.711750]];
+        //console.log(location);
+        const { body }=await client.search({
+            index: 'dc19zone',
+            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+            body: {
+                "query":{
+                    "bool": {
+                        "must": {
+                            "match_all": {}
+                        },
+                        "filter": {
+                            "geo_shape": {
+                                "zone.polygon": {
+                                    "shape": {
+                                        "type": "envelope",
+                                        "coordinates" : location
+                                    },
+                                    "relation": "CONTAINS"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        res.status(200).send({
+            success: true,
+            resust:body.hits.hits,
+        });
+       
+    }
 
 
 

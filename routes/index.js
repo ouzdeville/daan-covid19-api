@@ -22,7 +22,6 @@ module.exports = (app) => {
   app.post('/zone', auth, ZoneController.createZone);
   app.get('/zone', auth, ZoneController.getZones);
   app.get('/zone/:id', auth, ZoneController.getZone);
-  app.get('/zone/inside/:latitude/:longitude', auth, ZoneController.isInAZone);
   app.get('/contact', auth, ContactController.getContacts);
   app.get('/contact/:id', auth, ContactController.getContact);
   app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
@@ -57,6 +56,7 @@ module.exports = (app) => {
   app.get('/user/contact/:id/:begin/:end', ElasticCallController.getUserContacts);
   app.get('/user/trace/:id/:begin/:end', ElasticCallController.getUserTrace);
   app.post('/user/contact/position', ElasticCallController.getContactsAtPositionAndDate);
+  app.get('/user/inside/:latitude/:longitude', ElasticCallController.isInAZoneElastic);
 
   //reporting symptom and risk factor
   //deprecated

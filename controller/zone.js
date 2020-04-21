@@ -1,6 +1,7 @@
 const {Zone} = require('./../models');
 const {insidePolygon} = require('geolocation-utils');
 
+
 module.exports = {
     createZone(req, res) {
         const zone = req.body;
@@ -71,5 +72,7 @@ module.exports = {
             res.status(200).send({area,});
 
         }).catch((error) => console.log(error));
-    }
+    },
+
+    
 };
