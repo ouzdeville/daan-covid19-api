@@ -1,21 +1,11 @@
 const {
-<<<<<<< .mine
-    UserController, LocationController,
-    ZoneController, ContactController,
-    BarrierGestureController, SelfReportingController,
-    GreenNumberController, SymptomInfoController,
-=======
+
   UserController, LocationController,
   ZoneController, ContactController,
   BarrierGestureController, SelfReportingController,
   GreenNumberController, SymptomInfoController,
->>>>>>> .theirs
-    PrevalenceController, DailyReportController,
-<<<<<<< .mine
-    ElasticCallController
-=======
-
->>>>>>> .theirs
+  PrevalenceController, DailyReportController,
+  ElasticCallController
 } = require('./../controller');
 const { auth } = require('./../middlewares');
 
