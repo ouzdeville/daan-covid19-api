@@ -1,6 +1,205 @@
 [
   {
     "type": "post",
+    "url": "/user/contact/position",
+    "title": "Get contacts at Position",
+    "name": "getContactsAtPosition",
+    "group": "Contact",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "created_date",
+            "description": "<p>date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>GPS latitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>GPS longitude</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If it works ot not</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "resust",
+            "description": "<p>Location objects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"resust\":[\n         {\n             \"_index\": \"dc19\",\n             \"_type\": \"_doc\",\n              \"_id\": \"uYT5mXEB0m4T_0Lwe8LZ\",\n              \"_score\": null,\n              \"_source\": {\n                  \"imei\": \"\",\n                  \"position\": {\n                      \"lat\": 14.750403052963359,\n                      \"lon\": -17.37935504970754\n                  },\n                  \"status\": \"unknown\",\n                  \"id\": \"dc0fc6c9-425d-4a23-89e1-ff238542a02e\",\n                  \"created_date\": 1586782662538\n              },\n              \"sort\": [\n                  1586782662538\n              ]\n          }\n      ]\n     \n  \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/elastic-call.js",
+    "groupTitle": "Contact"
+  },
+  {
+    "type": "get",
+    "url": "/user/contact/:id/:begin/:end",
+    "title": "Get all contacts",
+    "name": "getUserContacts",
+    "group": "Contact",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "begin",
+            "description": "<p>date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "end",
+            "description": "<p>date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If it works ot not</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "resust",
+            "description": "<p>Location objects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"resust\":[\n         {\n             \"_index\": \"dc19\",\n             \"_type\": \"_doc\",\n              \"_id\": \"uYT5mXEB0m4T_0Lwe8LZ\",\n              \"_score\": null,\n              \"_source\": {\n                  \"imei\": \"\",\n                  \"position\": {\n                      \"lat\": 14.750403052963359,\n                      \"lon\": -17.37935504970754\n                  },\n                  \"status\": \"unknown\",\n                  \"id\": \"dc0fc6c9-425d-4a23-89e1-ff238542a02e\",\n                  \"created_date\": 1586782662538\n              },\n              \"sort\": [\n                  1586782662538\n              ]\n          }\n      ]\n     \n  \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/elastic-call.js",
+    "groupTitle": "Contact"
+  },
+  {
+    "type": "get",
+    "url": "/user/contact/:id/:begin/:end",
+    "title": "Get user trace",
+    "name": "getUserTrace",
+    "group": "Contact",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "begin",
+            "description": "<p>date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "end",
+            "description": "<p>date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If it works ot not</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "resust",
+            "description": "<p>Location objects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"resust\":[\n         {\n             \"_index\": \"dc19\",\n             \"_type\": \"_doc\",\n              \"_id\": \"uYT5mXEB0m4T_0Lwe8LZ\",\n              \"_score\": null,\n              \"_source\": {\n                  \"imei\": \"\",\n                  \"position\": {\n                      \"lat\": 14.750403052963359,\n                      \"lon\": -17.37935504970754\n                  },\n                  \"status\": \"unknown\",\n                  \"id\": \"dc0fc6c9-425d-4a23-89e1-ff238542a02e\",\n                  \"created_date\": 1586782662538\n              },\n              \"sort\": [\n                  1586782662538\n              ]\n          }\n      ]\n     \n  \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/elastic-call.js",
+    "groupTitle": "Contact"
+  },
+  {
+    "type": "post",
     "url": "/prevalence",
     "title": "Add Prevalence",
     "name": "CreatePrevalence",
@@ -352,5 +551,132 @@
     "version": "0.0.0",
     "filename": "controller/prevalence.js",
     "groupTitle": "Prevalence"
+  },
+  {
+    "type": "post",
+    "url": "/sefreport/create",
+    "title": "Get contacts at Position",
+    "name": "CreateSelfReporting",
+    "group": "Reporting",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "firstname",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lastname",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "gender",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "dateOfBirth",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "age",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "adresse",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "department",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "region",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>GPS latitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>GPS longitude</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If it works ot not</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "message",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>of the created object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": true,\n  \"id\":1\n     \n  \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controller/self-reporting.js",
+    "groupTitle": "Reporting"
   }
 ]
