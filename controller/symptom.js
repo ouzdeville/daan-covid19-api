@@ -2,22 +2,25 @@ const { Symptom } = require('./../models');
 
 module.exports = {
     create: function (req, res) {
-        var title = req.body.title;
+        var name = req.body.name;
+        var major = req.body.major;
         var img = req.body.img;
-        var content = req.body.content;
+        var description = req.body.description;
 
-        if (content == null) {
+        if (name == null) {
             return res.status(400).send({ message: 'missing parameters' });
         }
 
         var newSymtom = Symptom.create({
-            title: title,
-            img: img,
-            content: content
+            name: name,
+            description:description,
+            major: major,
+            img: img
         })
         .then(function(newSymtom){
-            return res.status(200).send({
+            return res.status(201).send({
               success: true,
+              code:1,
               message: 'Successfully created.',
               symtom: newSymtom
             });
@@ -29,9 +32,8 @@ module.exports = {
         });
     },
     get: function (req, res) {
-        var symptomId = res.body.id;
+        var symptomId = req.params.id;
         Symptom.findOne({
-          attributes: ['title','img','content'],
           where: {id:symptomId}
         }).then(function(symtom){
           if(symtom) {

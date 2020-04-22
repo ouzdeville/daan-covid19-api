@@ -49,7 +49,7 @@ module.exports = (app) => {
   // Route Symptom
   app.post('/symptom', auth, SymptomInfoController.create);
   app.get('/symptom/:id', auth, SymptomInfoController.get);
-  app.get('/symptoms', auth, SymptomInfoController.getAllSymptom);
+  app.get('/symptoms', SymptomInfoController.getAllSymptom);
 
 
   //elastic search

@@ -1,23 +1,26 @@
-const { SymptomInfo } = require('../models');
+const { Symptom } = require('../models');
 
 module.exports = {
     create: function (req, res) {
-        var title = req.body.title;
-        var img = req.body.img;
-        var content = req.body.content;
+      var name = req.body.name;
+      var major = req.body.major;
+      var img = req.body.img;
+      var description = req.body.description;
 
-        if (content == null) {
+        if (name == null) {
             return res.status(400).send({ message: 'missing parameters' });
         }
 
-        var newSymtom = SymptomInfo.create({
-            title: title,
-            img: img,
-            content: content
+        var newSymtom = Symptom.create({
+          name: name,
+          description:description,
+          major: major,
+          img: img
         })
         .then(function(newSymtom){
             return res.status(200).send({
               success: true,
+              code:1,
               message: 'Successfully created.',
               symtom: newSymtom
             });
@@ -29,9 +32,8 @@ module.exports = {
         });
     },
     get: function (req, res) {
-        var symptomId = res.body.id;
-        SymptomInfo.findOne({
-          attributes: ['title','img','content'],
+        var symptomId = req.params.id;
+        Symptom.findOne({
           where: {id:symptomId}
         }).then(function(symtom){
           if(symtom) {
@@ -55,14 +57,14 @@ module.exports = {
       var offset = parseInt(req.query.offset);
       var order = req.query.order;
 
-      SymptomInfo.findAll({
+      Symptom.findAll({
         order: [(order !=null) ? order.split(':') : ['id', 'ASC']],
         attributes: (fields !=='*' && fields != null) ? fields.split(','): null,
         limit: (!isNaN(limit)) ? limit : null,
         offset: (!isNaN(offset)) ? offset : null
-      }).then(function(symptoms) {
+      }).then(function(symptoms) { 
         if(symptoms) {
-          return res.status(200).send(symtoms);
+          return res.status(200).send(symptoms);
         }
         else {
           res.status(404).send({
