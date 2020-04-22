@@ -1,6 +1,36 @@
 const {DailyReport} = require('./../models');
 
 module.exports = {
+    /**
+     * @api {post} /daily-report Add report for a specific day
+     * @apiName CreateDailyReport
+     * @apiGroup DailyReport
+     *
+     * @apiParam {Date} reportDate date
+     * @apiParam {Number} numberOfTest number of Test
+     * @apiParam {Number} numberOfImportedCases number of imported cases
+     * @apiParam {Number} numberOfContactCases number of contact cases
+     * @apiParam {Number} numberOfCommunityCases number of community cases
+     * @apiParam {Number} numberOfRecoveredCases number of recovered cases
+     * @apiParam {Number} numberOfDeadCases number of dead cases
+     * @apiParam {Number} numberOfEvacuatedCases number of evacuated cases
+     * @apiParam {Number} numberOfPositiveCases number of positive cases
+     * @apiParam {Number} totalUnderTreatment total under treatment
+     * @apiParam {Number} totalRecovered total recovered
+     * @apiParam {Number} totalDeath total death
+     * @apiParam {Number} totalEvacuation total evacuation
+     * @apiParam {Number} totalCases total cases
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {String} message Response message
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully created."
+     *     }
+     */
     async create(req, res) {
         reportDate = req.body.reportDate;
         const data = {
@@ -29,8 +59,7 @@ module.exports = {
                 .then((dailyReport) => {
                     res.status(201).send({
                         success: true,
-                        message: 'Successfully created.',
-                        dailyReport,
+                        message: 'Successfully created.'
                     });
                 })
                 .catch((error) => res.status(400).send(error));
@@ -43,13 +72,63 @@ module.exports = {
                 .then((dailyReport) => {
                     res.status(201).send({
                         success: true,
-                        message: 'Successfully updated.',
+                        message: 'Successfully updated.'
                     });
                 })
                 .catch((error) => res.status(400).send(error));
         }
     },
 
+    /**
+     * @api {get} /daily-report Get all daily report
+     * @apiName GetAllDailyReport
+     * @apiGroup DailyReport
+     *
+     * @apiSuccess (Success 200) {Object[]} dailyReports List of daily report
+     * @apiSuccess (Success 200) {Number} dailyReports.id ID
+     * @apiSuccess (Success 200) {Date} dailyReports.reportDate date
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfTest number of Test
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfImportedCases number of imported cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfContactCases number of contact cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfCommunityCases number of community cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfRecoveredCases number of recovered cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfDeadCases number of dead cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfEvacuatedCases number of evacuated cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfPositiveCases number of positive cases
+     * @apiSuccess (Success 200) {Number} dailyReports.totalUnderTreatment total under treatment
+     * @apiSuccess (Success 200) {Number} dailyReports.totalRecovered total recovered
+     * @apiSuccess (Success 200) {Number} dailyReports.totalDeath total death
+     * @apiSuccess (Success 200) {Number} dailyReports.totalEvacuation total evacuation
+     * @apiSuccess (Success 200) {Number} dailyReports.totalCases total cases
+     * @apiSuccess (Success 200) {Date} dailyReports.updatedAt Creation date
+     * @apiSuccess (Success 200) {Date} dailyReports.createdAt Modification date
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "dailyReports": [
+     *         {
+     *           "id": 1,
+     *           "reportDate": "2020-04-19",
+     *           "numberOfTest": 313,
+     *           "numberOfImportedCases": 0,
+     *           "numberOfContactCases": 15,
+     *           "numberOfCommunityCases": 2,
+     *           "numberOfRecoveredCases": 9,
+     *           "numberOfDeadCases": 0,
+     *           "numberOfEvacuatedCases": 0,
+     *           "totalUnderTreatment": 143,
+     *           "totalRecovered": 220,
+     *           "totalDeath": 3,
+     *           "totalEvacuation": 1,
+     *           "numberOfPositiveCases": 17,
+     *           "totalCases": 367,
+     *           "createdAt": "2020-04-19T17:14:22.826Z",
+     *           "updatedAt": "2020-04-22T12:12:35.067Z"
+     *         }
+     *       ]
+     *     }
+     */
     getAll(req, res) {
         DailyReport.findAll()
             .then((dailyReports) => {
@@ -60,6 +139,56 @@ module.exports = {
             .catch((error) => res.status(400).send(error));
     },
 
+    /**
+     * @api {get} /daily-report/last Get the last daily report
+     * @apiName GetLastDailyReport
+     * @apiGroup DailyReport
+     *
+     * @apiSuccess (Success 200) {Object[]} dailyReports List of daily report
+     * @apiSuccess (Success 200) {Number} dailyReports.id ID
+     * @apiSuccess (Success 200) {Date} dailyReports.reportDate date
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfTest number of Test
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfImportedCases number of imported cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfContactCases number of contact cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfCommunityCases number of community cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfRecoveredCases number of recovered cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfDeadCases number of dead cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfEvacuatedCases number of evacuated cases
+     * @apiSuccess (Success 200) {Number} dailyReports.numberOfPositiveCases number of positive cases
+     * @apiSuccess (Success 200) {Number} dailyReports.totalUnderTreatment total under treatment
+     * @apiSuccess (Success 200) {Number} dailyReports.totalRecovered total recovered
+     * @apiSuccess (Success 200) {Number} dailyReports.totalDeath total death
+     * @apiSuccess (Success 200) {Number} dailyReports.totalEvacuation total evacuation
+     * @apiSuccess (Success 200) {Number} dailyReports.totalCases total cases
+     * @apiSuccess (Success 200) {Date} dailyReports.updatedAt Creation date
+     * @apiSuccess (Success 200) {Date} dailyReports.createdAt Modification date
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "dailyReports": [
+     *         {
+     *           "id": 1,
+     *           "reportDate": "2020-04-19",
+     *           "numberOfTest": 313,
+     *           "numberOfImportedCases": 0,
+     *           "numberOfContactCases": 15,
+     *           "numberOfCommunityCases": 2,
+     *           "numberOfRecoveredCases": 9,
+     *           "numberOfDeadCases": 0,
+     *           "numberOfEvacuatedCases": 0,
+     *           "totalUnderTreatment": 143,
+     *           "totalRecovered": 220,
+     *           "totalDeath": 3,
+     *           "totalEvacuation": 1,
+     *           "numberOfPositiveCases": 17,
+     *           "totalCases": 367,
+     *           "createdAt": "2020-04-19T17:14:22.826Z",
+     *           "updatedAt": "2020-04-22T12:12:35.067Z"
+     *         }
+     *       ]
+     *     }
+     */
     getLast(req, res) {
         const {reportDate} = req.params;
         DailyReport.findAll({
