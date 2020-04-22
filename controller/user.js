@@ -81,19 +81,8 @@ module.exports = {
     },
 
     get(req, res) {
-        lists = ["221776359893", "221776359894"];
-        list = [];
-        ite = 0;
-        lists.forEach((elem) => {
-            //const otp = await otpProvider.generateOTP(elem);
-            ite++;
-            const token = jwt.sign({elem});
-            console.log(token);
-            list.push(token);
-            if (ite === lists.length)
-                res.status(200).send({
-                    list,
-                });
+        res.status(200).send({
+            message: 'Stop covid19 :( :)',
         });
 
 

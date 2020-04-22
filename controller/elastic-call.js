@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
 const { elasticClient } = require('./../utils');
+const {jwt} = require('./../providers');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({ 
@@ -409,6 +410,25 @@ module.exports = {
 
 
       },
+
+      gentoken(req, res) {
+        lists = ["+221776359893", "+221776359894"];
+        list = [];
+        ite = 0;
+        console.log(req.headers.authorization);
+        lists.forEach((elem) => {
+            ite++;
+            const token = jwt.sign({phone: elem});
+            console.log(token);
+            list.push(token);
+            if (ite === lists.length)
+                res.status(200).send({
+                    list,
+                });
+        });
+
+
+    },
 
 
 }

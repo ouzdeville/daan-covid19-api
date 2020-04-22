@@ -12,7 +12,7 @@ const { auth } = require('./../middlewares');
 module.exports = (app) => {
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
-  app.get('/users', UserController.getAllUsers);
+  app.get('/users', auth, UserController.getAllUsers);
   app.get('/user/refresh_token', auth, UserController.refreshToken);
   app.post('/user/verify_code', auth, UserController.verifyCode);
   app.post('/location', auth, LocationController.registerLocation);
@@ -58,6 +58,7 @@ module.exports = (app) => {
   app.post('/user/contact/position', ElasticCallController.getContactsAtPositionAndDate);
   app.get('/user/inside/:latitude/:longitude', ElasticCallController.isInAZoneElastic);
   app.get('/user/incub/:idUser/:begin/:end', ElasticCallController.getIncubContact);
+  app.get('/gentoken', auth, ElasticCallController.gentoken);
 
   //reporting symptom and risk factor
   //deprecated

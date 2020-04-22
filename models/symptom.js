@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.BOOLEAN,
       allowNull: true
     },
+    img: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
   }, {});
   Symptom.associate = function(models) {
     // associations can be defined here
