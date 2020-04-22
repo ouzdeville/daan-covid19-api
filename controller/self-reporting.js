@@ -226,7 +226,7 @@ createSelfReporting(req, res) {
     },
 
     /** 
-     * @api {get} /riskfactor/create get all risk-factor
+     * @api {get} /reporting/riskfactors get all risk-factor
      * @apiName getAllRiskFactor
      * @apiGroup Reporting
      *
@@ -234,11 +234,30 @@ createSelfReporting(req, res) {
      * @apiSuccess (Success 200) {Object} result risk-factors list
      *
      * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 201 OK
+     *     HTTP/1.1 200 OK
      *     {
      *       "success": true,
-     *       "id":1,
-     *       "message":
+     *       "result":[
+     *          {
+     *             "id": 2,
+     *             "reportingDate": ,
+     *             "idUser": ,
+     *             "lat": "",
+     *             "lng": ,
+     *             "firstname": "",
+     *             "lastname": "",
+     *             "gender": "",
+     *             "dateOfBirth": "",
+     *             "age": ,
+     *             "email": "",
+     *             "adresse": "Ouakem",
+     *             "department": "Dakar",
+     *             "region": "Dakar",
+     *             "createdAt": "2020-04-21T11:49:21.687Z",
+     *             "updatedAt": "2020-04-21T11:49:21.687Z"
+     *         }
+     *              
+     *           ]
      *          
      *       
      *     }
@@ -246,7 +265,11 @@ createSelfReporting(req, res) {
     getAllRiskFactors(req, res) {
       SelfReporting.findAll()
       .then(data=>{
-        res.send({result:data});
+        res.send({
+          success: true,
+          code:0,
+          resust:data,
+      });
       })
       .catch(err=>{
         res.status(500).send({

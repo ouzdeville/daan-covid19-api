@@ -1,4 +1,8 @@
+const {Incubation} = require('./../models');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
+const { elasticClient } = require('./../utils');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({ 
@@ -61,50 +65,25 @@ module.exports = {
         begin = req.params.begin;
         end = req.params.end;
         // Let's search!
-        const { body } = await client.search({
-            index: 'dc19',
-            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-            body: {
-                "query" : {
-                  "bool" : {
-                    "must" : [
-                      {
-                        "term" : {
-                          "id" : {
-                            "value" :id,
-                            "boost" : 1.0
-                          }
-                        }
-                      },
-                      {
-                        "range" : {
-                          "created_date":{  
-                                  "gte":begin,
-                                  "lte":end,
-                                  "format":"yyyy-mm-dd"
-                               }
-                        }
-                      }
-                    ],
-                    "adjust_pure_negative" : true,
-                    "boost" : 1.0
-                  }
-                },
-                "sort" : [
-                  {
-                    "created_date" : {
-                      "order" : "asc"
-                    }
-                  }
-                ]
-              }
-        });
-        
-        console.log(body.hits.hits)
-            res.status(200).send({
-                success: true,
-                resust:body.hits.hits,
+        try {
+            await elasticClient.getUserTrace(id,begin,end,function(result) {
+                //console.log(result);
+                res.status(200).send({
+                    success: true,
+                    code:99,
+                    resust:result,
+                });
             });
+        } catch(error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code:-1,
+            });
+
+    }  
+        
+        
     
         
 
@@ -113,13 +92,13 @@ module.exports = {
 
 
     /** 
-     * @api {get} /user/contact/:id/:begin/:end Get all contacts
+     * @api {get} /user/contact/:id/:begin/:end Get all contacts 
      * @apiName getUserContacts
      * @apiGroup Contact
      *
      * @apiParam {Number} id User id
-     * @apiParam {Date} begin date
-     * @apiParam {Date} end date
+     * @apiParam {Date} begin date in format "yyyy-mm-dd"
+     * @apiParam {Date} end date in format "yyyy-mm-dd"
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
      * @apiSuccess (Success 200) {Object} resust Location objects
@@ -159,129 +138,17 @@ module.exports = {
             begin = req.params.begin;
             end = req.params.end;
             // Let's search!
-            const { body }=await client.search({
-                index: 'dc19',
-                // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-                body: {
-                    "query" : {
-                    "bool" : {
-                        "must" : [
-                        {
-                            "term" : {
-                            "id" : {
-                                "value" :id,
-                                "boost" : 1.0
-                            }
-                            }
-                        },
-                        {
-                            "range" : {
-                            "created_date":{  
-                                    "gte":begin,
-                                    "lte":end,
-                                    "format":"yyyy-mm-dd"
-                                }
-                            }
-                        }
-                        ],
-                        "adjust_pure_negative" : true,
-                        "boost" : 1.0
-                    }
-                    },
-                    "sort" : [
-                    {
-                        "created_date" : {
-                        "order" : "asc"
-                        }
-                    }
-                    ]
-                }
-            });
-
-
-            hits=body.hits.hits;
-            var resust=[];
-            var itemsProcessed = 0;
-            await hits.forEach(async (hit) => {
-                console.log("My new Position:"+id);
-                source=hit._source;
-                console.log("Source");
-                //console.log(source);
-                
-                begin1=hit._source.created_date-1300;
-                end1=hit._source.created_date+1300;
-                console.log("5 min before"+begin1);
-                console.log("5 min after"+end1);
-                const { body }=await client.search({
-                    index: 'dc19',
-                    // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-                    body: {
-                        "query": {
-                            "bool" : {
-                            
-                                "must" : [
-                                    {
-                                    "match_all" : {}
-                                    },
-                                    {
-                                    "range" : {
-                                        "created_date":{  
-                                                "gte":begin1,
-                                                "lte":end1,
-                                                "format":"epoch_millis"
-                                            }
-                                    }
-                                    }
-                                ],
-
-                                "must_not": {
-                                        
-                                        "term" : {
-                                            "id":{
-                                                "value" : source.id,
-                                                "boost" : 1.0
-                                            }
-                                        }
-                                },
-                                "filter" : {
-                                    "geo_distance" : {
-                                        "distance" : "2m",
-                                        "position" : {
-                                                "lat" : source.position.lat,
-                                                "lon" : source.position.lon
-                                            }
-                                    }
-                                }
-                                
-                            }
-                        },
-                        "sort" : [
-                        {
-                            "created_date" : {
-                            "order" : "asc"
-                            }
-                        }
-                        ]
-                    }
-
-                    
+            //console.log("ok");
+            await elasticClient.getUserContacts(id,begin,end,function(result) {
+                console.log(result);
+                res.status(200).send({
+                    success: true,
+                    code:99,
+                    resust:result,
                 });
-                //deuxieme body
-                console.log("Results:");
-                if(body.hits.hits[0]!=null)
-                    resust.push(body.hits.hits[0]);
-                console.log(resust);
-                
-
-                itemsProcessed++;
-                if(itemsProcessed === hits.length) {
-                    res.status(200).send({
-                        success: true,
-                        resust:resust,
-                    });
-                }
-                
-            });
+              });
+            
+            
             
             
         } catch(error) {
@@ -292,12 +159,6 @@ module.exports = {
                 });
     
         }   
-        
-        
-            
-    
-        
-
     },
     /** 
      * @api {post} /user/contact/position Get contacts at Position
@@ -310,13 +171,13 @@ module.exports = {
      * @apiParam {Number} longitude GPS longitude
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
-     * @apiSuccess (Success 200) {Object} resust Location objects
+     * @apiSuccess (Success 200) {Object} result Location objects
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
      *       "success": true,
-     *       "resust":[
+     *       "result":[
      *              {
      *                  "_index": "dc19",
      *                  "_type": "_doc",
@@ -344,70 +205,24 @@ module.exports = {
     async getContactsAtPositionAndDate(req, res){
         
         const {latitude, longitude,created_date,id} = req.body;
-        const location = {
-            "lat":parseFloat(latitude), 
-            "lon":parseFloat(longitude)
-        }
-        begin1=created_date-1300;
-        end1=created_date+1300;
-        const { body }=await client.search({
-            index: 'dc19',
-            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-            body: {
-                "query": {
-                    "bool" : {
-                    
-                        "must" : [
-                            {
-                            "match_all" : {}
-                            },
-                            {
-                            "range" : {
-                                "created_date":{  
-                                        "gte":begin1,
-                                        "lte":end1,
-                                        "format":"epoch_millis"
-                                    }
-                            }
-                            }
-                        ],
-
-                        "must_not": {
-                                
-                                "term" : {
-                                    "id":{
-                                        "value" : id,
-                                        "boost" : 1.0
-                                    }
-                                }
-                        },
-                        "filter" : {
-                            "geo_distance" : {
-                                "distance" : "2m",
-                                "position" : {
-                                        "lat" : position.lat,
-                                        "lon" : position.lon
-                                    }
-                            }
-                        }
-                        
-                    }
-                }
-            },
-            "sort" : [
-            {
-                "created_date" : {
-                "order" : "asc"
-                }
-            }
-            ]
-
-            
-        });
-        res.status(200).send({
-            success: true,
-            resust:body.hits.hits,
-        });
+        try {
+            await elasticClient.getContactsAtPositionAndDate(id,created_date,latitude,longitude,function(result) {
+                console.log(result);
+                res.status(200).send({
+                    success: true,
+                    code:99,
+                    resust:result,
+                });
+              });
+        } catch(error) {
+                console.log(error);
+                res.status(500).send({
+                    success: false,
+                    code:-1,
+                });
+    
+        }  
+        
 
     },
 
@@ -421,13 +236,89 @@ module.exports = {
      * @apiParam {Number} longitude GPS longitude
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} result Location objects
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "result":{
+     *          "zone": {
+     *               "polygon": {
+     *                   "type": "polygon",
+     *                   "coordinates": [
+     *                       [
+     *                           [
+     *                               -17.4962,
+     *                               14.7007
+     *                           ],
+     *                           [
+     *                               -17.4274,
+     *                               14.7007
+     *                           ],
+     *                           [
+     *                               -17.4274,
+     *                               14.7535
+     *                           ],
+     *                           [
+     *                               -17.4962,
+     *                               14.7535
+     *                           ],
+     *                           [
+     *                               -17.4962,
+     *                               14.7007
+     *                           ]
+     *                       ]
+     *                   ]
+     *               },
+     *               "name": "Dakar",
+     *               "observation": "épicentre du pays"
+     *           }
+     * 
+     *       }
+     *          
+     *       
+     *     }
+     */
+    async isInAZoneElastic(req, res) {
+        var area = {};
+        const {latitude, longitude} = req.params;
+        try {
+            await elasticClient.isInAZoneElastic(latitude,longitude,function(result) {
+                console.log(result);
+                res.status(200).send({
+                    success: true,
+                    code:99,
+                    resust:result,
+                });
+              });
+        } catch(error) {
+                console.log(error);
+                res.status(500).send({
+                    success: false,
+                    code:-1,
+                });
+    
+        } 
+       
+    },
+
+    /** 
+     * @api {get} /user/incub/:idUser/:begin/:end to get 
+     * @apiName getIncubContact
+     * @apiGroup Contact
+     *
+     * @apiParam {Number} latitude GPS latitude
+     * @apiParam {Number} longitude GPS longitude
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
      * @apiSuccess (Success 200) {Object} resust Location objects
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
      *       "success": true,
-     *       "resust":[
+     *       "result":[
      *              {
      *                  "_index": "dc19",
      *                  "_type": "_doc",
@@ -452,44 +343,72 @@ module.exports = {
      *       
      *     }
      */
-    async isInAZoneElastic(req, res) {
-        var area = {};
-        const {latitude, longitude} = req.params;
-        var location = [parseFloat(longitude),parseFloat(latitude)];
-        //location=[[-17.468653,14.711750],[-17.468653,14.711750]];
-        //console.log(location);
-        const { body }=await client.search({
-            index: 'dc19zone',
-            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-            body: {
-                "query":{
-                    "bool": {
-                        "must": {
-                            "match_all": {}
-                        },
-                        "filter": {
-                            "geo_shape": {
-                                "zone.polygon": {
-                                    "shape": {
-                                        "type": "envelope",
-                                        "coordinates" : location
-                                    },
-                                    "relation": "CONTAINS"
+      async getIncubContact(req, res) {
+        const { idUser , begin, end} = req.params;
+        try{
+            //get all contacts first
+            await elasticClient.getUserContacts(idUser,begin,end,async function(result) {
+                var resultpositive=[];
+                var counter = result.length;
+                if(counter){
+                    await result.forEach(element => {
+                        source=element._source;
+                        source.created_date
+                        source.id
+                        Incubation.findAll({
+                            where: {
+                                idUser: source.id,
+                                incubationStartedAt: {
+                                    [Op.lte]: source.created_date
+                                },
+                                incubationEndedAt: {
+                                    [Op.gte]: source.created_date
                                 }
+                            },
+                        }).then((exist) => {
+                            if (exist && !exist.length) {
+                                resultpositive.push(element);
                             }
+                            
+                        
+                        });
+                        counter -= 1;
+                        if ( counter === 0){
+                            console.log(resultpositive);
+                            res.status(200).send({
+                                success: true,
+                                code:99,
+                                resust:resultpositive,
+                            });
+                            return;
                         }
-                    }
+                        
+
+                    });
+                }else {
+                    res.status(200).send({
+                        success: true,
+                        code:99,
+                        resust:resultpositive,
+                    });
                 }
-            }
-        });
-        res.status(200).send({
-            success: true,
-            resust:body.hits.hits,
-        });
-       
+                
+                
+              });
+
+
+
+        } catch(error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code:-1,
+            });
+
     }
 
 
+      },
 
 
 }
