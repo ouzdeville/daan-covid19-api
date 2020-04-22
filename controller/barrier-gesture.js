@@ -1,10 +1,45 @@
 const { BarrierGesture } = require('./../models');
 
 module.exports = {
+  /**
+     * @api {post} /barrier-gesture Add BarrierGesture
+     * @apiName CreateBarrierGesture
+     * @apiGroup BarrierGesture
+     *
+     * @apiParam {String} title title of barrier gesture
+     * @apiParam {Date} img image
+     * @apiParam {String} content content of barrier gesture
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {String} message Response message
+     * @apiSuccess (Success 201) {Object} barrierGesture BarrierGesture object
+     * @apiSuccess (Success 201) {Number} barrierGesture.id BarrierGesture id of barrier-gesture
+     * @apiSuccess (Success 201) {String} barrierGesture.title BarrierGesture title of barrier-gesture
+     * @apiSuccess (Success 201) {Text} barrierGesture.content content of barrier-gesture
+     * @apiSuccess (Success 201) {String} barrierGesture.img image of barrier-gesture
+     * @apiSuccess (Success 201) {Date} barrierGesture.updatedAt date of last update of barrier-gesture
+     * @apiSuccess (Success 201) {Date} barrierGesture.createdAt date of creation of of barrier-gesture  
+     
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *         "success": true,
+      *          "message": "Successfully created.",
+      *          "barrierGesture": {
+      *             "id": 2,
+      *             "title": "lavage des mains",
+      *             "img": "C:\\Users\\PC\\Pictures\\error.png",
+      *             "content": "barriere numero 3",
+      *             "updatedAt": "2020-04-22T14:12:03.631Z",
+      *             "createdAt": "2020-04-22T14:12:03.631Z"
+      *         }
+      *     }
+      */
   create: function (req, res) {
-    var title = req.body.title;
-    var img = req.body.img;
-    var content = req.body.content;
+    var title = req.query.title;
+    var img = req.query.img;
+    var content = req.query.content;
 
     if (content == null) {
         return res.status(400).send({ message: 'missing parameters' });
@@ -29,8 +64,42 @@ module.exports = {
       });
     });
   },
-  get: function (req, res) {
-    var barrierGestureId = res.body.id;
+
+/**
+     * @api {get} /barrier-gesture/:id Get a barrierGesture by id
+     * @apiName GetBarrierGestureById
+     * @apiGroup BarrierGesture
+     *
+     * @apiParam {Number} id id of the barrierGesture
+     *
+     * @apiSuccess (Success 200) {Object} barrierGesture Object of BarrierGesture
+     * @apiSuccess (Success 200) {Number} barrierGesture.id BarrierGesture id
+     * @apiSuccess (Success 200) {String} barrierGesture.title BarrierGesture id
+     * @apiSuccess (Success 200) {Date} barrierGesture.img image of BarrierGesture
+     * @apiSuccess (Success 200) {text} barrierGesture.content content of BarrierGesture
+     * @apiSuccess (Success 200) {Date} barrierGesture.createdAt date of creation of BarrierGesture
+     * @apiSuccess (Success 200) {Date} barrierGesture.updatedAt last update date of BarrierGesture
+     * 
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "barrierGesture": 
+     *         {
+     *           "id": 2,
+     *           "title": "lavage des mains",
+     *           "img": "C:\\Users\\PC\\Pictures\\error.png",
+     *           "content": "barriere numero 3",
+     *           "createdAt": "2020-04-22T14:12:03.631Z",
+     *           "updatedAt": "2020-04-22T14:12:03.631Z"
+     *         },
+     *         
+     *       
+     *     }
+     */
+
+      get: function (req, res) {
+    var barrierGestureId = req.body.id;
     BarrierGesture.findOne({
       attributes: ['title','img','content'],
       where: {id:barrierGestureId}
@@ -50,6 +119,45 @@ module.exports = {
       });
     });
   },
+
+    /**
+     * @api {get} /barrier-gestures Get all BarrierGesture
+     * @apiName getAllBarrierGesture
+     * @apiGroup BarrierGesture
+     *
+     * @apiSuccess (Success 200) {Object[]} barrierGesture List of barrier-gesture
+     * @apiSuccess (Success 200) {Number} barrierGesture.id Prevalence id
+     * @apiSuccess (Success 200) {String} barrierGesture.title title of BarrierGesture
+     * @apiSuccess (Success 200) {String} barrierGesture.img image of BarrierGesture
+     * @apiSuccess (Success 200) {Text} barrierGesture.content of BarrierGesture
+     * @apiSuccess (Success 200) {Date} barrierGesture.createdAt date of creation of BarrierGesture
+     * @apiSuccess (Success 200) {Date} barrierGesture.updateAt date of last update of BarrierGesture
+     * 
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "prevalences": [
+     *         {
+     *            "id": 1,
+     *            "title": null,
+     *            "img": "C:\\Users\\PC\\Pictures\\error.png",
+     *            "content": "barriere numero 2",
+     *            "createdAt": "2020-04-22T13:39:40.467Z",
+     *            "updatedAt": "2020-04-22T13:39:40.467Z"
+     *         },
+     *         {
+     *            "id": 2,
+     *            "title": "lavage des mains",
+     *            "img": "C:\\Users\\PC\\Pictures\\error.png",
+     *            "content": "barriere numero 3",
+     *            "createdAt": "2020-04-22T14:12:03.631Z",
+     *            "updatedAt": "2020-04-22T14:12:03.631Z"
+     *         }
+     *       ]
+     *     }
+     */
+
   getAllBarrierGesture: function (req, res) {
     var fields = req.query.fields;
     var limit = parseInt(req.query.limit);
