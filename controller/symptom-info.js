@@ -11,23 +11,23 @@ module.exports = {
             return res.status(400).send({ message: 'missing parameters' });
         }
 
-        var newSymtom = Symptom.create({
+        var newsymptom = Symptom.create({
           name: name,
           description:description,
           major: major,
           img: img
         })
-        .then(function(newSymtom){
+        .then(function(newsymptom){
             return res.status(200).send({
               success: true,
               code:1,
               message: 'Successfully created.',
-              symtom: newSymtom
+              symptom: newsymptom
             });
         })
         .catch(function(err){
           return res.status(400).send({
-            error: 'Cannot add symtom'
+            error: 'Cannot add symptom'
           });
         });
     },
@@ -35,13 +35,13 @@ module.exports = {
         var symptomId = req.params.id;
         Symptom.findOne({
           where: {id:symptomId}
-        }).then(function(symtom){
-          if(symtom) {
-            return res.status(201).send(symtom);
+        }).then(function(symptom){
+          if(symptom) {
+            return res.status(201).send(symptom);
           } 
           else {
             res.status(404).send({
-              error: 'Cannot add symtom'
+              error: 'Cannot add symptom'
             });
           }
         }).catch(function(err){
