@@ -124,11 +124,24 @@ module.exports = {
 
   },
 
-  /**
-   * Renvoie la liste de tous les users de l'app.
-   * @param {*} req 
-   * @param {*} res 
-   */
+  /** 
+     * @api {get} /users get all users
+     * @apiName getAllUsers
+     * @apiGroup User
+     *
+     *
+     * @apiSuccess (Success 200) {Object} result users list
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "id":1,
+     *       "message":
+     *          
+     *       
+     *     }
+     */
   getAllUsers(req, res) {
     //res.send({message: 'hi :)'});
     User.findAll({include: [{

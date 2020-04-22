@@ -3,11 +3,24 @@ const {SelfReporting, Symptom, RiskFactor, User,
 
 
 module.exports={
-    /**
- * Renvoie la liste de tous les autosignalements
- * @param {*} req 
- * @param {*} res 
- */
+/** 
+     * @api {get} /reporting/self-reports get all self-reports
+     * @apiName getAllSelfReports
+     * @apiGroup Reporting
+     *
+     *
+     * @apiSuccess (Success 200) {Object} result self-reports list
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "id":1,
+     *       "message":
+     *          
+     *       
+     *     }
+     */
 getAllSelfReports(req, res) {
     //res.send({ message: 'hi :)' });
     SelfReporting.findAll({
