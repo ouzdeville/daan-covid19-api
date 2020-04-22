@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('RiskFactor', [{
+    return queryInterface.bulkInsert('RiskFactors', [{
       id:1,
       name: "Fumeur",
       description: "",
