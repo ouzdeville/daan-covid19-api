@@ -1,7 +1,7 @@
-const {User,Incubation, SelfReporting,} = require('./../models');
+const {User, Incubation, SelfReporting,} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
-const { Client } = require('@elastic/elasticsearch')
-const client = new Client({ node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' })
+const {Client} = require('@elastic/elasticsearch')
+const client = new Client({node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com'})
 
 /**
  * User.
@@ -9,7 +9,7 @@ const client = new Client({ node: 'https://search-test-r7znlu2wprxosxw75c5veftgk
  */
 
 module.exports = {
-    
+
     /** Creating user by genrating first an otp and jwt token
      * @param  {} req
      * @param  {} res
@@ -81,21 +81,21 @@ module.exports = {
     },
 
     get(req, res) {
-        lists=["221776359893","221776359894"];
-        list=[];
-        ite=0;
-        lists.forEach( (elem) => {
+        lists = ["221776359893", "221776359894"];
+        list = [];
+        ite = 0;
+        lists.forEach((elem) => {
             //const otp = await otpProvider.generateOTP(elem);
             ite++;
             const token = jwt.sign({elem});
             console.log(token);
             list.push(token);
-            if(ite===lists.length)
+            if (ite === lists.length)
                 res.status(200).send({
                     list,
                 });
         });
-        
+
 
     },
     /**
@@ -122,9 +122,9 @@ module.exports = {
             });
         });
 
-  },
+    },
 
-  /** 
+    /**
      * @api {get} /users get all users
      * @apiName getAllUsers
      * @apiGroup User
@@ -138,25 +138,26 @@ module.exports = {
      *       "success": true,
      *       "id":1,
      *       "message":
-     *          
-     *       
+     *
+     *
      *     }
      */
-  getAllUsers(req, res) {
-    //res.send({message: 'hi :)'});
-    User.findAll({include: [{
-        model: SelfReporting
-    }]
-    }).then(data=>{
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving users."
-      });
-    });
-},
+    getAllUsers(req, res) {
+        //res.send({message: 'hi :)'});
+        User.findAll({
+            include: [{
+                model: SelfReporting
+            }]
+        }).then(data => {
+            res.send(data);
+        })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message || "Some error occurred while retrieving users."
+                });
+            });
+    },
 
     /**
      * @param  {} req
@@ -167,19 +168,21 @@ module.exports = {
         finincubation = req.body.finincubation;
         idUser = req.body.idUser;
         await Incubation.create({
-            id:0,
-                incubationStartedAt: debutincubation,
-                incubationEndedAt: finincubation,
-                idUser:idUser}, {})
-        .then(() => {
-            res.status(201).send({
-                success: true,
-                message: 'Successfully updated.'
-            });
-        })
-            .catch((error) =>{ 
+            id: 0,
+            incubationStartedAt: debutincubation,
+            incubationEndedAt: finincubation,
+            idUser: idUser
+        }, {})
+            .then(() => {
+                res.status(201).send({
+                    success: true,
+                    message: 'Successfully updated.'
+                });
+            })
+            .catch((error) => {
                 console.log(error);
-                res.status(400).send(error)});
+                res.status(400).send(error)
+            });
         return;
     },
 };
