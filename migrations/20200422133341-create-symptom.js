@@ -20,6 +20,11 @@ module.exports = {
         allowNull: true,
         type: Sequelize.BOOLEAN
       },
+      img: 
+      {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
