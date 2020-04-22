@@ -1,7 +1,7 @@
-const { BarrierGesture } = require('./../models');
+const {BarrierGesture} = require('./../models');
 
 module.exports = {
-  /**
+    /**
      * @api {post} /barrier-gesture Add BarrierGesture
      * @apiName CreateBarrierGesture
      * @apiGroup BarrierGesture
@@ -18,107 +18,96 @@ module.exports = {
      * @apiSuccess (Success 201) {Text} barrierGesture.content content of barrier-gesture
      * @apiSuccess (Success 201) {String} barrierGesture.img image of barrier-gesture
      * @apiSuccess (Success 201) {Date} barrierGesture.updatedAt date of last update of barrier-gesture
-     * @apiSuccess (Success 201) {Date} barrierGesture.createdAt date of creation of of barrier-gesture  
-     
+     * @apiSuccess (Success 201) {Date} barrierGesture.createdAt date of creation of of barrier-gesture
+
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 201 Created
      *     {
      *         "success": true,
-      *          "message": "Successfully created.",
-      *          "barrierGesture": {
-      *             "id": 2,
-      *             "title": "lavage des mains",
-      *             "img": "C:\\Users\\PC\\Pictures\\error.png",
-      *             "content": "barriere numero 3",
-      *             "updatedAt": "2020-04-22T14:12:03.631Z",
-      *             "createdAt": "2020-04-22T14:12:03.631Z"
-      *         }
-      *     }
-      */
-  create: function (req, res) {
-    var title = req.query.title;
-    var img = req.query.img;
-    var content = req.query.content;
+     *          "message": "Successfully created.",
+     *          "barrierGesture": {
+     *             "id": 2,
+     *             "title": "lavage des mains",
+     *             "img": "C:\\Users\\PC\\Pictures\\error.png",
+     *             "content": "barriere numero 3",
+     *             "updatedAt": "2020-04-22T14:12:03.631Z",
+     *             "createdAt": "2020-04-22T14:12:03.631Z"
+     *         }
+     *     }
+     */
+    create: function (req, res) {
+        var title = req.query.title;
+        var img = req.query.img;
+        var content = req.query.content;
 
-    if (content == null) {
-        return res.status(400).send({ message: 'missing parameters' });
-    }
+        if (content == null) {
+            return res.status(400).send({message: 'missing parameters'});
+        }
 
-    var newBarrierGesture = BarrierGesture.create({
-        title: title,
-        img: img,
-        content: content
-    })
-    .then(function(newBarrierGesture){
-        return res.status(200).send({
-          success: true,
-          message: 'Successfully created.',
-          barrierGesture: newBarrierGesture
-        });
-    })
-    .catch(function(err){
-      console.log(err);
-      return res.status(400).send({
-        error: 'Cannot add barrier gesture'
-      });
-    });
-  },
+        var newBarrierGesture = BarrierGesture.create({
+            title: title,
+            img: img,
+            content: content
+        })
+            .then(function (newBarrierGesture) {
+                return res.status(200).send({
+                    success: true,
+                    message: 'Successfully created.',
+                    barrierGesture: newBarrierGesture
+                });
+            })
+            .catch(function (err) {
+                console.log(err);
+                return res.status(400).send({
+                    error: 'Cannot add barrier gesture'
+                });
+            });
+    },
 
-/**
+    /**
      * @api {get} /barrier-gesture/:id Get a barrierGesture by id
      * @apiName GetBarrierGestureById
      * @apiGroup BarrierGesture
      *
      * @apiParam {Number} id id of the barrierGesture
      *
-     * @apiSuccess (Success 200) {Object} barrierGesture Object of BarrierGesture
-     * @apiSuccess (Success 200) {Number} barrierGesture.id BarrierGesture id
-     * @apiSuccess (Success 200) {String} barrierGesture.title BarrierGesture id
-     * @apiSuccess (Success 200) {Date} barrierGesture.img image of BarrierGesture
-     * @apiSuccess (Success 200) {text} barrierGesture.content content of BarrierGesture
-     * @apiSuccess (Success 200) {Date} barrierGesture.createdAt date of creation of BarrierGesture
-     * @apiSuccess (Success 200) {Date} barrierGesture.updatedAt last update date of BarrierGesture
-     * 
+     * @apiSuccess (Success 200) {Number} id BarrierGesture id
+     * @apiSuccess (Success 200) {String} title BarrierGesture id
+     * @apiSuccess (Success 200) {Date} img image of BarrierGesture
+     * @apiSuccess (Success 200) {text} content content of BarrierGesture
+     *
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
-     *       "barrierGesture": 
-     *         {
-     *           "id": 2,
-     *           "title": "lavage des mains",
-     *           "img": "C:\\Users\\PC\\Pictures\\error.png",
-     *           "content": "barriere numero 3",
-     *           "createdAt": "2020-04-22T14:12:03.631Z",
-     *           "updatedAt": "2020-04-22T14:12:03.631Z"
-     *         },
-     *         
-     *       
+     *       "id": 2,
+     *       "title": "lavage des mains",
+     *       "img": "C:\\Users\\PC\\Pictures\\error.png",
+     *       "content": "barriere numero 3"
      *     }
      */
 
-      get: function (req, res) {
-    var barrierGestureId = req.body.id;
-    BarrierGesture.findOne({
-      attributes: ['title','img','content'],
-      where: {id:barrierGestureId}
-    }).then(function(barrierGesture){
-      if(barrierGesture) {
-        return res.status(201).send(barrierGesture);
-      } 
-      else {
-        res.status(404).send({
-          error: 'Cannot add barrier gesture'
+    get: function (req, res) {
+        var barrierGestureId = req.params.id;
+        BarrierGesture.findOne({
+            attributes: ['id', 'title', 'img', 'content'],
+            where: {id: barrierGestureId}
+        }).then(function (barrierGesture) {
+            if (barrierGesture) {
+                return res.status(200).send(barrierGesture);
+            } else {
+                res.status(404).send({
+                    error: 'Cannot add barrier gesture'
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send({
+                error: 'Cannot fetch barrier gesture'
+            });
         });
-      }
-    }).catch(function(err){
-      console.log(err);
-      res.status(500).send({
-        error: 'Cannot fetch barrier gesture'
-      });
-    });
-  },
+    },
 
     /**
      * @api {get} /barrier-gestures Get all BarrierGesture
@@ -132,12 +121,12 @@ module.exports = {
      * @apiSuccess (Success 200) {Text} barrierGesture.content of BarrierGesture
      * @apiSuccess (Success 200) {Date} barrierGesture.createdAt date of creation of BarrierGesture
      * @apiSuccess (Success 200) {Date} barrierGesture.updateAt date of last update of BarrierGesture
-     * 
+     *
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
-     *       "prevalences": [
+     *       "barrierGestures": [
      *         {
      *            "id": 1,
      *            "title": null,
@@ -158,31 +147,30 @@ module.exports = {
      *     }
      */
 
-  getAllBarrierGesture: function (req, res) {
-    var fields = req.query.fields;
-    var limit = parseInt(req.query.limit);
-    var offset = parseInt(req.query.offset);
-    var order = req.query.order;
+    getAllBarrierGesture: function (req, res) {
+        var fields = req.query.fields;
+        var limit = parseInt(req.query.limit);
+        var offset = parseInt(req.query.offset);
+        var order = req.query.order;
 
-    BarrierGesture.findAll({
-      order: [(order !=null) ? order.split(':') : ['id', 'ASC']],
-      attributes: (fields !=='*' && fields != null) ? fields.split(','): null,
-      limit: (!isNaN(limit)) ? limit : null,
-      offset: (!isNaN(offset)) ? offset : null
-    }).then(function(barrierGestures) {
-      if(barrierGestures) {
-        return res.status(200).send(barrierGestures);
-      }
-      else {
-        res.status(404).send({
-          error: 'no barriers gesture found'
-        });
-      }
-    }).catch(function(err) {
-      console.log(err);
-      res.status(500).send({
-        error: 'invalid fields'
-      });
-    })
-  }
+        BarrierGesture.findAll({
+            order: [(order != null) ? order.split(':') : ['id', 'ASC']],
+            attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+            limit: (!isNaN(limit)) ? limit : null,
+            offset: (!isNaN(offset)) ? offset : null
+        }).then(function (barrierGestures) {
+            if (barrierGestures) {
+                return res.status(200).send({barrierGestures});
+            } else {
+                res.status(404).send({
+                    error: 'no barriers gesture found'
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send({
+                error: 'invalid fields'
+            });
+        })
+    }
 }
