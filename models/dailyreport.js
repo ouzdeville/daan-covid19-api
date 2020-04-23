@@ -58,6 +58,10 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       allowNull: true
     },
+    dailyStatement: {
+      type:DataTypes.STRING,
+      allowNull: true
+    },
   }, {});
   DailyReport.associate = function(models) {
     // associations can be defined here

@@ -19,8 +19,8 @@ module.exports = {
      * @apiParam {Number} totalRecovered total recovered
      * @apiParam {Number} totalDeath total death
      * @apiParam {Number} totalEvacuation total evacuation
-     * @apiParam {Number} totalCases total cases
-     *
+     * @apiParam {Number} totalCases total cases 
+     * @apiParam {String} dailyStatement 
      * @apiSuccess (Success 201) {Boolean} success If it works ot not
      * @apiSuccess (Success 201) {String} message Response message
      *
@@ -47,7 +47,8 @@ module.exports = {
             totalDeath: req.body.totalDeath,
             totalEvacuation: req.body.totalEvacuation,
             numberOfPositiveCases: req.body.numberOfPositiveCases,
-            totalCases: req.body.totalCases
+            totalCases: req.body.totalCases,
+            dailyStatement:req.body.dailyStatement
         };
 
         // check if the report for the date (reportDate) already exist
@@ -122,6 +123,7 @@ module.exports = {
      *           "totalDeath": 3,
      *           "totalEvacuation": 1,
      *           "numberOfPositiveCases": 17,
+     *           "dailyStatement":,
      *           "totalCases": 367,
      *           "createdAt": "2020-04-19T17:14:22.826Z",
      *           "updatedAt": "2020-04-22T12:12:35.067Z"
@@ -162,7 +164,8 @@ module.exports = {
      * @apiSuccess (Success 200) {Number} dailyReports.totalCases total cases
      * @apiSuccess (Success 200) {Date} dailyReports.updatedAt Creation date
      * @apiSuccess (Success 200) {Date} dailyReports.createdAt Modification date
-     *
+     * @apiSuccess (Success 200) {String} dailyReports.dailyStatement
+     * 
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
@@ -182,6 +185,7 @@ module.exports = {
      *           "totalDeath": 3,
      *           "totalEvacuation": 1,
      *           "numberOfPositiveCases": 17,
+     *           "dailyStatement":,
      *           "totalCases": 367,
      *           "createdAt": "2020-04-19T17:14:22.826Z",
      *           "updatedAt": "2020-04-22T12:12:35.067Z"

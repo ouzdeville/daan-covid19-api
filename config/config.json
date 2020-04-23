@@ -1,22 +1,21 @@
 {
-    "local": {
-      "username": "daancovid19sn",
-      "password": "4rn37byqxZT8gkABCG",
-      "database": "daancovid19sn",
-      "host": "127.0.0.1",
-      "dialect": "postgres",
-      "operatorsAliases": false
-    },
-    "development": {
-      "username": "daancovid19sn",
-      "password": "4rn37byqxZT8gkABCG",
-      "database": "daancovid19sn",
-      "host": "127.0.0.1",
-      "dialect": "postgres",
-      "operatorsAliases": false
-    },
-    "production": {
-      "use_env_variable": "DATABASE_URL"
-    }
+  "local": {
+    "username": "daancovid19sn",
+    "password": "daancovid19sn",
+    "database": "daancovid19sn",
+    "host": "172.31.240.1",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "development": {
+    "username": "daancovid19sn",
+    "password": "daancovid19sn",
+    "database": "daancovid19sn",
+    "host": "172.31.240.1",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
   }
-  
+}
