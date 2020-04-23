@@ -110,6 +110,8 @@ module.exports = {
 
     /**
      * @api {get} /symptoms get all SymptomInfo
+     * @apiName getAllSymptom
+     * @apiGroup SymptomInfo
      * @apiSuccess {Object[]} symptoms            List of SymptomInfo.
      * @apiSuccess {Number}   symptom.id          id SymptomInfo.
      * @apiSuccess {String}   symptom.title       title of SymptomInfo.
