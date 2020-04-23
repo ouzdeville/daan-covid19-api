@@ -28,7 +28,7 @@ getAllSelfReports(req, res) {
       include: [{
         model: User,attributes: ['id','phone','active']
       },{
-        model: Symptom, attributes: ['id','title','content','major'],
+        model: Symptom, attributes: ['id','name','description','major'],
         as: 'Symptom'
     },{
         model: RiskFactor, attributes: ['id','name','description','type'],
@@ -62,9 +62,9 @@ getAllSelfReports(req, res) {
      * @apiParam {Number} latitude GPS latitude
      * @apiParam {Number} longitude GPS longitude
      *
-     * @apiSuccess (Success 200) {Boolean} success If it works ot not
-     * @apiSuccess (Success 200) {Object} message 
-     * @apiSuccess (Success 200) {Number} id of the created object
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {Object} message 
+     * @apiSuccess (Success 201) {Number} id of the created object
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 201 OK

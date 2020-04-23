@@ -37,7 +37,7 @@ module.exports = {
           where: {id:symptomId}
         }).then(function(symtom){
           if(symtom) {
-            return res.status(201).send(symtom);
+            return res.status(200).send(symtom);
           } 
           else {
             res.status(404).send({

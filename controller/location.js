@@ -85,7 +85,7 @@ module.exports = {
       idUser,
     })
       .then((locations) => {
-        res.status(201).send({
+        res.status(200).send({
           locations,
         });
       })
