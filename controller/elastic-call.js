@@ -20,7 +20,7 @@ auth: {
 
 module.exports = {
      /**
-     * @api {get} /user/contact/:id/:begin/:end Get user trace
+     * @api {get} /user/contact/:id/:begin/:end Get user traces
      * @apiName getUserTrace
      * @apiGroup Contact
      *
@@ -62,13 +62,14 @@ module.exports = {
      */
 
     async getUserTrace(req, res){
+        console.log("getUserTrace");
         id = req.params.id;
         begin = req.params.begin;
         end = req.params.end;
         // Let's search!
         try {
             await elasticClient.getUserTrace(id,begin,end,function(result) {
-                //console.log(result);
+                console.log(result);
                 res.status(200).send({
                     success: true,
                     code:99,
@@ -162,7 +163,7 @@ module.exports = {
         }   
     },
     /** 
-     * @api {post} /user/contact/position Get contacts at Position
+     * @api {post} /user/contact/position Get contacts at one Position
      * @apiName getContactsAtPosition
      * @apiGroup Contact
      *
@@ -305,7 +306,7 @@ module.exports = {
     },
 
     /** 
-     * @api {get} /user/incub/:idUser/:begin/:end to get 
+     * @api {get} /user/incub/:idUser/:begin/:end Infected Contacts
      * @apiName getIncubContact
      * @apiGroup Contact
      *
@@ -406,10 +407,108 @@ module.exports = {
                 code:-1,
             });
 
-    }
+        }
 
 
       },
+    
+
+
+    /**
+     * @api {post} /zone Add Zone
+     * @apiName CreateZone
+     * @apiGroup Zone
+     * @apiParam {Number} name name of the zone
+     * @apiParam {JSON} obersvation static information about this zone
+     * @apiParam {String} polygon in the format lat,lon;lat,lon;lat,lon;lat,lon 
+     * 
+     * 
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {Object} Zone a Zone object
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully created.",
+     *       "zone":{ 
+     *              _index: 'dc19zone',
+     *              _type: '_doc',
+     *               _id: '1',
+     *               _version: 1,
+     *               created: true 
+     *            }
+     *     }
+     */  
+    async createZone(req, res) {
+        const zone = req.body;
+        //lat,lon;lat,lon;lat,lon;lat,lon
+        console.log(zone);
+        var polygon = [];
+        const spolygone = zone.polygon + '';
+        latlons = spolygone.split(";");
+        latlons.forEach(latlon => {
+            position = latlon.split(",");
+            const location = [parseFloat(position[1]), parseFloat(position[0])];
+            if (location.length == 2)
+                polygon.push(location);
+        });
+        const payload = {
+            "zone": {
+                "name":zone.name,
+                "observation":zone.observation,
+                "polygon": {
+                    "type" : "polygon",
+                    "coordinates": [polygon]
+                }
+        
+            }
+          };
+        zone.polygon = polygon;
+        console.log(zone);
+        try{
+            //get all contacts first
+            await elasticClient.createZone(payload,async function(resp) {
+                res.status(200).send({
+                    success: true,
+                    code:99,
+                    resust:resp,
+                });
+            });
+        } catch(error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code:-1,
+            });
+
+        }
+        
+        
+    },
+
+    async getZones(req, res) {
+       try{
+
+        await elasticClient.getZones(async function(resp) {
+            res.status(200).send({
+                success: true,
+                code:99,
+                resust:resp,
+            });
+        }); 
+
+        } catch(error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code:-1,
+            });
+
+        }
+    },
+
+    
 
       gentoken(req, res) {
         lists = ["+221776359893", "+221776359894"];

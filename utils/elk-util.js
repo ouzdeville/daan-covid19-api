@@ -7,7 +7,9 @@ auth: {
     username: 'elastic',
     password: 'A6JlhI1Yqt1Y2l0rtFE7ANSZ'
   }});
-
+const indexlocation="dc19"
+const indexzone="dc19zone"
+var uuid = require('uuid');
 /** 
  * 
  * Daancovid ELK Client
@@ -25,7 +27,7 @@ module.exports = {
     async getUserContacts(id,begin,end,callback){
         try {
             const { body }=await client.search({
-                index: 'dc19',
+                index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
                     "query" : {
@@ -68,10 +70,10 @@ module.exports = {
             var result=[];
             var itemsProcessed = 0;
             hits.forEach(async (hit) => {
-                //console.log("My new Position:"+id);
+                console.log("My new Position:"+id);
                 source=hit._source;
-                //console.log("Source");
-                //console.log(source);
+                console.log("Source");
+                console.log(source);
                 
                 begin1=hit._source.created_date-1300;
                 end1=hit._source.created_date+1300;
@@ -170,7 +172,7 @@ module.exports = {
         try{
             // Let's search!
             const { body } = await client.search({
-                index: 'dc19',
+                index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
                     "query" : {
@@ -207,6 +209,7 @@ module.exports = {
                     ]
                 }
             });
+            console.log()
             callback(body.hits.hits);
         } catch(error) {
             throw (error);
@@ -229,10 +232,10 @@ module.exports = {
                 "lat":parseFloat(latitude), 
                 "lon":parseFloat(longitude)
             }
-            begin1=created_date-1300;
-            end1=created_date+1300;
+            begin1=timestamp-1300;
+            end1=timestamp+1300;
             const { body }=await client.search({
-                index: 'dc19',
+                index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
                     "query": {
@@ -302,7 +305,7 @@ module.exports = {
         location=[location,location];
         //console.log(location);
             const { body }=await client.search({
-                index: 'dc19zone',
+                index: indexzone,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
                     "size":1,
@@ -332,5 +335,48 @@ module.exports = {
         } 
         
        
+    },
+    /**
+     * @param  {Zone} zone
+     * @param  {function} callback
+     */
+    async createZone(payload,callback) {
+        try {
+            client.create({
+                id: uuid.v4(),
+                index: indexzone,
+                type: "_doc",
+                refresh: 'true',
+                body: payload
+            }, function(error, response, status) {
+                if (error) {
+                    throw(error);
+                } else {
+                    callback(response.body);
+                }
+            });
+
+        } catch(error) {
+            throw (error);
+        }
+    },
+    /**
+     * @param  {function} callback
+     */
+    async getZones(callback) {
+        try{
+            const { body }=await client.search({
+                index: indexzone,
+                // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                body: {
+                    "query": {
+                        "match_all" : {}
+                    }
+                }  
+            });
+            callback(body.hits.hits);
+        } catch(error) {
+            throw (error);
+        }
     },
 }

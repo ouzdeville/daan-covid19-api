@@ -22,7 +22,7 @@ module.exports = {
                 res.status(201).send({
                     success: true,
                     message: 'Successfully created.',
-                    zone,
+                    zone:zone,
                 });
             })
             .catch((error) => res.status(400).send(error));
