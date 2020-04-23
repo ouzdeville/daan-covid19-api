@@ -149,8 +149,21 @@ module.exports = {
     },
 
     /**
-     * @param  {} req
-     * @param  {} res
+     * @api {post} /user/signaler Report a positive case
+     * @apiName signaler
+     * @apiGroup User
+     *
+     *
+     * @apiSuccess (Success 201) {Object} result
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message":
+     *
+     *
+     *     }
      */
     async signaler(req, res) {
         debutincubation = req.body.debutincubation;

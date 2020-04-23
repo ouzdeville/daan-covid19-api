@@ -19,7 +19,6 @@ module.exports = {
      * @apiSuccess (Success 201) {String} barrierGesture.img image of barrier-gesture
      * @apiSuccess (Success 201) {Date} barrierGesture.updatedAt date of last update of barrier-gesture
      * @apiSuccess (Success 201) {Date} barrierGesture.createdAt date of creation of of barrier-gesture
-
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 201 Created

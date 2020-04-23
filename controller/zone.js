@@ -1,8 +1,17 @@
 const {Zone} = require('./../models');
 const {insidePolygon} = require('geolocation-utils');
 
-
+/** 
+     *  @deprecated zones are managed on elsaticsearch now
+     * @param  {} req
+     * @param  {} res
+     */
 module.exports = {
+    /** 
+     *  @deprecated 
+     * @param  {} req
+     * @param  {} res
+     */
     createZone(req, res) {
         const zone = req.body;
         //lat,lon;lat,lon;lat,lon;lat,lon
