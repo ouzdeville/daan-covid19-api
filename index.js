@@ -13,12 +13,28 @@ const server = http.createServer(app);
 
 // Log requests to the console.
 app.use(logger('dev'));
-app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static('public'));
+
+if (process.env.NODE_ENV === 'production') {
+    var whitelist = ['http://localhost:4200', 'https://daan-covid19-api.herokuapp.com'];
+
+    var corsOptions = {
+        origin: function (origin, callback) {
+            if (whitelist.indexOf(origin) !== -1) {
+                callback(null, true);
+            } else {
+                console.log(origin);
+                callback(new Error('Not allowed by CORS'));
+            }
+        }
+    };
+}
+
+app.use(cors(corsOptions));
 
 require('./routes')(app);
 app.get('*', (req, res) =>
