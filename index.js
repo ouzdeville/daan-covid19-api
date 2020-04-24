@@ -19,10 +19,14 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static('public'));
 
+var corsOptions = {
+    origin: false
+};
+
 if (process.env.ACTIVATE_CORS === 'true') {
     var whitelist = ['http://localhost:4200', 'https://daan-covid19-api.herokuapp.com'];
 
-    var corsOptions = {
+    corsOptions = {
         origin: function (origin, callback) {
             if (whitelist.indexOf(origin) !== -1) {
                 callback(null, true);
@@ -32,8 +36,9 @@ if (process.env.ACTIVATE_CORS === 'true') {
             }
         }
     };
-    app.use(cors(corsOptions));
 }
+
+app.use(cors(corsOptions));
 
 require('./routes')(app);
 app.get('*', (req, res) =>
