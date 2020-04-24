@@ -5,7 +5,7 @@ module.exports = {
   ContactController: require('./contact'),
   BarrierGestureController: require('./barrier-gesture'),
   GreenNumberController: require('./green-number'),
-  SymptomInfoController: require('./symptom-info'),
+  SymptomController: require('./symptom'),
   PrevalenceController: require('./prevalence'),
   DailyReportController: require('./daily-report'),
   SelfReportingController: require('./self-reporting'),

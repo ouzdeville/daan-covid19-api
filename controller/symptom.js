@@ -11,7 +11,7 @@ module.exports = {
      * @apiParam {String} name name of Symptom
      * @apiParam {Boolean} major is or not a major Symptom
      * @apiParam {Text} description description of Symptom
-     * @apiParam {String} img image of SymtomInfo
+     * @apiParam {String} img image of Symptom
      * 
      *
      *
@@ -148,10 +148,10 @@ module.exports = {
      *     }
      */
     getAllSymptom: function (req, res) {
-      var fields = req.query.fields;
-      var limit = parseInt(req.query.limit);
-      var offset = parseInt(req.query.offset);
-      var order = req.query.order;
+      var fields = req.body.fields;
+      var limit = parseInt(req.body.limit);
+      var offset = parseInt(req.body.offset);
+      var order = req.body.order;
 
       Symptom.findAll({
         order: [(order !=null) ? order.split(':') : ['id', 'ASC']],
