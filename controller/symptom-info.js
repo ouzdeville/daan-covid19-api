@@ -6,7 +6,7 @@ module.exports = {
   /**
      * @api {post} /symptom Add Symptom
      * @apiName Create
-     * @apiGroup SymptomInfo
+     * @apiGroup Symptom
      *
      * @apiParam {String} name id of Location
      * @apiParam {Boolean} major is or not a major Symptom
@@ -58,7 +58,7 @@ module.exports = {
     /**
      * @api {get} /symptom/:id Get SymptomInfo by symptom id
      * @apiName Get
-     * @apiGroup SymptomInfo
+     * @apiGroup Symptom
      *
      * @apiParam {Number} id id of the SymptomInfo
      *
@@ -111,7 +111,7 @@ module.exports = {
     /**
      * @api {get} /symptoms get all SymptomInfo
      * @apiName getAllSymptom
-     * @apiGroup SymptomInfo
+     * @apiGroup Symptom
      * @apiSuccess {Object[]} symptoms            List of SymptomInfo.
      * @apiSuccess {Number}   symptom.id          id SymptomInfo.
      * @apiSuccess {String}   symptom.title       title of SymptomInfo.
