@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static('public'));
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.ACTIVATE_CORS === 'true') {
     var whitelist = ['http://localhost:4200', 'https://daan-covid19-api.herokuapp.com'];
 
     var corsOptions = {
