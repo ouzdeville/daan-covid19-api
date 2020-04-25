@@ -3,7 +3,7 @@ const {
   UserController, LocationController,
   ZoneController, ContactController,
   BarrierGestureController, SelfReportingController,
-  GreenNumberController, SymptomInfoController,
+  GreenNumberController, SymptomController,
   PrevalenceController, DailyReportController,
   ElasticCallController
 } = require('./../controller');
@@ -47,9 +47,9 @@ module.exports = (app) => {
   app.get('/green-numbers', auth, GreenNumberController.getAllGreenNumber);
 
   // Route Symptom
-  app.post('/symptom', auth, SymptomInfoController.create);
-  app.get('/symptom/:id', auth, SymptomInfoController.get);
-  app.get('/symptoms', SymptomInfoController.getAllSymptom);
+  app.post('/symptom', auth, SymptomController.create);
+  app.get('/symptom/:id', auth, SymptomController.get);
+  app.get('/symptoms', SymptomController.getAllSymptom);
 
 
   //elastic search
