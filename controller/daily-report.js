@@ -1,5 +1,4 @@
 const {DailyReport} = require('./../models');
-
 module.exports = {
     /**
      * @api {post} /daily-report Add report for a specific day
@@ -32,6 +31,7 @@ module.exports = {
      *     }
      */
     async create(req, res) {
+        //console.log(req.file.path);
         reportDate = req.body.reportDate;
         const data = {
             reportDate: req.body.reportDate,
@@ -48,7 +48,7 @@ module.exports = {
             totalEvacuation: req.body.totalEvacuation,
             numberOfPositiveCases: req.body.numberOfPositiveCases,
             totalCases: req.body.totalCases,
-            dailyStatement:req.body.dailyStatement
+            dailyStatement:req.file.path
         };
 
         // check if the report for the date (reportDate) already exist

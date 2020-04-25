@@ -1,3 +1,4 @@
+const multer = require('multer');
 const {
 
   UserController, LocationController,
@@ -8,7 +9,27 @@ const {
   ElasticCallController
 } = require('./../controller');
 const { auth } = require('./../middlewares');
-
+DIR='./pdf/';
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+      const fileName = file.originalname.toLowerCase().split(' ').join('-');
+      cb(null, fileName)
+  }
+});
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+      if (file.mimetype == "application/pdf") {
+          cb(null, true);
+      } else {
+          cb(null, false);
+          return cb(new Error('Allowed only pdf file'));
+      }
+  }
+});
 module.exports = (app) => {
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
@@ -32,7 +53,7 @@ module.exports = (app) => {
   app.get('/prevalence/:idZone', PrevalenceController.getByZone);
 
   // Route Daily Report
-  app.post('/daily-report', DailyReportController.create);
+  app.post('/daily-report',upload.single('dailyStatement'), DailyReportController.create);
   app.get('/daily-report', DailyReportController.getAll);
   app.get('/daily-report/last', DailyReportController.getLast);
 
