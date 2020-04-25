@@ -122,6 +122,11 @@ module.exports = {
                                 
                             }
                         },
+                        "aggs" : {
+                            "contacts" : {
+                                "terms" : { "field" : "id" } 
+                            }
+                        },
                         "sort" : [
                         {
                             "created_date" : {
@@ -144,7 +149,7 @@ module.exports = {
                 if(itemsProcessed === hits.length) {
                     //console.log("Results1:");
                     //console.log(result);
-                    callback(result);
+                    callback(result,body.aggregations);
                 }
                 
             });

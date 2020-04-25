@@ -24,7 +24,7 @@ var corsOptions = {
 };
 
 if (process.env.ACTIVATE_CORS === 'true') {
-    var whitelist = ['http://localhost:4200', 'https://daan-covid19-api.herokuapp.com'];
+    var whitelist = ['/*.localhost.*$/', 'https://daan-covid19-api.herokuapp.com'];
 
     corsOptions = {
         origin: function (origin, callback) {

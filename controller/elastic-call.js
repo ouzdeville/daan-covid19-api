@@ -143,12 +143,13 @@ module.exports = {
             end = req.params.end;
             // Let's search!
             //console.log("ok");
-            await elasticClient.getUserContacts(id,begin,end,function(result) {
-                console.log(result);
+            await elasticClient.getUserContacts(id,begin,end,function(result,buckets) {
+                console.log(buckets);
                 res.status(200).send({
                     success: true,
                     code:99,
                     resust:result,
+                    buckets:buckets,
                 });
               });
             
