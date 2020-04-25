@@ -56,6 +56,102 @@ module.exports = {
     },
 
     /**
+     * @api {put} /symptom/:id Update Symptom
+     * @apiName Update
+     * @apiGroup Symptom
+     *
+     * @apiParam {Number} id    id of Symptom
+     * @apiParam {String} name name of Symptom
+     * @apiParam {Boolean} major is or not a major Symptom
+     * @apiParam {Text} description description of Symptom
+     * @apiParam {String} img image of Symptom
+     * 
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 Updated
+     *     {
+     *         "success" : true,
+     *         "code"    : 1,
+     *         "message": 'Symptom successfully updated',
+     *         "symptom": "updatesymptom"  
+     *     }
+     */
+
+    update: function(req, res){
+      var symptomId = req.query.id;
+      var name = req.query.name;
+      var major = req.query.major;
+      var img = req.query.img;
+      var description = req.query.description;
+      return Symptom.findOne({
+        where: {id:symptomId}
+      })
+        .then(function(symptom){
+          if (!symptom) {
+            return res.status(404).send({
+              success: true,
+              code:0,
+              message: 'Symptom Not Found',
+            });
+          }
+          return symptom.update({
+            id: symptomId || symptom.id,
+            name: name || symptom.name,
+            description:description || symptom.description,
+            major: major || symptom.major,
+            img: img || symptom.img
+          })
+          .then(() => res.status(200).send({
+            success: true,
+            code:1,
+            message: 'Symptom successfully updated',
+            symptom: "updatesymptom"
+          }))
+          .catch((error) => res.status(400).send(error));
+        })
+        .catch((error) => res.status(400).send(error));
+    },
+
+
+    /**
+     * @api {put} /symptom/:id Update Symptom
+     * @apiName Delete
+     * @apiGroup Symptom
+     *
+     * @apiParam {Number} id    id of Symptom
+     * 
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 204
+     *     {
+     *      
+     *     }
+     */
+    delete: function(req, res){
+      return Symptom
+      .findOne({
+        where: {id: req.params.id}
+      })
+      .then(function(symptom) {
+        if (!symptom) {
+          return res.status(400).send({
+            success: true,
+            code:0,
+            message: 'Symptom Not Found',
+          });
+        }
+        return symptom
+          .destroy()
+          .then(() => res.status(204).send())
+          .catch((error) => res.status(400).send({
+          }));
+      })
+      .catch((error) => res.status(400).send(error));
+    },
+
+    /**
      * @api {get} /symptom/:id Get Symptom by symptom id
      * @apiName Get
      * @apiGroup Symptom
@@ -106,6 +202,8 @@ module.exports = {
           });
         });
     },
+
+
 
 
     /**

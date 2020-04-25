@@ -50,6 +50,8 @@ module.exports = (app) => {
   app.post('/symptom', auth, SymptomController.create);
   app.get('/symptom/:id', auth, SymptomController.get);
   app.get('/symptoms', SymptomController.getAllSymptom);
+  app.put('/symptom', SymptomController.update);
+  app.delete('/symptom/:id', SymptomController.delete);
 
 
   //elastic search
