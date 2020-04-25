@@ -15,8 +15,11 @@ const storage = multer.diskStorage({
       cb(null, DIR);
   },
   filename: (req, file, cb) => {
+    
       const fileName = file.originalname.toLowerCase().split(' ').join('-');
-      cb(null, fileName)
+      cb(null, fileName);
+      
+      
   }
 });
 const upload = multer({
@@ -55,6 +58,7 @@ module.exports = (app) => {
   // Route Daily Report
   app.post('/daily-report',upload.single('dailyStatement'), DailyReportController.create);
   app.get('/daily-report', DailyReportController.getAll);
+  app.get('/pdf/:filename', DailyReportController.getPDf);
   app.get('/daily-report/last', DailyReportController.getLast);
 
   // Route Barrier Gesture

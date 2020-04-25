@@ -1,4 +1,5 @@
 const {DailyReport} = require('./../models');
+var fs = require('fs');
 module.exports = {
     /**
      * @api {post} /daily-report Add report for a specific day
@@ -31,7 +32,8 @@ module.exports = {
      *     }
      */
     async create(req, res) {
-        //console.log(req.file.path);
+        filename=req.file.path.replace('pdf','').replace('/','').replace('\\','');
+        console.log(filename);
         reportDate = req.body.reportDate;
         const data = {
             reportDate: req.body.reportDate,
@@ -205,5 +207,11 @@ module.exports = {
                 });
             })
             .catch((error) => res.status(400).send(error));
+    },
+
+    getPDf(req, res){
+        var data =fs.readFileSync('./pdf/'+req.params.filename);
+            res.contentType("application/pdf");
+            res.send(data);
     }
 };
