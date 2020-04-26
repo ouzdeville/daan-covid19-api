@@ -56,7 +56,7 @@ module.exports = (app) => {
   app.get('/prevalence/:idZone', PrevalenceController.getByZone);
 
   // Route Daily Report
-  app.post('/daily-report',upload.single('dailyStatement'), DailyReportController.create);
+  app.post('/daily-report', DailyReportController.create);
   app.get('/daily-report', DailyReportController.getAll);
   app.get('/pdf/:filename', DailyReportController.getPDf);
   app.get('/daily-report/last', DailyReportController.getLast);

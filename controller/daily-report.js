@@ -32,7 +32,11 @@ module.exports = {
      *     }
      */
     async create(req, res) {
-        filename=req.file.path.replace('pdf','').replace('/','').replace('\\','');
+        //filename=req.file.path.replace('pdf','').replace('/','').replace('\\','');
+        filename=Date.now()+".pdf";
+        var jsonPath = path.join(__dirname, '..', 'pdf', filename);
+        let pdfBuffer = await request.get({uri: req.body.dailyStatement, encoding: null});
+        fs.writeFileSync(jsonPath, pdfBuffer);
         console.log(filename);
         reportDate = req.body.reportDate;
         const data = {
@@ -50,7 +54,7 @@ module.exports = {
             totalEvacuation: req.body.totalEvacuation,
             numberOfPositiveCases: req.body.numberOfPositiveCases,
             totalCases: req.body.totalCases,
-            dailyStatement:req.file.path
+            dailyStatement:filename
         };
 
         // check if the report for the date (reportDate) already exist
