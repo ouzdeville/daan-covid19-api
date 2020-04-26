@@ -7,11 +7,19 @@
     "dialect": "postgres",
     "operatorsAliases": false
   },
+  "test": {
+    "username": "daancovid19sn",
+    "password": "daancovid19sn",
+    "database": "daancovid19sn_test",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
   "development": {
     "username": "daancovid19sn",
     "password": "daancovid19sn",
     "database": "daancovid19sn",
-    "host": "172.31.240.1",
+    "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": false
   },

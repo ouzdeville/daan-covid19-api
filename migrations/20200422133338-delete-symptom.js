@@ -12,13 +12,14 @@ module.exports = {
    return queryInterface.dropTable('Symptoms');
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface, Sequelize, done) => {
     /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.dropTable('users');
+    Add reverting commands here.
+    Return a promise to correctly handle asynchronicity.
+    
+    Example:
+    return queryInterface.dropTable('users');
     */
+   done()
   }
 };
