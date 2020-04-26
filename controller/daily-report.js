@@ -1,7 +1,7 @@
 const {DailyReport} = require('./../models');
 var fs = require('fs');
 var path = require('path');
-const request = require('request')
+const request = require("request-promise-native");
 module.exports = {
     /**
      * @api {post} /daily-report Add report for a specific day
