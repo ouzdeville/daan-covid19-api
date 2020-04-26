@@ -1,5 +1,6 @@
 const {DailyReport} = require('./../models');
 var fs = require('fs');
+var path = require('path');
 module.exports = {
     /**
      * @api {post} /daily-report Add report for a specific day
