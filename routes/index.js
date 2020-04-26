@@ -45,9 +45,10 @@ module.exports = (app) => {
   app.get('/location/:idUser', auth, LocationController.getUserLocations);
   app.get('/user/contacts/:idUser', auth, UserController.getContact);
   app.post('/user/signaler', auth, UserController.signaler);
-  //app.post('/zone', auth, ZoneController.createZone);
-  //app.get('/zones', auth, ZoneController.getZones);
-  //app.get('/zone/:id', auth, ZoneController.getZone);
+  app.post('/zone', auth, ZoneController.createZone);
+  app.get('/zones', auth, ZoneController.getZones);
+  app.get('/zone/:id', auth, ZoneController.getZone);
+  app.get('/user/inside/:latitude/:longitude', ZoneController.isInAZone);
   app.get('/contact', auth, ContactController.getContacts);
   app.get('/contact/:id', auth, ContactController.getContact);
   //app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
@@ -82,11 +83,11 @@ module.exports = (app) => {
   app.get('/user/contact/:id/:begin/:end', ElasticCallController.getUserContacts);
   app.get('/user/trace/:id/:begin/:end', ElasticCallController.getUserTrace);
   app.post('/user/contact/position', ElasticCallController.getContactsAtPositionAndDate);
-  app.get('/user/inside/:latitude/:longitude', ElasticCallController.isInAZoneElastic);
+  //app.get('/user/inside/:latitude/:longitude', ElasticCallController.isInAZoneElastic);
   app.get('/user/incub/:idUser/:begin/:end', ElasticCallController.getIncubContact);
-  app.post('/zone', ElasticCallController.createZone);
-  app.get('/zones', ElasticCallController.getZones);
-  app.get('/zone/:id', ZoneController.getZone);
+  // app.post('/zone', ElasticCallController.createZone);
+  // app.get('/zones', ElasticCallController.getZones);
+  // app.get('/zone/:id', ZoneController.getZone);
   app.get('/gentoken', auth, ElasticCallController.gentoken);
 
   //reporting symptom and risk factor

@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     description: DataTypes.JSON,
-    polygon: DataTypes.JSON
+    polygon: DataTypes.JSON,
+    idParent: DataTypes.UUID,
+    type: DataTypes.ENUM('REGION', 'DEPARTEMENT', 'COMMUNE', 'QUARTIER'),
+    longitude: DataTypes.FLOAT,
+    latitude: DataTypes.FLOAT
   }, {});
   Zone.associate = function(models) {
     // associations can be defined here
