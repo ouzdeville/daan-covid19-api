@@ -20,9 +20,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 
 var corsOptions = {
-    origin: function (origin, callback) {
-        callback(null, true);
-    }
+    origin: '*'
 };
 
 if (process.env.ACTIVATE_CORS === 'true') {

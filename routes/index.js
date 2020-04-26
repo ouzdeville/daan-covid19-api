@@ -1,6 +1,6 @@
 const multer = require('multer');
-const {
 
+const {
   UserController, LocationController,
   ZoneController, ContactController,
   BarrierGestureController, SelfReportingController,
@@ -8,24 +8,25 @@ const {
   PrevalenceController, DailyReportController,
   ElasticCallController
 } = require('./../controller');
+
 const { auth } = require('./../middlewares');
+
 DIR='./pdf/';
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
       cb(null, DIR);
   },
   filename: (req, file, cb) => {
-    
       const fileName = file.originalname.toLowerCase().split(' ').join('-');
       cb(null, fileName);
-      
-      
   }
 });
+
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-      if (file.mimetype == "application/pdf") {
+      if (file.mimetype === "application/pdf") {
           cb(null, true);
       } else {
           cb(null, false);
@@ -33,6 +34,7 @@ const upload = multer({
       }
   }
 });
+
 module.exports = (app) => {
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
@@ -75,7 +77,6 @@ module.exports = (app) => {
   app.post('/symptom', auth, SymptomController.create);
   app.get('/symptom/:id', auth, SymptomController.get);
   app.get('/symptoms', SymptomController.getAllSymptom);
-
 
   //elastic search
   app.get('/user/contact/:id/:begin/:end', ElasticCallController.getUserContacts);
