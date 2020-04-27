@@ -56,7 +56,7 @@ module.exports = (app) => {
   // Route Prevalence
   app.post('/prevalence', auth, PrevalenceController.create);
   app.get('/prevalence', auth, PrevalenceController.getAll);
-  app.get('/prevalence/run', auth, PrevalenceController.runPrevalence);
+  app.get('/prevalence/run', PrevalenceController.runPrevalence);
   app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 
   // Route Daily Report
@@ -91,7 +91,7 @@ module.exports = (app) => {
   // app.post('/zone', auth, ElasticCallController.createZone);
   // app.get('/zones', auth, ElasticCallController.getZones);
   // app.get('/zone/:id', auth, ZoneController.getZone);
-  app.get('/gentoken', auth, ElasticCallController.gentoken);
+  app.get('/gentoken', ElasticCallController.gentoken);
 
   //reporting symptom and risk factor
   //deprecated
