@@ -54,17 +54,18 @@ module.exports = (app) => {
   //app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
 
   // Route Prevalence
-  app.post('/prevalence', PrevalenceController.create);
-  app.get('/prevalence', PrevalenceController.getAll);
-  app.get('/prevalence/:idZone', PrevalenceController.getByZone);
+  app.post('/prevalence', auth, PrevalenceController.create);
+  app.get('/prevalence', auth, PrevalenceController.getAll);
+  app.get('/prevalence/run', auth, PrevalenceController.runPrevalence);
+  app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 
   // Route Daily Report
-  app.post('/daily-report', DailyReportController.create);
-  app.get('/daily-report', DailyReportController.getAll);
-  app.get('/pdf/:filename', DailyReportController.getPDf);
-  app.get('/daily-report/last', DailyReportController.getLast);
-  app.get('/daily-report/:id', DailyReportController.get);
-  app.get('/daily-report/by-date/:date', DailyReportController.getByDate);
+  app.post('/daily-report', auth, DailyReportController.create);
+  app.get('/daily-report', auth, DailyReportController.getAll);
+  app.get('/pdf/:filename', auth, DailyReportController.getPDf);
+  app.get('/daily-report/last', auth, DailyReportController.getLast);
+  app.get('/daily-report/:id', auth, DailyReportController.get);
+  app.get('/daily-report/by-date/:date', auth, DailyReportController.getByDate);
 
   // Route Barrier Gesture
   app.post('/barrier-gesture', auth, BarrierGestureController.create);
@@ -82,22 +83,22 @@ module.exports = (app) => {
   app.get('/symptoms', SymptomController.getAllSymptom);
 
   //elastic search
-  app.get('/user/contact/:id/:begin/:end', ElasticCallController.getUserContacts);
-  app.get('/user/trace/:id/:begin/:end', ElasticCallController.getUserTrace);
-  app.post('/user/contact/position', ElasticCallController.getContactsAtPositionAndDate);
-  //app.get('/user/inside/:latitude/:longitude', ElasticCallController.isInAZoneElastic);
-  app.get('/user/incub/:idUser/:begin/:end', ElasticCallController.getIncubContact);
-  // app.post('/zone', ElasticCallController.createZone);
-  // app.get('/zones', ElasticCallController.getZones);
-  // app.get('/zone/:id', ZoneController.getZone);
+  app.get('/user/contact/:id/:begin/:end', auth, ElasticCallController.getUserContacts);
+  app.get('/user/trace/:id/:begin/:end', auth, ElasticCallController.getUserTrace);
+  app.post('/user/contact/position', auth, ElasticCallController.getContactsAtPositionAndDate);
+  //app.get('/user/inside/:latitude/:longitude', auth, ElasticCallController.isInAZoneElastic);
+  app.get('/user/incub/:idUser/:begin/:end', auth, ElasticCallController.getIncubContact);
+  // app.post('/zone', auth, ElasticCallController.createZone);
+  // app.get('/zones', auth, ElasticCallController.getZones);
+  // app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/gentoken', auth, ElasticCallController.gentoken);
 
   //reporting symptom and risk factor
   //deprecated
-  app.get('/self-reports', SelfReportingController.getAllSelfReports);
-  app.get('/reporting/self-reports', SelfReportingController.getAllSelfReports);
-  app.get('/reporting/riskfactors', SelfReportingController.getAllRiskFactors);
-  app.post('/reporting/self-report', SelfReportingController.createSelfReporting);
-  app.post('/reporting/selfreport-symptom', SelfReportingController.createSelfReportSymptom);
-  app.post('/reporting/selfreport-risk', SelfReportingController.createSelfReportRisk);
+  app.get('/self-reports', auth, SelfReportingController.getAllSelfReports);
+  app.get('/reporting/self-reports', auth, SelfReportingController.getAllSelfReports);
+  app.get('/reporting/riskfactors', auth, SelfReportingController.getAllRiskFactors);
+  app.post('/reporting/self-report', auth, SelfReportingController.createSelfReporting);
+  app.post('/reporting/selfreport-symptom', auth, SelfReportingController.createSelfReportSymptom);
+  app.post('/reporting/selfreport-risk', auth, SelfReportingController.createSelfReportRisk);
 };

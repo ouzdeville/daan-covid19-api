@@ -1,4 +1,5 @@
 const {Prevalence} = require('./../models');
+const {prevalenceCron} = require('./../utils');
 
 module.exports = {
     /**
@@ -181,5 +182,37 @@ module.exports = {
                 });
             })
             .catch((error) => res.status(400).send(error));
+    },
+    /**
+     * @api {get} /prevalence/run Refresh prevalence from COUS
+     * @apiName runPrevalence
+     * @apiGroup Prevalence
+     *
+     * @apiSuccess (Success 200) {String} message
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message":
+     *     }
+     */
+
+    async runPrevalence(req, res) {
+        try{
+            await prevalenceCron.prevalenceCompute();
+            res.status(200).send({
+                success: true,
+                code:99,
+                message:"Refresh done",
+            });
+
+        } catch(error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code:-1,
+            });
+
+        }
     }
 };
