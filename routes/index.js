@@ -63,6 +63,8 @@ module.exports = (app) => {
   app.get('/daily-report', DailyReportController.getAll);
   app.get('/pdf/:filename', DailyReportController.getPDf);
   app.get('/daily-report/last', DailyReportController.getLast);
+  app.get('/daily-report/:id', DailyReportController.get);
+  app.get('/daily-report/by-date/:date', DailyReportController.getByDate);
 
   // Route Barrier Gesture
   app.post('/barrier-gesture', auth, BarrierGestureController.create);
