@@ -1,4 +1,5 @@
-const {Prevalence} = require('./../models');
+const { Prevalence, Zone } = require('./../models');
+const { prevalenceCron } = require('./../utils');
 
 module.exports = {
     /**
@@ -169,7 +170,7 @@ module.exports = {
      */
 
     getByZone(req, res) {
-        const {idZone} = req.params;
+        const { idZone } = req.params;
         Prevalence.findAll({
             where: {
                 idZone: idZone
@@ -181,5 +182,58 @@ module.exports = {
                 });
             })
             .catch((error) => res.status(400).send(error));
+    },
+    /**
+     * @api {get} /prevalence/run Refresh prevalence from COUS
+     * @apiName runPrevalence
+     * @apiGroup Prevalence
+     *
+     * @apiSuccess (Success 200) {String} message
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message":
+     *     }
+     */
+
+    async runPrevalence(req, res) {
+        try {
+            await prevalenceCron.prevalenceCompute(async function () {
+                var districtsgps = await require('./../init_data/districts-sn.json');
+                for (var district of districtsgps) {
+                    //console.log(district);
+                    await Zone.update(
+                        {
+                            longitude: district.geometry.x,
+                            latitude: district.geometry.y
+                        },
+                        {
+                            where: {
+                                name: district.attributes.NAME
+                            }
+                        });
+
+                }
+            });
+
+            res.status(200).send({
+                success: true,
+                code: 99,
+                message: "Refresh done",
+            });
+
+
+
+
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+
+        }
     }
 };

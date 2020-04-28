@@ -101,3 +101,5 @@ fabric.properties
 /http_request_test/
 /tmp
 /public/apidoc/
+/pdf/privacy-management.pdf
+/pdf/

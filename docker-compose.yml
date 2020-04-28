@@ -5,8 +5,10 @@ services:
     environment:
       - POSTGRES_USER=daancovid19sn
       - POSTGRES_PASSWORD=daancovid19sn
+      - POSTGRES_MULTIPLE_DATABASES=daancovid19sn_test
     volumes:
-      - db_daancovid19sn:/var/lib/postgresql/data
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - ./tmp/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   elasticsearch:
@@ -17,7 +19,3 @@ services:
       - discovery.type=single-node
     ports:
       - "9200:9200"
-volumes:
-  es-data:
-  db_daancovid19sn:
-    external: true

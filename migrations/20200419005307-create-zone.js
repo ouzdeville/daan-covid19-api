@@ -3,7 +3,6 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Zones', {
       id: {
-        allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         allowNull: false,

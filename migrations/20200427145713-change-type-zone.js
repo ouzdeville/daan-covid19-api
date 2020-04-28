@@ -9,16 +9,11 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return Promise.all([
-      queryInterface.addColumn(
-        'DailyReports', // table name
-        'dailyStatement', // new field name
-        {
-          type: Sequelize.STRING,
-          allowNull: true,
-        },
-      ),
-    ]);
+   return queryInterface
+   .changeColumn('Zones', 'type', {
+     type: Sequelize.STRING,
+     allowNull: false
+   });
   },
 
   down: (queryInterface, Sequelize) => {
@@ -29,8 +24,10 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    return Promise.all([
-      queryInterface.removeColumn('DailyReports', 'dailyStatement'),
-    ]);
+    return queryInterface
+    .changeColumn('Zones', 'type', {
+      type: Sequelize.ENUM('REGION', 'DEPARTEMENT', 'COMMUNE', 'QUARTIER'),
+      allowNull: false
+    });
   }
 };
