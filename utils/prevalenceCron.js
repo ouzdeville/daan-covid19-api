@@ -8,7 +8,7 @@ const Op = Sequelize.Op;
 var uuid = require('uuid');
 
 module.exports = {
-    prevalenceCompute() {
+    async prevalenceCompute(callback) {
         var url = 'https://services7.arcgis.com/Z6qiqUaS6ImjYL5S/arcgis/rest/services/Situation_Covid19_Mise_a_jour/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&maxRecordCountFactor=5&orderByFields=Cas_conf%20DESC&outSR=102100&resultOffset=0&resultRecordCount=5000&cacheHint=true&quantizationParameters=%7B%22mode%22%3A%22view%22%2C%22originPosition%22%3A%22upperLeft%22%2C%22tolerance%22%3A1.0583354500042357%2C%22extent%22%3A%7B%22xmin%22%3A-17.483173135032132%2C%22ymin%22%3A12.474185961912667%2C%22xmax%22%3A-11.82930724143597%2C%22ymax%22%3A16.322471220470504%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%2C%22latestWkid%22%3A4326%7D%7D%7D';
 
         https.get(url, (res) => {
@@ -60,7 +60,7 @@ module.exports = {
                                 limit: 1,
                                 where: {
                                     idZone: prevdata.idZone,
-                                    date: prevdata.date,
+                                    //date: prevdata.date,
                                 },
                                 order: [['createdAt', 'DESC']]
                             }).then((prevexist) => {
@@ -68,7 +68,7 @@ module.exports = {
                                 if (prevexist.length <= 0) {
 
                                     Prevalence.create(prevdata);
-                                } else if (prevexist[0].numberOfConfirmedCases != prevdata.numberOfConfirmedCases) {
+                                } else if ( prevexist[0].numberOfConfirmedCases != prevdata.numberOfConfirmedCases) {
                                     
                                     Prevalence.create(prevdata);
                                 }
@@ -82,6 +82,7 @@ module.exports = {
                 } catch (error) {
                     console.error(error);
                 };
+                callback();
             });
 
         }).on("error", (error) => {

@@ -199,22 +199,24 @@ module.exports = {
 
     async runPrevalence(req, res) {
         try {
-            await prevalenceCron.prevalenceCompute();
-            var districtsgps = await require('./../init_data/districts-sn.json');
-            for (var district of districtsgps) {
-                //console.log(district);
-                await Zone.update(
-                    {
-                        longitude: district.geometry.x,
-                        latitude: district.geometry.y
-                    },
-                    {
-                        where: {
-                            name: district.attributes.NAME
-                        }
-                    });
+            await prevalenceCron.prevalenceCompute(async function () {
+                var districtsgps = await require('./../init_data/districts-sn.json');
+                for (var district of districtsgps) {
+                    //console.log(district);
+                    await Zone.update(
+                        {
+                            longitude: district.geometry.x,
+                            latitude: district.geometry.y
+                        },
+                        {
+                            where: {
+                                name: district.attributes.NAME
+                            }
+                        });
 
-            }
+                }
+            });
+
             res.status(200).send({
                 success: true,
                 code: 99,
