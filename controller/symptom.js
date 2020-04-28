@@ -271,5 +271,73 @@ module.exports = {
           error: 'invalid fields'
         });
       })
+    },
+
+    /**
+     * @api {get} /symptoms/major get all major Symptom
+     * @apiName getAllMajorSymptom
+     * @apiGroup Symptom
+     * @apiSuccess {Object[]} symptoms            List of Symptom.
+     * @apiSuccess {Number}   symptom.id          id Symptom.
+     * @apiSuccess {String}   symptom.title       title of Symptom.
+     * @apiSuccess {Text}   symptom.content     content of Symptom.
+     * @apiSuccess {Boolean}   symptom.major       major of Symptom.
+     * @apiSuccess {String}   symptom.img         image of Symptom.
+     * @apiSuccess {Date}   symptom.createdAt   creation's date of Symptom.
+     * @apiSuccess {Date}   symptom.updatedAt   last update's date of Symptom.
+     * 
+     * 
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *        "somptoms": [
+     *          {
+     *             "id": 1,
+     *             "title": "Mal de tête",
+     *             "content": "",
+     *             "major": true,
+     *             "img": "",
+     *             "createdAt": "2020-04-22T21:18:48.066Z",
+     *             "updatedAt": "2020-04-22T21:18:48.066Z"
+     *           },
+     *           {
+     *               "id": 2,
+     *               "title": "Toux",
+     *               "content": "",
+     *               "major": true,
+     *               "img": "",
+     *               "createdAt": "2020-04-22T21:18:48.066Z",
+     *               "updatedAt": "2020-04-22T21:18:48.066Z"
+     *          },
+     *        ]
+     *     }
+     */
+    getAllMajorSymptom: function (req, res) {
+      var fields = req.body.fields;
+      var limit = parseInt(req.body.limit);
+      var offset = parseInt(req.body.offset);
+      var order = req.body.order;
+
+      Symptom.findAll({
+        where: {major: true},
+        order: [(order !=null) ? order.split(':') : ['id', 'ASC']],
+        attributes: (fields !=='*' && fields != null) ? fields.split(','): null,
+        limit: (!isNaN(limit)) ? limit : null,
+        offset: (!isNaN(offset)) ? offset : null
+      }).then(function(symptoms) { 
+        if(symptoms) {
+          return res.status(200).send(symptoms);
+        }
+        else {
+          res.status(404).send({
+            error: 'no symptoms found'
+          });
+        }
+      }).catch(function(err) {
+        console.log(err);
+        res.status(500).send({
+          error: 'invalid fields'
+        });
+      })
     }
 }
