@@ -102,6 +102,7 @@ module.exports = (app) => {
   app.get('/reporting/self-reports', SelfReportingController.getAllSelfReports);
   app.get('/reporting/riskfactors', SelfReportingController.getAllRiskFactors);
   app.post('/reporting/self-report', SelfReportingController.createSelfReporting);
+  app.put('/reporting/modify-self-report', SelfReportingController.updateUserSelfReport);
   app.post('/reporting/selfreport-symptom', SelfReportingController.createSelfReportSymptom);
   app.post('/reporting/selfreport-risk', SelfReportingController.createSelfReportRisk);
 

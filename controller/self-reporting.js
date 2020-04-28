@@ -24,7 +24,7 @@ module.exports={
 getAllSelfReports(req, res) {
     //res.send({ message: 'hi :)' });
     SelfReporting.findAll({
-      attributes: ['reportingDate','firstname','lastname','email','adresse','department','region'],
+      attributes: ['id','reportingDate','firstname','lastname','email','adresse','department','region'],
       include: [{
         model: User,attributes: ['id','phone','active']
       },{
@@ -121,6 +121,73 @@ createSelfReporting(req, res) {
       });
 
     }
+
+},
+
+
+/**
+       * @api {put} /reporting/modify-self-report Update SelfReporting
+       * @apiName Update
+       * @apiGroup RiskFactor
+       *
+       * @apiParam {String} firstname  
+       * @apiParam {String} lastname 
+       * @apiParam {String} gender
+       * @apiParam {Date} dateOfBirth 
+       * @apiParam {Number} age 
+       * @apiParam {String} email 
+       * @apiParam {String} adresse 
+       * @apiParam {String} department 
+       * @apiParam {String} region 
+       * @apiParam {Number} latitude GPS latitude
+       * @apiParam {Number} longitude GPS longitude 
+       *
+       *
+       * @apiSuccessExample Success-Response:
+       *     HTTP/1.1 200 Updated
+       *     {
+       *         "success" : true,
+       *         "code"    : 1,
+       *         "message": 'RiskFactor successfully updated',
+       *         "riskfactor": "updaterisk-factor"  
+       *     }
+       */
+updateUserSelfReport(req, res){
+  const {id,firstname, lastname, gender, dateOfBirth, age,
+    email, adresse, department, region, lat,lng,idUser} = req.query;
+    return SelfReporting.findOne({
+      where: {id: id},
+    }).then(selfreporting=>{
+      if (!selfreporting) {
+        return res.status(404).send({
+          success: true,
+          code:0,
+          message: 'selfreporting Not Found',
+        });
+      }
+      return selfreporting.update({
+        id:           idUser          || selfreporting.id,  
+        firstname:    firstname       || selfreporting.firstname,
+        lastname:     lastname        || selfreporting.lastname,
+        gender:       gender          || selfreporting.gender,
+        dateOfBirth:  dateOfBirth     || selfreporting.dateOfBirth,
+        age:          age             || selfreporting.age,
+        email:        email           || selfreporting.email, 
+        adresse:      adresse         || selfreporting.adresse, 
+        departement:  department      || selfreporting.departement, 
+        region:       region          || selfreporting.region,
+        lat:          lat             || selfreporting.lat,
+        lng:          lng             || selfreporting.lng
+
+      }).then(() => res.status(200).send({
+        success: true,
+        code:1,
+        message: 'riskFactor successfully updated',
+        riskfactor: "updaterisk-factor"
+      }))
+      .catch((error) => res.status(400).send(error));
+    })
+    .catch((error) => res.status(400).send(error));
 
 },
 /** 
