@@ -202,7 +202,6 @@ module.exports = {
    *     }
    */
   getLast(req, res) {
-    const {reportDate} = req.params;
     DailyReport.findAll({
       limit: 1,
       order: [['reportDate', 'DESC']]
@@ -213,6 +212,136 @@ module.exports = {
         });
       })
       .catch((error) => res.status(400).send(error));
+  },
+
+  /**
+   * @api {get} /daily-report/last-with-diff Get the last daily report with diff
+   * @apiName GetLastDailyReportWithDiff
+   * @apiGroup DailyReport
+   *
+   * @apiSuccess (Success 200) {Object} dailyReportWithDiff daily report with diff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.id ID
+   * @apiSuccess (Success 200) {Date} dailyReportWithDiff.reportDate date
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfTest number of Test
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfImportedCases number of imported cases
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfContactCases number of contact cases
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfCommunityCases number of community cases
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfRecoveredCases number of recovered cases
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfDeadCases number of dead cases
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfEvacuatedCases number of evacuated cases
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfPositiveCases number of positive cases
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalUnderTreatment total under treatment
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalRecovered total recovered
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalDeath total death
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalEvacuation total evacuation
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalCases total cases
+   * @apiSuccess (Success 200) {String} dailyReportWithDiff.dailyStatement
+   * @apiSuccess (Success 200) {Date} dailyReportWithDiff.updatedAt Creation date
+   * @apiSuccess (Success 200) {Date} dailyReportWithDiff.createdAt Modification date
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfTestDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfImportedCasesDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfContactCasesDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfCommunityCasesDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfRecoveredCasesDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfDeadCasesDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfEvacuatedCasesDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalUnderTreatmentDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalRecoveredDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalDeathDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalEvacuationDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.numberOfPositiveCasesDiff
+   * @apiSuccess (Success 200) {Number} dailyReportWithDiff.totalCasesDiff
+   *
+   * @apiSuccessExample Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "dailyReportWithDiff": {
+   *         "id": 176,
+   *         "reportDate": "2020-04-25",
+   *         "numberOfTest": 703,
+   *         "numberOfImportedCases": 0,
+   *         "numberOfContactCases": 63,
+   *         "numberOfCommunityCases": 6,
+   *         "numberOfRecoveredCases": 14,
+   *         "numberOfDeadCases": 1,
+   *         "numberOfEvacuatedCases": 0,
+   *         "totalUnderTreatment": 330,
+   *         "totalRecovered": 276,
+   *         "totalDeath": 7,
+   *         "totalEvacuation": 1,
+   *         "numberOfPositiveCases": 69,
+   *         "totalCases": 614,
+   *         "dailyStatement": null,
+   *         "createdAt": "2020-04-25T00:00:00.000Z",
+   *         "updatedAt": "2020-04-25T00:00:00.000Z",
+   *         "numberOfTestDiff": 175,
+   *         "numberOfImportedCasesDiff": 0,
+   *         "numberOfContactCasesDiff": 2,
+   *         "numberOfCommunityCasesDiff": 1,
+   *         "numberOfRecoveredCasesDiff": 9,
+   *         "numberOfDeadCasesDiff": 1,
+   *         "numberOfEvacuatedCasesDiff": 0,
+   *         "totalUnderTreatmentDiff": 54,
+   *         "totalRecoveredDiff": 14,
+   *         "totalDeathDiff": 1,
+   *         "totalEvacuationDiff": 0,
+   *         "numberOfPositiveCasesDiff": 3,
+   *         "totalCasesDiff": 69
+   *       }
+   *     }
+   */
+  async getLastWithDiff(req, res) {
+    var currentReport = await DailyReport.findOne({
+      limit: 1,
+      order: [['reportDate', 'DESC']]
+    });
+
+    var previousReport = await DailyReport.findOne({
+      limit: 1,
+      offset: 1,
+      order: [['reportDate', 'DESC']]
+    });
+
+    var dailyReportWithDiff = {
+      id: currentReport.id,
+      reportDate: currentReport.reportDate,
+      numberOfTest: currentReport.numberOfTest,
+      numberOfImportedCases: currentReport.numberOfImportedCases,
+      numberOfContactCases: currentReport.numberOfContactCases,
+      numberOfCommunityCases: currentReport.numberOfCommunityCases,
+      numberOfRecoveredCases: currentReport.numberOfRecoveredCases,
+      numberOfDeadCases: currentReport.numberOfDeadCases,
+      numberOfEvacuatedCases: currentReport.numberOfEvacuatedCases,
+      totalUnderTreatment: currentReport.totalUnderTreatment,
+      totalRecovered: currentReport.totalRecovered,
+      totalDeath: currentReport.totalDeath,
+      totalEvacuation: currentReport.totalEvacuation,
+      numberOfPositiveCases: currentReport.numberOfPositiveCases,
+      totalCases: currentReport.totalCases,
+      dailyStatement: currentReport.dailyStatement,
+      createdAt: currentReport.createdAt,
+      updatedAt: currentReport.updatedAt,
+
+      numberOfTestDiff: currentReport.numberOfTest - previousReport.numberOfTest,
+      numberOfImportedCasesDiff: currentReport.numberOfImportedCases - previousReport.numberOfImportedCases,
+      numberOfContactCasesDiff: currentReport.numberOfContactCases - previousReport.numberOfContactCases,
+      numberOfCommunityCasesDiff: currentReport.numberOfCommunityCases - previousReport.numberOfCommunityCases,
+      numberOfRecoveredCasesDiff: currentReport.numberOfRecoveredCases - previousReport.numberOfRecoveredCases,
+      numberOfDeadCasesDiff: currentReport.numberOfDeadCases - previousReport.numberOfDeadCases,
+      numberOfEvacuatedCasesDiff: currentReport.numberOfEvacuatedCases - previousReport.numberOfEvacuatedCases,
+      totalUnderTreatmentDiff: currentReport.totalUnderTreatment - previousReport.totalUnderTreatment,
+      totalRecoveredDiff: currentReport.totalRecovered - previousReport.totalRecovered,
+      totalDeathDiff: currentReport.totalDeath - previousReport.totalDeath,
+      totalEvacuationDiff: currentReport.totalEvacuation - previousReport.totalEvacuation,
+      numberOfPositiveCasesDiff: currentReport.numberOfPositiveCases - previousReport.numberOfPositiveCases,
+      totalCasesDiff: currentReport.totalCases - previousReport.totalCases,
+    }
+
+    console.log(dailyReportWithDiff);
+
+    res.status(200).send({
+      dailyReportWithDiff
+    });
   },
 
   /**
