@@ -211,6 +211,108 @@ getAllSelfReportsByUserId(req, res) {
   });
 },
 
+
+/** 
+     * @api {get} /self-report/risk-factors/:idreport get all risk by report
+     * @apiName getAllRiskByReport
+     * @apiGroup Reporting
+     *
+     *
+     * @apiParam {Number} id    id of Report
+     * 
+     * @apiSuccess (Success 200) {Object} result risk list
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       [
+     *             {
+     *                 "id": 2,
+     *                 "name": "Consommation d'alcool",
+     *                 "description": "",
+     *                 "type": "1",
+     *                 "createdAt": "2020-04-22T21:18:48.078Z",
+     *                 "updatedAt": "2020-04-22T21:18:48.078Z"
+     *             },
+     *             {
+     *                 "id": 3,
+     *                 "name": "Diabétique",
+     *                 "description": "",
+     *                 "type": "2",
+     *                 "createdAt": "2020-04-22T21:18:48.078Z",
+     *                 "updatedAt": "2020-04-22T21:18:48.078Z"
+     *             }
+     *         ]
+     *     }
+     */
+
+
+getAllRiskByReport(req, res){
+  const {idreport} = req.params;
+  RiskFactor.findAll({
+    include: [{
+      model: SelfReporting, attributes: [],
+      where: {id: idreport},
+      as: 'SelfReporting'
+    },
+  ],
+  }).then(selfreporting=>{
+    res.send(selfreporting);
+  }).catch(err=>{
+    res.send(err);
+  })
+},
+
+/** 
+     * @api {get} /self-report/symptoms/:idreport get all symptom by report
+     * @apiName getAllSymptomByReport
+     * @apiGroup Reporting
+     *
+     *
+     * @apiParam {Number} id    id of Report
+     * 
+     * @apiSuccess (Success 200) {Object} result risk list
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       [
+     *             {
+     *                 "id": 2,
+     *                 "name": "Toux",
+     *                 "description": "",
+     *                 "major": true,
+     *                 "img": "",
+     *                 "createdAt": "2020-04-22T21:18:48.066Z",
+     *                 "updatedAt": "2020-04-22T21:18:48.066Z"
+     *             },
+     *             {
+     *                 "id": 1,
+     *                 "name": "mal de tete",
+     *                 "description": "",
+     *                 "major": true,
+     *                 "img": "",
+     *                 "createdAt": "2020-04-22T21:18:48.066Z",
+     *                 "updatedAt": "2020-04-25T14:44:48.494Z"
+     *             }
+     *         ]
+     *     }
+     */
+getAllSymptomByReport(req, res){
+  const {idreport} = req.params;
+  Symptom.findAll({
+    include: [{
+      model: SelfReporting, attributes: [],
+      where: {id: idreport},
+      as: 'SelfReporting'
+    },
+  ],
+  }).then(selfreporting=>{
+    res.send(selfreporting);
+  }).catch(err=>{
+    res.send(err);
+  })
+},
 /** 
      * @api {get} /reporting/self-reports/:date get all self-reports by date
      * @apiName GetAllSelfReportsByDate

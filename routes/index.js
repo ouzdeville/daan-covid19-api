@@ -113,5 +113,7 @@ module.exports = (app) => {
   app.get('/risk-factor/:id', auth,  RiskFactorController.get);
   app.get('/risk-factors', auth, RiskFactorController.getAllRiskFactor);
   app.put('/risk-factor', auth, RiskFactorController.update);
+  app.get('/self-report/risk-factors/:idreport',  SelfReportingController.getAllRiskByReport);
+  app.get('/self-report/symptoms/:idreport',  SelfReportingController.getAllSymptomByReport);
   app.delete('/risk-factor/:id', auth, RiskFactorController.delete);
 };
