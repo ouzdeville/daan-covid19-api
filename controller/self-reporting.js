@@ -118,9 +118,68 @@ getAllSelfReports(req, res) {
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
-     *       "success": true,
-     *       "id":1,
-     *       "message":
+     *       *       [
+     *           {
+     *               "id": 1,
+     *               "reportingDate": null,
+     *               "firstname": "side",
+     *               "lastname": "sarr",
+     *               "email": null,
+     *               "adresse": null,
+     *               "department": null,
+     *               "region": null,
+     *               "User": {
+     *                   "id": "dc76809c-23b2-4e0d-91ce-14aa46aeb5b4",
+     *                   "phone": "+221776359893",
+     *                   "active": "active"
+     *               },
+     *               "Symptom": [],
+     *               "RiskFactor": [
+     *                   {
+     *                       "id": 2,
+     *                       "name": "Consommation d'alcool",
+     *                       "description": "",
+     *                       "type": "1",
+     *                       "SelfReporting_RiskFactor": {
+     *                           "idSelfReporting": 2,
+     *                           "idRiskFactor": 1,
+     *                           "createdAt": "2020-04-22T21:18:48.078Z",
+     *                           "updatedAt": "2020-04-22T21:18:48.078Z"
+     *                       }
+     *                   }
+     *               ]
+     *           },
+     *           {
+     *               "id": 2,
+     *               "reportingDate": null,
+     *               "firstname": "Demba",
+     *               "lastname": "Diaw",
+     *               "email": "demba@gmail.com",
+     *               "adresse": "dakar",
+     *               "department": null,
+     *               "region": null,
+     *               "User": {
+     *                   "id": "1ca8f3b7-905a-4b60-9a31-eed78142e5e4",
+     *                   "phone": "+221776359894",
+     *                   "active": "active"
+     *               },
+     *               "Symptom": [],
+     *               "RiskFactor": [
+     *                   {
+     *                       "id": 2,
+     *                       "name": "Consommation d'alcool",
+     *                       "description": "",
+     *                       "type": "1",
+     *                       "SelfReporting_RiskFactor": {
+     *                           "idSelfReporting": 2,
+     *                           "idRiskFactor": 2,
+      *                          "createdAt": "2020-04-22T21:18:48.078Z",
+      *                          "updatedAt": "2020-04-22T21:18:48.078Z"
+      *                      }
+      *                  }
+      *              ]
+      *          }
+      *      ]
      *          
      *       
      *     }
@@ -151,6 +210,114 @@ getAllSelfReportsByUserId(req, res) {
     });
   });
 },
+
+/** 
+     * @api {get} /reporting/self-reports/:date get all self-reports by date
+     * @apiName GetAllSelfReportsByDate
+     * @apiGroup Reporting
+     *
+     *
+     * @apiParam {Date} date    creation's date of SelfReporting
+     * 
+     * @apiSuccess (Success 200) {Object} result self-reports list
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       *       [
+     *           {
+     *               "id": 1,
+     *               "reportingDate": "2020-04-22",
+     *               "firstname": "side",
+     *               "lastname": "sarr",
+     *               "email": null,
+     *               "adresse": null,
+     *               "department": null,
+     *               "region": null,
+     *               "User": {
+     *                   "id": "dc76809c-23b2-4e0d-91ce-14aa46aeb5b4",
+     *                   "phone": "+221776359893",
+     *                   "active": "active"
+     *               },
+     *               "Symptom": [],
+     *               "RiskFactor": [
+     *                   {
+     *                       "id": 2,
+     *                       "name": "Consommation d'alcool",
+     *                       "description": "",
+     *                       "type": "1",
+     *                       "SelfReporting_RiskFactor": {
+     *                           "idSelfReporting": 2,
+     *                           "idRiskFactor": 1,
+     *                           "createdAt": "2020-04-22T21:18:48.078Z",
+     *                           "updatedAt": "2020-04-22T21:18:48.078Z"
+     *                       }
+     *                   }
+     *               ]
+     *           },
+     *           {
+     *               "id": 2,
+     *               "reportingDate": "2020-04-22",
+     *               "firstname": "Demba",
+     *               "lastname": "Diaw",
+     *               "email": "demba@gmail.com",
+     *               "adresse": "dakar",
+     *               "department": null,
+     *               "region": null,
+     *               "User": {
+     *                   "id": "1ca8f3b7-905a-4b60-9a31-eed78142e5e4",
+     *                   "phone": "+221776359894",
+     *                   "active": "active"
+     *               },
+     *               "Symptom": [],
+     *               "RiskFactor": [
+     *                   {
+     *                       "id": 2,
+     *                       "name": "Consommation d'alcool",
+     *                       "description": "",
+     *                       "type": "1",
+     *                       "SelfReporting_RiskFactor": {
+     *                           "idSelfReporting": 2,
+     *                           "idRiskFactor": 2,
+      *                          "createdAt": "2020-04-22T21:18:48.078Z",
+      *                          "updatedAt": "2020-04-22T21:18:48.078Z"
+      *                      }
+      *                  }
+      *              ]
+      *          }
+      *      ]
+     *          
+     *       
+     *     }
+     */
+    getAllSelfReportsByDate(req, res) {
+      //res.send({ message: 'hi :)' });
+      const {date} = req.params;
+      SelfReporting.findAll({
+        where: {reportingDate :date},
+        attributes: ['id','reportingDate','firstname','lastname','email','adresse','department','region',],
+        include: [{
+          model: User,attributes: ['id','phone','active'],
+          
+        },{
+          model: Symptom, attributes: ['id','name','description','major'],
+          as: 'Symptom'
+      },{
+          model: RiskFactor, attributes: ['id','name','description','type'],
+          as: 'RiskFactor'
+      }],
+      })
+      .then(data=>{
+        res.send(data);
+      })
+      .catch(err=>{
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving self-reports."
+        });
+      });
+    },
 
   /** 
      * @api {post} /user/selfreport Create seflReport
