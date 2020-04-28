@@ -18,8 +18,10 @@ module.exports = {
       code,
       associatedPhoneNumber: phoneNumber,
     });
-    //await sendSms(phoneNumber, `Bienvenue sur Daan Covid19 votre code est: ${code}`);
-    console.log(otp);
+    if (process.env.SEND_SMS === 'true')
+      await sendSms(phoneNumber, `Bienvenue sur Daan Covid19 votre code est: ${code}`);
+    else
+      console.log(otp);
     return otp;
   },
 
