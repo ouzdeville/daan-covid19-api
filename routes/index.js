@@ -6,8 +6,7 @@ const {
   BarrierGestureController, SelfReportingController,
   GreenNumberController, SymptomController,
   PrevalenceController, DailyReportController,
-  ElasticCallController,
-  RiskFactorController
+  ElasticCallController, RiskFactorController
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
@@ -83,6 +82,9 @@ module.exports = (app) => {
   app.post('/symptom', SymptomController.create);
   app.get('/symptom/:id', SymptomController.get);
   app.get('/symptoms', SymptomController.getAllSymptom);
+  app.get('/symptoms/major', SymptomController.getAllMajorSymptom);
+  app.put('/symptom', SymptomController.update);
+  app.delete('/symptom/:id', SymptomController.delete);
 
   //elastic search
   app.get('/user/contact/:id/:begin/:end', auth, ElasticCallController.getUserContacts);
@@ -99,15 +101,20 @@ module.exports = (app) => {
   //deprecated
   app.get('/self-reports', SelfReportingController.getAllSelfReports);
   app.get('/reporting/self-reports', SelfReportingController.getAllSelfReports);
+  app.get('/reporting/self-reports/:id', SelfReportingController.getAllSelfReportsByUserId);
+  app.get('/reporting/self-reports/by-date/:date', SelfReportingController.getAllSelfReportsByDate);
   app.get('/reporting/riskfactors', SelfReportingController.getAllRiskFactors);
   app.post('/reporting/self-report', SelfReportingController.createSelfReporting);
+  app.put('/reporting/modify-self-report', SelfReportingController.updateUserSelfReport);
   app.post('/reporting/selfreport-symptom', SelfReportingController.createSelfReportSymptom);
   app.post('/reporting/selfreport-risk', SelfReportingController.createSelfReportRisk);
 
   //Route RiskFactor
-  app.post('/risk-factor', RiskFactorController.create);
-  app.get('/risk-factor/:id',  RiskFactorController.get);
-  app.get('/risk-factors', RiskFactorController.getAllRiskFactor);
-  app.put('/risk-factor', RiskFactorController.update);
-  app.delete('/risk-factor/:id', RiskFactorController.delete);
+  app.post('/risk-factor', auth, RiskFactorController.create);
+  app.get('/risk-factor/:id', auth,  RiskFactorController.get);
+  app.get('/risk-factors', auth, RiskFactorController.getAllRiskFactor);
+  app.put('/risk-factor', auth, RiskFactorController.update);
+  app.get('/self-report/risk-factors/:idreport',  SelfReportingController.getAllRiskByReport);
+  app.get('/self-report/symptoms/:idreport',  SelfReportingController.getAllSymptomByReport);
+  app.delete('/risk-factor/:id', auth, RiskFactorController.delete);
 };
