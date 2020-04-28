@@ -9,10 +9,38 @@ const client = new Client({node: 'https://search-test-r7znlu2wprxosxw75c5veftgki
  */
 
 module.exports = {
-
     /** Creating user by genrating first an otp and jwt token
      * @param  {} req
      * @param  {} res
+     */
+
+    /**
+     * @api {post} /user Add user and get a token
+     * @apiName CreateUser
+     * @apiGroup User
+     *
+     * @apiHeader {String} issuer application issuer
+     *
+     * @apiParam {String} phone Phone number
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {String} message Response message
+     * @apiSuccess (Success 201) {Object} token
+     * @apiSuccess (Success 201) {String} token.token the token
+     * @apiSuccess (Success 201) {Number} token.expiresIn number of second before expiration
+     * @apiSuccess (Success 201) {Date} token.createdAt date of creation of the token
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully created.",
+     *       "token": {
+     *         "token": "xxx",
+     *         "expiresIn": 86400,
+     *         "createdAt": "2020-04-28T17:57:22.114Z"
+     *       }
+     *     }
      */
     async create(req, res) {
         try {
@@ -153,6 +181,7 @@ module.exports = {
      * @apiName signaler
      * @apiGroup User
      *
+     * @apiHeader Authorization Token <<token>>
      *
      * @apiSuccess (Success 201) {Object} result
      *
@@ -161,8 +190,6 @@ module.exports = {
      *     {
      *       "success": true,
      *       "message":
-     *
-     *
      *     }
      */
     async signaler(req, res) {
