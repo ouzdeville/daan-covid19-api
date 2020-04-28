@@ -1,5 +1,5 @@
-const {Prevalence} = require('./../models');
-const {prevalenceCron} = require('./../utils');
+const { Prevalence, Zone } = require('./../models');
+const { prevalenceCron } = require('./../utils');
 
 module.exports = {
     /**
@@ -170,7 +170,7 @@ module.exports = {
      */
 
     getByZone(req, res) {
-        const {idZone} = req.params;
+        const { idZone } = req.params;
         Prevalence.findAll({
             where: {
                 idZone: idZone
@@ -198,19 +198,38 @@ module.exports = {
      */
 
     async runPrevalence(req, res) {
-        try{
+        try {
             await prevalenceCron.prevalenceCompute();
+            var districtsgps = await require('./../init_data/districts-sn.json');
+            for (var district of districtsgps) {
+                //console.log(district);
+                await Zone.update(
+                    {
+                        longitude: district.geometry.x,
+                        latitude: district.geometry.y
+                    },
+                    {
+                        where: {
+                            name: district.attributes.NAME
+                        }
+                    });
+
+            }
             res.status(200).send({
                 success: true,
-                code:99,
-                message:"Refresh done",
+                code: 99,
+                message: "Refresh done",
             });
 
-        } catch(error) {
+
+
+
+
+        } catch (error) {
             console.log(error);
             res.status(500).send({
                 success: false,
-                code:-1,
+                code: -1,
             });
 
         }

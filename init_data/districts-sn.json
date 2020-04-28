@@ -1,0 +1,704 @@
+[
+    {
+        "attributes": {
+            "NAME": "ZIGUINCHOR"
+        },
+        "geometry": {
+            "x": -16.22216686920558,
+            "y": 12.515809469431531
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "OUSSOUYE"
+        },
+        "geometry": {
+            "x": -16.615442919854843,
+            "y": 12.474185961912667
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "BIGNONA"
+        },
+        "geometry": {
+            "x": -16.1606832066646,
+            "y": 12.906470998437896
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DIOULOULOU"
+        },
+        "geometry": {
+            "x": -16.595704655345514,
+            "y": 12.925978764008789
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "POPENGUINE"
+        },
+        "geometry": {
+            "x": -17.07178085869964,
+            "y": 14.616395906845696
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "TIVAOUANE"
+        },
+        "geometry": {
+            "x": -16.834849265780917,
+            "y": 15.074391073189531
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MEKHE"
+        },
+        "geometry": {
+            "x": -16.430776569782836,
+            "y": 15.124899007483236
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MBOUR"
+        },
+        "geometry": {
+            "x": -16.950418968260749,
+            "y": 14.45658477037091
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KHOMBOLE"
+        },
+        "geometry": {
+            "x": -16.712515183928531,
+            "y": 14.779180493385127
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "POUT"
+        },
+        "geometry": {
+            "x": -17.011177064070182,
+            "y": 14.799288413429565
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "THIADIAYE"
+        },
+        "geometry": {
+            "x": -16.706713889434411,
+            "y": 14.513005493508786
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "THIES"
+        },
+        "geometry": {
+            "x": -16.872605527523035,
+            "y": 14.649214406719523
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KIDIRA"
+        },
+        "geometry": {
+            "x": -12.199979057287635,
+            "y": 14.000509458744602
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "BAKEL"
+        },
+        "geometry": {
+            "x": -12.445091599397756,
+            "y": 14.800854312976185
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "TAMBACOUNDA"
+        },
+        "geometry": {
+            "x": -13.376930370640025,
+            "y": 13.467828409553533
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "GOUDIRY"
+        },
+        "geometry": {
+            "x": -13.10561134668626,
+            "y": 14.147555569533949
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "GOUDOMP"
+        },
+        "geometry": {
+            "x": -15.510132993742616,
+            "y": 12.632983017452318
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "SEDHIOU"
+        },
+        "geometry": {
+            "x": -15.615185079028151,
+            "y": 12.80570350641176
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "SAINT-LOUIS"
+        },
+        "geometry": {
+            "x": -16.373995976632955,
+            "y": 15.955043347372623
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "RICHARD-TOLL"
+        },
+        "geometry": {
+            "x": -16.094692556616167,
+            "y": 16.281987146789447
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "PODOR"
+        },
+        "geometry": {
+            "x": -14.902803569728917,
+            "y": 16.322471220470504
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "PETE"
+        },
+        "geometry": {
+            "x": -14.231991056442041,
+            "y": 16.042821547976132
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DAGANA"
+        },
+        "geometry": {
+            "x": -15.564269125919395,
+            "y": 16.254521816428735
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "SAKAL"
+        },
+        "geometry": {
+            "x": -16.305398633540051,
+            "y": 15.775891747106471
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "LOUGA"
+        },
+        "geometry": {
+            "x": -16.189089360085859,
+            "y": 15.58484461988337
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KEUR-MOMAR-SARR"
+        },
+        "geometry": {
+            "x": -15.83675366405032,
+            "y": 15.839225705402043
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KEBEMER"
+        },
+        "geometry": {
+            "x": -16.425248389501519,
+            "y": 15.409179187569521
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "LINGUERE"
+        },
+        "geometry": {
+            "x": -14.99023960617285,
+            "y": 15.20891563354968
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DAHRA"
+        },
+        "geometry": {
+            "x": -15.413938800735025,
+            "y": 15.510353677680143
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DAROU-MOUSTY"
+        },
+        "geometry": {
+            "x": -15.997307101841216,
+            "y": 15.15214191032095
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "COKI"
+        },
+        "geometry": {
+            "x": -15.96076696542309,
+            "y": 15.492391325998938
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MEDINA-YORO-FOULAH"
+        },
+        "geometry": {
+            "x": -14.865002808632653,
+            "y": 13.214005682516301
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "VELINGARA"
+        },
+        "geometry": {
+            "x": -13.874703853300161,
+            "y": 12.984908848364682
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KOLDA"
+        },
+        "geometry": {
+            "x": -14.65574686422633,
+            "y": 12.854796210876486
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "SARAYA"
+        },
+        "geometry": {
+            "x": -11.82930724143597,
+            "y": 12.972569584219002
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "SALEMATA"
+        },
+        "geometry": {
+            "x": -12.797852143261764,
+            "y": 12.600316554265589
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KEDOUGOU"
+        },
+        "geometry": {
+            "x": -12.434880226541168,
+            "y": 12.76554789212156
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "NDOFFANE"
+        },
+        "geometry": {
+            "x": -16.010414954486521,
+            "y": 13.999578601071619
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "GUINGUINEO"
+        },
+        "geometry": {
+            "x": -15.912847082127087,
+            "y": 14.282056897707719
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KAOLACK"
+        },
+        "geometry": {
+            "x": -16.206656084710517,
+            "y": 14.232709078960852
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KAFFRINE"
+        },
+        "geometry": {
+            "x": -15.446385176434717,
+            "y": 14.12869694270978
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DIOURBEL"
+        },
+        "geometry": {
+            "x": -16.216367575703032,
+            "y": 14.766487671568825
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "BAMBEY"
+        },
+        "geometry": {
+            "x": -16.483087655570785,
+            "y": 14.801471973652724
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "TOUBA"
+        },
+        "geometry": {
+            "x": -15.822731995884851,
+            "y": 14.874599213582883
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MBACKE"
+        },
+        "geometry": {
+            "x": -15.834292119785459,
+            "y": 14.745848315147668
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "RUFISQUE"
+        },
+        "geometry": {
+            "x": -17.276904669215071,
+            "y": 14.729134925736275
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "PIKINE"
+        },
+        "geometry": {
+            "x": -17.396379406984011,
+            "y": 14.752877009766223
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KEUR-MASSAR"
+        },
+        "geometry": {
+            "x": -17.319000786656943,
+            "y": 14.789165068013517
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DIAMNIADIO"
+        },
+        "geometry": {
+            "x": -17.172187714491372,
+            "y": 14.71005855685695
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "GUEDIAWAYE"
+        },
+        "geometry": {
+            "x": -17.394552874915178,
+            "y": 14.775056407527245
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MBAO"
+        },
+        "geometry": {
+            "x": -17.335107827064519,
+            "y": 14.747357385634871
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DAKAR-NORD"
+        },
+        "geometry": {
+            "x": -17.449033942962046,
+            "y": 14.736344297751202
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DAKAR-SUD"
+        },
+        "geometry": {
+            "x": -17.445477832036261,
+            "y": 14.674268223899446
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DAKAR-CENTRE"
+        },
+        "geometry": {
+            "x": -17.433216505837038,
+            "y": 14.712000149087658
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DAKAR-OUEST"
+        },
+        "geometry": {
+            "x": -17.483173135032132,
+            "y": 14.73031601437259
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KANEL"
+        },
+        "geometry": {
+            "x": -13.12836149378785,
+            "y": 14.974015208934816
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MATAM"
+        },
+        "geometry": {
+            "x": -13.576839861570306,
+            "y": 15.6362287519554
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "SOKONE"
+        },
+        "geometry": {
+            "x": -16.388910569067491,
+            "y": 13.725197656246905
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "PASSY"
+        },
+        "geometry": {
+            "x": -16.358568564687459,
+            "y": 14.013923408238725
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "FOUNDIOUGNE"
+        },
+        "geometry": {
+            "x": -16.61166729251147,
+            "y": 13.934672220446657
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DIOFFIOR"
+        },
+        "geometry": {
+            "x": -16.627927963204911,
+            "y": 14.173733089610437
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "NIAKHAR"
+        },
+        "geometry": {
+            "x": -16.401828585620706,
+            "y": 14.49762122473976
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "GOSSAS"
+        },
+        "geometry": {
+            "x": -15.838070760756978,
+            "y": 14.526235707911667
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "FATICK"
+        },
+        "geometry": {
+            "x": -16.396276480675,
+            "y": 14.390351931096802
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "YEUMBEUL"
+        },
+        "geometry": {
+            "x": -17.353934572922185,
+            "y": 14.776806427974293
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "THIONCK-ESSYL"
+        },
+        "geometry": {
+            "x": -16.46284812963745,
+            "y": 12.739491846171802
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "JOAL"
+        },
+        "geometry": {
+            "x": -16.791975490176696,
+            "y": 14.259192436881506
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KOUPENTOUM"
+        },
+        "geometry": {
+            "x": -14.311088641827325,
+            "y": 14.180415666649765
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "DIANKHEMAKHAN"
+        },
+        "geometry": {
+            "x": -12.645589155215305,
+            "y": 13.764283142053387
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MAKACOULIBANTANG"
+        },
+        "geometry": {
+            "x": -14.236778412093997,
+            "y": 13.662656904492621
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "BOUNKILING"
+        },
+        "geometry": {
+            "x": -15.602816230784356,
+            "y": 13.133571486934613
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "NIORO DU RIP"
+        },
+        "geometry": {
+            "x": -15.833979892258185,
+            "y": 13.732507012188933
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "MALEM-HODDAR"
+        },
+        "geometry": {
+            "x": -15.25398255774877,
+            "y": 14.354630820755801
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "KOUNGUEUL"
+        },
+        "geometry": {
+            "x": -14.857145662142557,
+            "y": 14.203398047481983
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "BIRKELANE"
+        },
+        "geometry": {
+            "x": -15.682227378290804,
+            "y": 14.049595929108875
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "RANEROU"
+        },
+        "geometry": {
+            "x": -14.137089720714016,
+            "y": 15.025810405825609
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "THILOGNE"
+        },
+        "geometry": {
+            "x": -13.73934712956634,
+            "y": 15.890568037884691
+        }
+    },
+    {
+        "attributes": {
+            "NAME": "SANGALKAM"
+        },
+        "geometry": {
+            "x": -17.225823830805098,
+            "y": 14.804281462019901
+        }
+    }
+]
