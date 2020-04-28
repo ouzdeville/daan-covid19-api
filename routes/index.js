@@ -6,7 +6,8 @@ const {
   BarrierGestureController, SelfReportingController,
   GreenNumberController, SymptomController,
   PrevalenceController, DailyReportController,
-  ElasticCallController
+  ElasticCallController,
+  RiskFactorController
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
@@ -101,4 +102,11 @@ module.exports = (app) => {
   app.post('/reporting/self-report', SelfReportingController.createSelfReporting);
   app.post('/reporting/selfreport-symptom', SelfReportingController.createSelfReportSymptom);
   app.post('/reporting/selfreport-risk', SelfReportingController.createSelfReportRisk);
+
+  //Route RiskFactor
+  app.post('/risk-factor', RiskFactorController.create);
+  app.get('/risk-factor/:id',  RiskFactorController.get);
+  app.get('/risk-factors', RiskFactorController.getAllRiskFactor);
+  app.put('/risk-factor', RiskFactorController.update);
+  app.delete('/risk-factor/:id', RiskFactorController.delete);
 };

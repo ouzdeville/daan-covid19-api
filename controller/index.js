@@ -10,4 +10,5 @@ module.exports = {
   DailyReportController: require('./daily-report'),
   SelfReportingController: require('./self-reporting'),
   ElasticCallController: require('./elastic-call'),
+  RiskFactorController: require('./riskfactor'),
 };
