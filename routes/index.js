@@ -38,48 +38,48 @@ const upload = multer({
 module.exports = (app) => {
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
-  app.get('/users', auth, UserController.getAllUsers);
+  app.get('/users', UserController.getAllUsers);
   app.get('/user/refresh_token', auth, UserController.refreshToken);
   app.post('/user/verify_code', auth, UserController.verifyCode);
-  app.post('/location', auth, LocationController.registerLocation);
+  app.post('/location', LocationController.registerLocation);
   app.get('/location/:idUser', auth, LocationController.getUserLocations);
   app.get('/user/contacts/:idUser', auth, UserController.getContact);
   app.post('/user/signaler', auth, UserController.signaler);
-  app.post('/zone', auth, ZoneController.createZone);
-  app.get('/zones', auth, ZoneController.getZones);
-  app.get('/zone/:id', auth, ZoneController.getZone);
+  app.post('/zone', ZoneController.createZone);
+  app.get('/zones', ZoneController.getZones);
+  app.get('/zone/:id', ZoneController.getZone);
   app.get('/user/inside/:latitude/:longitude', ZoneController.isInAZone);
-  app.get('/contact', auth, ContactController.getContacts);
-  app.get('/contact/:id', auth, ContactController.getContact);
+  app.get('/contact', ContactController.getContacts);
+  app.get('/contact/:id', ContactController.getContact);
   //app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
 
   // Route Prevalence
-  app.post('/prevalence', auth, PrevalenceController.create);
-  app.get('/prevalence', auth, PrevalenceController.getAll);
+  app.post('/prevalence', PrevalenceController.create);
+  app.get('/prevalence', PrevalenceController.getAll);
   app.get('/prevalence/run', PrevalenceController.runPrevalence);
-  app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
+  app.get('/prevalence/:idZone', PrevalenceController.getByZone);
 
   // Route Daily Report
-  app.post('/daily-report', auth, DailyReportController.create);
-  app.get('/daily-report', auth, DailyReportController.getAll);
-  app.get('/pdf/:filename', auth, DailyReportController.getPDf);
-  app.get('/daily-report/last', auth, DailyReportController.getLast);
-  app.get('/daily-report/:id', auth, DailyReportController.get);
-  app.get('/daily-report/by-date/:date', auth, DailyReportController.getByDate);
+  app.post('/daily-report', DailyReportController.create);
+  app.get('/daily-report', DailyReportController.getAll);
+  app.get('/pdf/:filename', DailyReportController.getPDf);
+  app.get('/daily-report/last', DailyReportController.getLast);
+  app.get('/daily-report/:id', DailyReportController.get);
+  app.get('/daily-report/by-date/:date', DailyReportController.getByDate);
 
   // Route Barrier Gesture
-  app.post('/barrier-gesture', auth, BarrierGestureController.create);
-  app.get('/barrier-gesture/:id', auth, BarrierGestureController.get);
-  app.get('/barrier-gestures', auth, BarrierGestureController.getAllBarrierGesture);
+  app.post('/barrier-gesture', BarrierGestureController.create);
+  app.get('/barrier-gesture/:id', BarrierGestureController.get);
+  app.get('/barrier-gestures', BarrierGestureController.getAllBarrierGesture);
 
   // Route Green Number
-  app.post('/green-number', auth, GreenNumberController.create);
-  app.get('/green-number/:id', auth, GreenNumberController.get);
-  app.get('/green-numbers', auth, GreenNumberController.getAllGreenNumber);
+  app.post('/green-number', GreenNumberController.create);
+  app.get('/green-number/:id', GreenNumberController.get);
+  app.get('/green-numbers', GreenNumberController.getAllGreenNumber);
 
   // Route Symptom
-  app.post('/symptom', auth, SymptomController.create);
-  app.get('/symptom/:id', auth, SymptomController.get);
+  app.post('/symptom', SymptomController.create);
+  app.get('/symptom/:id', SymptomController.get);
   app.get('/symptoms', SymptomController.getAllSymptom);
 
   //elastic search
@@ -95,10 +95,10 @@ module.exports = (app) => {
 
   //reporting symptom and risk factor
   //deprecated
-  app.get('/self-reports', auth, SelfReportingController.getAllSelfReports);
-  app.get('/reporting/self-reports', auth, SelfReportingController.getAllSelfReports);
-  app.get('/reporting/riskfactors', auth, SelfReportingController.getAllRiskFactors);
-  app.post('/reporting/self-report', auth, SelfReportingController.createSelfReporting);
-  app.post('/reporting/selfreport-symptom', auth, SelfReportingController.createSelfReportSymptom);
-  app.post('/reporting/selfreport-risk', auth, SelfReportingController.createSelfReportRisk);
+  app.get('/self-reports', SelfReportingController.getAllSelfReports);
+  app.get('/reporting/self-reports', SelfReportingController.getAllSelfReports);
+  app.get('/reporting/riskfactors', SelfReportingController.getAllRiskFactors);
+  app.post('/reporting/self-report', SelfReportingController.createSelfReporting);
+  app.post('/reporting/selfreport-symptom', SelfReportingController.createSelfReportSymptom);
+  app.post('/reporting/selfreport-risk', SelfReportingController.createSelfReportRisk);
 };
