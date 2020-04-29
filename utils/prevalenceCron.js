@@ -53,7 +53,7 @@ module.exports = {
                                 });
                             }
                             else {
-                                prevdata.idZone = zones[0].id;
+                                prevdata.idZone = await zones[0].id;
                             }
 
                             await Prevalence.findAll({
