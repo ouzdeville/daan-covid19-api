@@ -80,7 +80,7 @@ module.exports = {
                 //console.log("5 min before"+begin1);
                 //console.log("5 min after"+end1);
                 const { body }=await client.search({
-                    index: 'dc19',
+                    index: indexlocation,
                     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                     body: {
                         "query": {
@@ -380,6 +380,29 @@ module.exports = {
                 }  
             });
             callback(body.hits.hits);
+        } catch(error) {
+            throw (error);
+        }
+    },
+    /**
+     * @param  {function} callback
+     */
+    async createLocation(payload,callback) {
+        try {
+            client.create({
+                id: uuid.v4(),
+                index: indexlocation,
+                type: "_doc",
+                refresh: 'true',
+                body: payload
+            }, function(error, response, status) {
+                if (error) {
+                    throw(error);
+                } else {
+                    callback(response.body);
+                }
+            });
+
         } catch(error) {
             throw (error);
         }

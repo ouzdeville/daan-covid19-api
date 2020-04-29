@@ -41,7 +41,8 @@ module.exports = (app) => {
   app.get('/users', UserController.getAllUsers);
   app.get('/user/refresh_token', auth, UserController.refreshToken);
   app.post('/user/verify_code', auth, UserController.verifyCode);
-  app.post('/location', LocationController.registerLocation);
+  //app.post('/location', LocationController.registerLocation);
+  app.post('/location', ElasticCallController.registerLocation);
   app.get('/location/:idUser', auth, LocationController.getUserLocations);
   app.get('/user/contacts/:idUser', auth, UserController.getContact);
   app.post('/user/signaler', auth, UserController.signaler);
