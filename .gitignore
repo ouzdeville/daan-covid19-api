@@ -103,3 +103,4 @@ fabric.properties
 /public/apidoc/
 /pdf/privacy-management.pdf
 /pdf/
+/config/firebase_admin_sdk_key.json
