@@ -56,7 +56,8 @@ module.exports = (app) => {
   // Route Prevalence
   app.post('/prevalence', PrevalenceController.create);
   app.get('/prevalence', PrevalenceController.getAll);
-  app.get('/prevalence/run', PrevalenceController.runPrevalence);
+  app.get('/prevalence/updatestat', PrevalenceController.runPrevalence);
+  app.get('/prevalence/updategps', PrevalenceController.updateGPS);
   app.get('/prevalence/:idZone', PrevalenceController.getByZone);
 
   // Route Daily Report

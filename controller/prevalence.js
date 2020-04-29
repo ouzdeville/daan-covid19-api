@@ -199,28 +199,8 @@ module.exports = {
 
     async runPrevalence(req, res) {
         try {
-            await prevalenceCron.prevalenceCompute(async function () {
-                try {
-                    var districtsgps = await require('./../init_data/districts-sn.json');
-                    for (var district of districtsgps) {
-                        //console.log(district);
-                        await Zone.update(
-                            {
-                                longitude: district.geometry.x,
-                                latitude: district.geometry.y
-                            },
-                            {
-                                where: {
-                                    name: district.attributes.NAME
-                                }
-                            });
+            await prevalenceCron.prevalenceCompute();
 
-                    }
-                } catch (error) {
-                    console.error(error);
-                    res.status(400).send(error)
-                };
-            });
 
             res.status(200).send({
                 success: true,
@@ -240,5 +220,49 @@ module.exports = {
             });
 
         }
+    },
+    /**
+     * @api {get} /prevalence/rungps Get Update district GPS
+     * @apiName runGPS
+     * @apiGroup Prevalence
+     *
+     * @apiSuccess (Success 200) {String} message
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message":
+     *     }
+     */
+
+    async updateGPS(req, res) {
+
+        try {
+            var districtsgps = await require('./../init_data/districts-sn.json');
+            for (var district of districtsgps) {
+                //console.log(district);
+                await Zone.update(
+                    {
+                        longitude: district.geometry.x,
+                        latitude: district.geometry.y
+                    },
+                    {
+                        where: {
+                            name: district.attributes.NAME
+                        }
+                    });
+
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(400).send(error)
+        };
+
+        res.status(200).send({
+            success: true,
+            code: 99,
+            message: "Refresh done",
+        });
+
     }
 };
