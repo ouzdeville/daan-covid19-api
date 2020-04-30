@@ -113,7 +113,12 @@ module.exports = {
      *     }
      */
     getAll(req, res) {
-        Prevalence.findAll()
+        Prevalence.findAll({
+            include: [{
+                model: Zone, 
+            }],
+            order: [['createdAt', 'DESC']]
+        })
             .then((prevalences) => {
                 res.status(200).send({
                     prevalences,
