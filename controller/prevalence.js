@@ -1,5 +1,6 @@
 const { Prevalence, Zone } = require('./../models');
 const { prevalenceCron } = require('./../utils');
+var moment = require('moment');
 
 module.exports = {
     /**
@@ -67,7 +68,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /prevalence Get all prevalence
+     * @api {get} /prevalences Get all prevalence
      * @apiName GetPrevalence
      * @apiGroup Prevalence
      *
@@ -112,7 +113,12 @@ module.exports = {
      *     }
      */
     getAll(req, res) {
-        Prevalence.findAll()
+        Prevalence.findAll({
+            include: [{
+                model: Zone, 
+            }],
+            order: [['createdAt', 'DESC']]
+        })
             .then((prevalences) => {
                 res.status(200).send({
                     prevalences,
@@ -121,6 +127,71 @@ module.exports = {
             .catch((error) => res.status(400).send(error));
     },
 
+    /**
+     * @api {get} /prevalence Get all actual prevalences
+     * @apiName GetPrevalence
+     * @apiGroup Prevalence
+     *
+     * @apiSuccess (Success 200) {Object[]} prevalences List of prevalences
+     * @apiSuccess (Success 200) {Number} prevalences.id Prevalence id
+     * @apiSuccess (Success 200) {Number} prevalences.idZone Zone id
+     * @apiSuccess (Success 200) {Date} prevalences.date date
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfConfirmedCases number of confirmed cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfSupectedCases number of supected cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfContactsCases number of contacts cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfRecoveredCases number of recovered cases
+     * @apiSuccess (Success 200) {Date} prevalences.updatedAt Creation date
+     * @apiSuccess (Success 200) {Date} prevalences.createdAt Modification date
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "prevalences": [
+     *         {
+     *           "id": 5,
+     *           "idZone": "b967a828-7df4-459b-906d-f3ff4f8a05be",
+     *           "date": "2020-04-19",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-19T15:54:16.521Z",
+     *           "updatedAt": "2020-04-19T15:54:16.521Z"
+     *         },
+     *         {
+     *           "id": 6,
+     *           "idZone": "b967a828-7dp4-459b-906a-f3ffdf8a05be",
+     *           "date": "2020-04-19",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-20T22:55:41.419Z",
+     *           "updatedAt": "2020-04-20T22:55:41.419Z"
+     *         }
+     *       ]
+     *     }
+     */
+    async getprevalenceNow(req, res) {
+        var now = await moment().format("YYYY-MM-DD")
+        const { count } = await Zone.findAndCountAll();
+        Prevalence.findAll({
+            limit: count,
+            where: {
+                date: now,
+            },
+            include: [{
+                model: Zone, 
+            }],
+            order: [['createdAt', 'DESC']]
+        })
+            .then((prevalences) => {
+                res.status(200).send({
+                    prevalences,
+                });
+            })
+            .catch((error) => res.status(400).send(error));
+    },
     /**
      * @api {get} /prevalence/:idZone Get all prevalence by Zone
      * @apiName GetPrevalenceByZone
@@ -207,10 +278,6 @@ module.exports = {
                 code: 99,
                 message: "Refresh done",
             });
-
-
-
-
 
         } catch (error) {
             console.log(error);
