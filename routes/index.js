@@ -61,6 +61,7 @@ module.exports = (app) => {
   app.get('/prevalence', PrevalenceController.getprevalenceNow);
   app.get('/prevalence/updatestat', PrevalenceController.runPrevalence);
   app.get('/prevalence/updategps', PrevalenceController.updateGPS);
+  app.get('/prevalence/updatepolygon', PrevalenceController.runPolygon);
   app.get('/prevalence/:idZone', PrevalenceController.getByZone);
 
   // Route Daily Report
@@ -123,7 +124,7 @@ module.exports = (app) => {
   app.delete('/risk-factor/:id', auth, RiskFactorController.delete);
 
   // Push notification
-  app.post('/push-notification', auth, PushNotificationController.sendMessage);
-  app.post('/push-notification/add-token', auth, PushNotificationController.addToken);
-  app.get('/push-notification/send', auth, PushNotificationController.pushBackOffice);
+  //app.post('/push-notification', auth, PushNotificationController.sendMessage);
+  //app.post('/push-notification/add-token', auth, PushNotificationController.addToken);
+  //app.get('/push-notification/send', auth, PushNotificationController.pushBackOffice);
 };

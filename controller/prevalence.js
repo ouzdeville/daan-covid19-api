@@ -1,6 +1,7 @@
 const { Prevalence, Zone } = require('./../models');
 const { prevalenceCron } = require('./../utils');
 var moment = require('moment');
+var fs = require('fs');
 
 module.exports = {
     /**
@@ -115,7 +116,7 @@ module.exports = {
     getAll(req, res) {
         Prevalence.findAll({
             include: [{
-                model: Zone, 
+                model: Zone,
             }],
             order: [['createdAt', 'DESC']]
         })
@@ -181,7 +182,7 @@ module.exports = {
                 date: now,
             },
             include: [{
-                model: Zone, 
+                model: Zone,
             }],
             order: [['createdAt', 'DESC']]
         })
@@ -318,6 +319,52 @@ module.exports = {
                             name: district.attributes.NAME
                         }
                     });
+
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(400).send(error)
+        };
+
+        res.status(200).send({
+            success: true,
+            code: 99,
+            message: "Refresh done",
+        });
+
+    },
+
+    /**
+     * @api {get} /prevalence/runPolygone  Update district polygone GPS
+     * @apiName runPolygone
+     * @apiGroup Prevalence
+     *
+     * @apiSuccess (Success 200) {String} message
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message":
+     *     }
+     */
+
+    async runPolygon(req, res) {
+
+        try {
+            var districtsgps = JSON.parse(fs.readFileSync('./init_data/Districts.geojson', 'utf8'));
+            //console.log(districtsgps.features.length);
+            for (var district of districtsgps.features) {
+                var polygon = district.geometry.coordinates[0][0];
+                await Zone.update(
+                    {
+                        polygon: polygon,
+                    },
+                    {
+                        where: {
+                            name: district.properties.NomDS.toUpperCase().split(' ').join('-')
+                        }
+                    });
+
 
             }
         } catch (error) {
