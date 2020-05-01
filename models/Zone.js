@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Zone.associate = function(models) {
     // associations can be defined here
+    Zone.hasMany(models.Prevalence, {foreignKey: 'idZone'});
   };
   return Zone;
 };

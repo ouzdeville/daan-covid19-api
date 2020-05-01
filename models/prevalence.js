@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Prevalence.associate = function(models) {
     // associations can be defined here
+    Prevalence.belongsTo(models.Zone, {foreignKey: 'idZone' });
   };
   return Prevalence;
 };

@@ -22,6 +22,11 @@ module.exports = {
                 try {
                     let json = JSON.parse(body);
                     features = json.features;
+                    await Prevalence.destroy({
+                        where: {
+                            date: moment().format("YYYY-MM-DD")
+                        }
+                      });
                     for (var district of features) {
                         prevdata = {
                             numberOfConfirmedCases: district.attributes.Cas_conf,
@@ -53,7 +58,7 @@ module.exports = {
                                 });
                             }
                             else {
-                                prevdata.idZone = zones[0].id;
+                                prevdata.idZone = await zones[0].id;
                             }
 
                             await Prevalence.findAll({
@@ -68,7 +73,7 @@ module.exports = {
                                 if (prevexist.length <= 0) {
 
                                     Prevalence.create(prevdata);
-                                } else if ( prevexist[0].numberOfConfirmedCases != prevdata.numberOfConfirmedCases) {
+                                } else if (prevexist[0].numberOfConfirmedCases != prevdata.numberOfConfirmedCases) {
                                     
                                     Prevalence.create(prevdata);
                                 }

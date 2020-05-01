@@ -2,6 +2,8 @@ const {DailyReport} = require('./../models');
 var fs = require('fs');
 var path = require('path');
 const request = require("request-promise-native");
+const urlRegex = require('url-regex');
+
 module.exports = {
   /**
    * @api {post} /daily-report Add report for a specific day
@@ -34,13 +36,19 @@ module.exports = {
    *     }
    */
   async create(req, res) {
+    let filename = Date.now() + ".pdf";
     //filename=req.file.path.replace('pdf','').replace('/','').replace('\\','');
-    filename = Date.now() + ".pdf";
-    var jsonPath = path.join(__dirname, '..', 'pdf', filename);
-    let pdfBuffer = await request.get({uri: req.body.dailyStatement, encoding: null});
-    fs.writeFileSync(jsonPath, pdfBuffer);
-    console.log(filename);
-    reportDate = req.body.reportDate;
+    if (urlRegex().test(req.body.dailyStatement)) {
+      var jsonPath = path.join(__dirname, '..', 'pdf', filename);
+      let pdfBuffer = await request.get({uri: req.body.dailyStatement, encoding: null});
+      fs.writeFileSync(jsonPath, pdfBuffer);
+      console.log(filename);
+    } else {
+      filename = req.body.dailyStatement;
+    }
+
+    let reportDate = req.body.reportDate;
+
     const data = {
       reportDate: req.body.reportDate,
       numberOfTest: req.body.numberOfTest,
