@@ -38,6 +38,8 @@ module.exports = {
    * @apiName AddToken
    * @apiGroup PushNotification
    *
+   * @apiHeader Authorization Bearer token
+   *
    * @apiParam {String} fbToken the client Firebase token
    *
    * @apiSuccess (Success 201) {Boolean} success If it works ot not (true)
@@ -79,6 +81,8 @@ module.exports = {
    * @api {post} /push-notification Send push notification
    * @apiName SendPushNotification
    * @apiGroup PushNotification
+   *
+   * @apiHeader Authorization Bearer token
    *
    * @apiParam {String} title title of the message to send
    * @apiParam {String} body content of the message to send

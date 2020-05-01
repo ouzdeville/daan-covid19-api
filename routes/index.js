@@ -115,15 +115,15 @@ module.exports = (app) => {
 
   //Route RiskFactor
   app.post('/risk-factor', auth, RiskFactorController.create);
-  app.get('/risk-factor/:id', auth,  RiskFactorController.get);
+  app.get('/risk-factor/:id', auth, RiskFactorController.get);
   app.get('/risk-factors', auth, RiskFactorController.getAllRiskFactor);
   app.put('/risk-factor', auth, RiskFactorController.update);
-  app.get('/self-report/risk-factors/:idreport',  SelfReportingController.getAllRiskByReport);
-  app.get('/self-report/symptoms/:idreport',  SelfReportingController.getAllSymptomByReport);
+  app.get('/self-report/risk-factors/:idreport', SelfReportingController.getAllRiskByReport);
+  app.get('/self-report/symptoms/:idreport', SelfReportingController.getAllSymptomByReport);
   app.delete('/risk-factor/:id', auth, RiskFactorController.delete);
 
   // Push notification
-  app.post('/push-notification', PushNotificationController.sendMessage);
-  app.post('/push-notification/add-token', PushNotificationController.addToken);
-  app.get('/push-notification/send', PushNotificationController.pushBackOffice);
+  app.post('/push-notification', auth, PushNotificationController.sendMessage);
+  app.post('/push-notification/add-token', auth, PushNotificationController.addToken);
+  app.get('/push-notification/send', auth, PushNotificationController.pushBackOffice);
 };
