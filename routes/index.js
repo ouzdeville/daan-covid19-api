@@ -124,7 +124,7 @@ module.exports = (app) => {
   app.delete('/risk-factor/:id', auth, RiskFactorController.delete);
 
   // Push notification
-  //app.post('/push-notification', auth, PushNotificationController.sendMessage);
-  //app.post('/push-notification/add-token', auth, PushNotificationController.addToken);
-  //app.get('/push-notification/send', auth, PushNotificationController.pushBackOffice);
+  app.post('/push-notification', auth, PushNotificationController.sendMessage);
+  app.post('/push-notification/add-token', auth, PushNotificationController.addToken);
+  app.get('/push-notification/send', auth, PushNotificationController.pushBackOffice);
 };
