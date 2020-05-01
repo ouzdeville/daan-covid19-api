@@ -5,9 +5,20 @@ const serviceAccount = require("../config/firebase_admin_sdk_key.json");
 const TOPIC = 'daily-stats';
 
 admin.initializeApp({
+  credential: admin.credential.cert({
+    "private_key": process.env.FIREBASE_PRIVATE_KEY,
+    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+    "project_id": process.env.FIREBASE_PROJECT_ID,
+  }),
+  databaseURL: "https://daan-covid19-d67c8.firebaseio.com"
+});
+
+/*
+admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://daan-covid19-d67c8.firebaseio.com"
 });
+*/
 
 function sendPushNotification(message) {
   // Send a message to devices subscribed to the provided topic.
@@ -110,6 +121,11 @@ module.exports = {
           message: error
         });
       });
+  },
+
+  pushBackOffice(req, res) {
+    io.emit('new-message', 'cooooool');
+    res.status(200).send('it works')
   }
 }
 

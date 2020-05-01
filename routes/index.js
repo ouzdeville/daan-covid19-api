@@ -124,4 +124,5 @@ module.exports = (app) => {
   // Push notification
   app.post('/push-notification', PushNotificationController.sendMessage);
   app.post('/push-notification/add-token', PushNotificationController.addToken);
+  app.get('/push-notification/send', PushNotificationController.pushBackOffice);
 };
