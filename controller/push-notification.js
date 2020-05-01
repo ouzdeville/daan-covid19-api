@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 
-const serviceAccount = require("../config/firebase_admin_sdk_key.json");
+// const serviceAccount = require("../config/firebase_admin_sdk_key.json");
 
 const TOPIC = 'daily-stats';
 
