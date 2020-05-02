@@ -8,9 +8,9 @@ module.exports = {
     IV: "qKrtJS287EKQfACW",
     CLEAR_ENCODE: "utf8",
     ENCRYPT_ENCODE: "binary",
-    MOD_LENGTH=2048,
-    KEY_FORMAT="pem",
-    PRINT_FORMAT='base64',
+    MOD_LENGTH:2048,
+    KEY_FORMAT:"pem",
+    PRINT_FORMAT:'base64',
     getSymmetricKey(password) {
         const key = crypto.scryptSync(password, module.exports.SALT, module.exports.KEY_SIZE / 8);
 
