@@ -73,7 +73,7 @@ module.exports = {
                                 if (prevexist.length <= 0) {
 
                                     Prevalence.create(prevdata);
-                                } else if (prevexist[0].numberOfConfirmedCases != prevdata.numberOfConfirmedCases) {
+                                } else if (prevexist[0].date != prevdata.date || prevexist[0].numberOfConfirmedCases != prevdata.numberOfConfirmedCases) {
                                     
                                     Prevalence.create(prevdata);
                                 }
