@@ -26,7 +26,7 @@ module.exports = {
     */
     return queryInterface
     .changeColumn('Zones', 'type', {
-      type: Sequelize.ENUM('REGION', 'DEPARTEMENT', 'COMMUNE', 'QUARTIER'),
+      type: Sequelize.STRING,
       allowNull: false
     });
   }

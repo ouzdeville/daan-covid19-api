@@ -18,12 +18,12 @@ module.exports = {
     return Promise.all([
       queryInterface
         .changeColumn('Zones', 'longitude', {
-          type: Sequelize.FLOAT,
+          type: Sequelize.STRING,
           allowNull: false
         }),
       queryInterface
         .changeColumn('Zones', 'latitude', {
-          type: Sequelize.FLOAT,
+          type: Sequelize.STRING,
           allowNull: false
         })
     ]);

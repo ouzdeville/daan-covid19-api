@@ -18,7 +18,7 @@
     "deploy:production:create": "claudia create  --set-env-from-json prodEnv.json NODE_ENV=production --version production --handler lambda.handler --deploy-proxy-api --region us-east-1",
     "deploy": "pm2 restart index.js --name daan-covid19-api",
     "migrate:reset": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all && npm run migrate",
-    "test": "NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles",
+    "test": "jest --testTimeout=10000 --detectOpenHandles",
     "pretest": "NODE_ENV=test npm run migrate:reset",
     "migrate": "npx sequelize-cli db:migrate"
   },
@@ -57,10 +57,12 @@
     "uuid": "^7.0.3"
   },
   "devDependencies": {
+    "@types/jest": "^25.2.1",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
-    "jest": "^25.4.0",
+    "jest": "^25.5.4",
     "nodemon": "^2.0.3",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "ts-jest": "^25.4.0"
   }
 }
