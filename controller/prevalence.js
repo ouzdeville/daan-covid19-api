@@ -355,15 +355,40 @@ module.exports = {
             //console.log(districtsgps.features.length);
             for (var district of districtsgps.features) {
                 var polygon = district.geometry.coordinates[0][0];
-                await Zone.update(
-                    {
-                        polygon: polygon,
-                    },
-                    {
-                        where: {
-                            name: district.properties.NomDS.toUpperCase().split(' ').join('-')
-                        }
-                    });
+                if("Dakar"==district.properties.NomDS){
+                    await Zone.update(
+                        {
+                            polygon: polygon,
+                        },
+                        {
+                            where: {
+                                name: "DAKAR-CENTRE"
+                            }
+                        });
+                }
+                else if("Nioro"==district.properties.NomDS){
+
+                    await Zone.update(
+                        {
+                            polygon: polygon,
+                        },
+                        {
+                            where: {
+                                name: "NIORO DU RIP"
+                            }
+                        });
+                }
+                else {
+                    await Zone.update(
+                        {
+                            polygon: polygon,
+                        },
+                        {
+                            where: {
+                                name: district.properties.NomDS.toUpperCase().split(' ').join('-')
+                            }
+                        });
+                }
 
 
             }
