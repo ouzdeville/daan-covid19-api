@@ -366,6 +366,18 @@ module.exports = {
                             }
                         });
                 }
+                else if("Dakar Ouest"==district.properties.NomDS){
+
+                    await Zone.update(
+                        {
+                            polygon: district.geometry.coordinates[1][0],
+                        },
+                        {
+                            where: {
+                                name: district.properties.NomDS.toUpperCase().split(' ').join('-')
+                            }
+                        });
+                }
                 else if("Nioro"==district.properties.NomDS){
 
                     await Zone.update(
