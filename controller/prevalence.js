@@ -378,6 +378,31 @@ module.exports = {
                             }
                         });
                 }
+                
+                else if("Ndiass"==district.properties.NomDS){
+
+                    await Zone.update(
+                        {
+                            polygon: polygon,
+                        },
+                        {
+                            where: {
+                                name: "POPENGUINE"
+                            }
+                        });
+                }
+                else if("Ngueniene"==district.properties.NomDS){
+
+                    await Zone.update(
+                        {
+                            polygon: polygon,
+                        },
+                        {
+                            where: {
+                                name: "JOAL"
+                            }
+                        });
+                }
                 else if("Nioro"==district.properties.NomDS){
 
                     await Zone.update(
@@ -387,6 +412,18 @@ module.exports = {
                         {
                             where: {
                                 name: "NIORO DU RIP"
+                            }
+                        });
+                }
+                else if("Koki"==district.properties.NomDS){
+
+                    await Zone.update(
+                        {
+                            polygon: polygon,
+                        },
+                        {
+                            where: {
+                                name: "COKI"
                             }
                         });
                 }
