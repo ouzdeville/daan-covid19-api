@@ -112,7 +112,7 @@ module.exports = {
   },
 
   /**
-   * @api {get} /reporting/self-reports/:id get all self-reports by user
+   * @api {get} /reporting/self-reports/by-user/:id get all self-reports by user id
    * @apiName getAllSelfReportsByUserId
    * @apiGroup Reporting
    *
@@ -195,7 +195,6 @@ module.exports = {
    *     }
    */
   getAllSelfReportsByUserId(req, res) {
-    //res.send({ message: 'hi :)' });
     const {id} = req.params;
     SelfReporting.findAll({
       attributes: ['id', 'reportingDate', 'firstname', 'lastname', 'email', 'adresse', 'department', 'region', 'lat', 'lng'],
@@ -221,6 +220,80 @@ module.exports = {
       });
   },
 
+  /**
+   * @api {get} /reporting/self-reports/:id get self-reports by id
+   * @apiName getSelfReportById
+   * @apiGroup Reporting
+   *
+   *
+   * @apiParam {Number} id id of the report
+   *
+   * @apiSuccess (Success 200) {Object} result self-reports list
+   *
+   * @apiSuccessExample Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       [
+   *           {
+   *               "id": 2,
+   *               "reportingDate": null,
+   *               "firstname": "Demba",
+   *               "lastname": "Diaw",
+   *               "email": "demba@gmail.com",
+   *               "adresse": "dakar",
+   *               "department": null,
+   *               "region": null,
+   *               "lat": null,
+   *               "lng": null,
+   *               "User": {
+   *                   "id": "1ca8f3b7-905a-4b60-9a31-eed78142e5e4",
+   *                   "phone": "+221776359894",
+   *                   "active": "active"
+   *               },
+   *               "Symptom": [],
+   *               "RiskFactor": [
+   *                   {
+   *                       "id": 2,
+   *                       "name": "Consommation d'alcool",
+   *                       "description": "",
+   *                       "type": "1",
+   *                       "SelfReporting_RiskFactor": {
+   *                           "idSelfReporting": 2,
+   *                           "idRiskFactor": 2,
+   *                          "createdAt": "2020-04-22T21:18:48.078Z",
+   *                          "updatedAt": "2020-04-22T21:18:48.078Z"
+   *                      }
+   *                  }
+   *              ]
+   *          }
+   *      ]
+   *     }
+   */
+  getById(req, res) {
+    const {id} = req.params;
+    SelfReporting.findAll({
+      attributes: ['id', 'reportingDate', 'firstname', 'lastname', 'email', 'adresse', 'department', 'region', 'lat', 'lng'],
+      where: {id: id},
+      include: [{
+        model: User, attributes: ['id', 'phone', 'active']
+      }, {
+        model: Symptom, attributes: ['id', 'name', 'description', 'major'],
+        as: 'Symptom'
+      }, {
+        model: RiskFactor, attributes: ['id', 'name', 'description', 'type'],
+        as: 'RiskFactor'
+      }],
+    })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving self-reports."
+        });
+      });
+  },
 
   /**
    * @api {get} /self-report/risk-factors/:idreport get all risk by report

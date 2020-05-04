@@ -106,7 +106,8 @@ module.exports = (app) => {
   //deprecated
   app.get('/self-reports', auth, SelfReportingController.getAllSelfReports);
   app.get('/reporting/self-reports', auth, SelfReportingController.getAllSelfReports);
-  app.get('/reporting/self-reports/:id', auth, SelfReportingController.getAllSelfReportsByUserId);
+  app.get('/reporting/self-reports/:id', auth, SelfReportingController.getById);
+  app.get('/reporting/self-reports/by-user/:id', auth, SelfReportingController.getAllSelfReportsByUserId);
   app.get('/reporting/self-reports/by-date/:date', auth, SelfReportingController.getAllSelfReportsByDate);
   app.get('/reporting/riskfactors', auth, SelfReportingController.getAllRiskFactors);
   app.post('/reporting/self-report', auth, SelfReportingController.createSelfReporting);
