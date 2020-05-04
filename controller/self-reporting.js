@@ -462,10 +462,10 @@ module.exports = {
    *     }
    */
   createSelfReporting(req, res) {
-
+    const idUser = req.userID;
     const {
       firstname, lastname, gender, dateOfBirth, age,
-      email, adresse, department, region, lat, lng, idUser
+      email, adresse, department, region, lat, lng
     } = req.body;
     try {
       if (idUser == null) {
