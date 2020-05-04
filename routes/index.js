@@ -104,15 +104,15 @@ module.exports = (app) => {
 
   //reporting symptom and risk factor
   //deprecated
-  app.get('/self-reports', SelfReportingController.getAllSelfReports);
-  app.get('/reporting/self-reports', SelfReportingController.getAllSelfReports);
-  app.get('/reporting/self-reports/:id', SelfReportingController.getAllSelfReportsByUserId);
-  app.get('/reporting/self-reports/by-date/:date', SelfReportingController.getAllSelfReportsByDate);
-  app.get('/reporting/riskfactors', SelfReportingController.getAllRiskFactors);
-  app.post('/reporting/self-report', SelfReportingController.createSelfReporting);
-  app.put('/reporting/modify-self-report', SelfReportingController.updateUserSelfReport);
-  app.post('/reporting/selfreport-symptom', SelfReportingController.createSelfReportSymptom);
-  app.post('/reporting/selfreport-risk', SelfReportingController.createSelfReportRisk);
+  app.get('/self-reports', auth, SelfReportingController.getAllSelfReports);
+  app.get('/reporting/self-reports', auth, SelfReportingController.getAllSelfReports);
+  app.get('/reporting/self-reports/:id', auth, SelfReportingController.getAllSelfReportsByUserId);
+  app.get('/reporting/self-reports/by-date/:date', auth, SelfReportingController.getAllSelfReportsByDate);
+  app.get('/reporting/riskfactors', auth, SelfReportingController.getAllRiskFactors);
+  app.post('/reporting/self-report', auth, SelfReportingController.createSelfReporting);
+  app.put('/reporting/modify-self-report', auth, SelfReportingController.updateUserSelfReport);
+  app.post('/reporting/selfreport-symptom', auth, SelfReportingController.createSelfReportSymptom);
+  app.post('/reporting/selfreport-risk', auth, SelfReportingController.createSelfReportRisk);
 
   //Route RiskFactor
   app.post('/risk-factor', auth, RiskFactorController.create);
