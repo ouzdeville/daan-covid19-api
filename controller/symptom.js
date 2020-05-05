@@ -1,9 +1,7 @@
-const { Symptom } = require('../models');
+const {Symptom} = require('../models');
 
 module.exports = {
-
-
-  /**
+    /**
      * @api {post} /symptom Add Symptom
      * @apiName Create
      * @apiGroup Symptom
@@ -12,7 +10,7 @@ module.exports = {
      * @apiParam {Boolean} major is or not a major Symptom
      * @apiParam {Text} description description of Symptom
      * @apiParam {String} img image of Symptom
-     * 
+     *
      *
      *
      * @apiSuccessExample Success-Response:
@@ -25,34 +23,34 @@ module.exports = {
      *     }
      */
     create: function (req, res) {
-      var name = req.body.name;
-      var major = req.body.major;
-      var img = req.body.img;
-      var description = req.body.description;
+        let name = req.body.name;
+        let major = req.body.major;
+        let img = req.body.img;
+        let description = req.body.description;
 
         if (name == null) {
-            return res.status(400).send({ message: 'missing parameters' });
+            return res.status(400).send({message: 'missing parameters'});
         }
 
-        var newsymptom = Symptom.create({
-          name: name,
-          description:description,
-          major: major,
-          img: img
+        let newsymptom = Symptom.create({
+            name: name,
+            description: description,
+            major: major,
+            img: img
         })
-        .then(function(newsymptom){
-            return res.status(201).send({
-              success: true,
-              code:1,
-              message: 'Successfully created.',
-              symptom: newsymptom
+            .then(function (newsymptom) {
+                return res.status(201).send({
+                    success: true,
+                    code: 1,
+                    message: 'Successfully created.',
+                    symptom: newsymptom
+                });
+            })
+            .catch(function (err) {
+                return res.status(400).send({
+                    error: 'Cannot add symptom'
+                });
             });
-        })
-        .catch(function(err){
-          return res.status(400).send({
-            error: 'Cannot add symptom'
-          });
-        });
     },
 
     /**
@@ -65,7 +63,7 @@ module.exports = {
      * @apiParam {Boolean} major is or not a major Symptom
      * @apiParam {Text} description description of Symptom
      * @apiParam {String} img image of Symptom
-     * 
+     *
      *
      *
      * @apiSuccessExample Success-Response:
@@ -77,42 +75,40 @@ module.exports = {
      *         "symptom": "updatesymptom"  
      *     }
      */
-
-    update: function(req, res){
-      var symptomId = req.query.id;
-      var name = req.query.name;
-      var major = req.query.major;
-      var img = req.query.img;
-      var description = req.query.description;
-      return Symptom.findOne({
-        where: {id:symptomId}
-      })
-        .then(function(symptom){
-          if (!symptom) {
-            return res.status(404).send({
-              success: true,
-              code:0,
-              message: 'Symptom Not Found',
-            });
-          }
-          return symptom.update({
-            id: symptomId || symptom.id,
-            name: name || symptom.name,
-            description:description || symptom.description,
-            major: major || symptom.major,
-            img: img || symptom.img
-          })
-          .then(() => res.status(200).send({
-            success: true,
-            code:1,
-            message: 'Symptom successfully updated',
-            symptom: "updatesymptom"
-          }))
-          .catch((error) => res.status(400).send(error));
+    update: function (req, res) {
+        let symptomId = req.query.id;
+        let name = req.query.name;
+        let major = req.query.major;
+        let img = req.query.img;
+        let description = req.query.description;
+        return Symptom.findOne({
+            where: {id: symptomId}
         })
-        .catch((error) => res.status(400).send(error));
+            .then(function (symptom) {
+                if (!symptom) {
+                    return res.status(404).send({
+                        success: true,
+                        code: 0,
+                        message: 'Symptom Not Found',
+                    });
+                }
+                return symptom.update({
+                    id: symptomId || symptom.id,
+                    name: name || symptom.name,
+                    description: description || symptom.description,
+                    major: major || symptom.major,
+                    img: img || symptom.img
+                })
+                    .then(() => res.status(200).send({
+                        success: true,
+                        code: 1,
+                        message: 'Symptom successfully updated',
+                        symptom: "updatesymptom"
+                    }))
+                    .catch((error) => res.status(400).send(error));
+            })
+            .catch((error) => res.status(400).send(error));
     },
-
 
     /**
      * @api {delete} /symptom/:id Update Symptom
@@ -120,35 +116,31 @@ module.exports = {
      * @apiGroup Symptom
      *
      * @apiParam {Number} id    id of Symptom
-     * 
+     *
      *
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 204
-     *     {
-     *      
-     *     }
      */
-    delete: function(req, res){
-      return Symptom
-      .findOne({
-        where: {id: req.params.id}
-      })
-      .then(function(symptom) {
-        if (!symptom) {
-          return res.status(400).send({
-            success: true,
-            code:0,
-            message: 'Symptom Not Found',
-          });
-        }
-        return symptom
-          .destroy()
-          .then(() => res.status(204).send())
-          .catch((error) => res.status(400).send({
-          }));
-      })
-      .catch((error) => res.status(400).send(error));
+    delete: function (req, res) {
+        return Symptom
+            .findOne({
+                where: {id: req.params.id}
+            })
+            .then(function (symptom) {
+                if (!symptom) {
+                    return res.status(400).send({
+                        success: true,
+                        code: 0,
+                        message: 'Symptom Not Found',
+                    });
+                }
+                return symptom
+                    .destroy()
+                    .then(() => res.status(204).send())
+                    .catch((error) => res.status(400).send({}));
+            })
+            .catch((error) => res.status(400).send(error));
     },
 
     /**
@@ -158,14 +150,14 @@ module.exports = {
      *
      * @apiParam {Number} id id of the Symptom
      *
-     * 
+     *
      * @apiSuccess (Success 200) {Number}  id            id of Symptom
      * @apiSuccess (Success 200) {String}  title         title of Symptom
      * @apiSuccess (Success 200) {Text}    content       content of Symptom
      * @apiSuccess (Success 200) {Boolean} major         is or not major Symptom
      * @apiSuccess (Success 200) {Date}    createdAt     creation's date of Symptom
      * @apiSuccess (Success 200) {DATE}    updatedAt     date of last update of Symptom
-     * 
+     *
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -183,28 +175,24 @@ module.exports = {
      *     }
      */
     get: function (req, res) {
-        var symptomId = req.params.id;
+        let symptomId = req.params.id;
         Symptom.findOne({
-          where: {id:symptomId}
-        }).then(function(symptom){
-          if(symptom) {
-            return res.status(200).send(symptom);
-          } 
-          else {
-            res.status(404).send({
-              error: 'Cannot add symptom'
+            where: {id: symptomId}
+        }).then(function (symptom) {
+            if (symptom) {
+                return res.status(200).send(symptom);
+            } else {
+                res.status(404).send({
+                    error: 'Cannot add symptom'
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send({
+                error: 'Cannot fetch symptom'
             });
-          }
-        }).catch(function(err){
-          console.log(err);
-          res.status(500).send({
-            error: 'Cannot fetch symptom'
-          });
         });
     },
-
-
-
 
     /**
      * @api {get} /symptoms get all Symptom
@@ -218,8 +206,8 @@ module.exports = {
      * @apiSuccess {String}   symptom.img         image of Symptom.
      * @apiSuccess {Date}   symptom.createdAt   creation's date of Symptom.
      * @apiSuccess {Date}   symptom.updatedAt   last update's date of Symptom.
-     * 
-     * 
+     *
+     *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
@@ -246,31 +234,30 @@ module.exports = {
      *     }
      */
     getAllSymptom: function (req, res) {
-      var fields = req.body.fields;
-      var limit = parseInt(req.body.limit);
-      var offset = parseInt(req.body.offset);
-      var order = req.body.order;
+        let fields = req.body.fields;
+        let limit = parseInt(req.body.limit);
+        let offset = parseInt(req.body.offset);
+        let order = req.body.order;
 
-      Symptom.findAll({
-        order: [(order !=null) ? order.split(':') : ['id', 'ASC']],
-        attributes: (fields !=='*' && fields != null) ? fields.split(','): null,
-        limit: (!isNaN(limit)) ? limit : null,
-        offset: (!isNaN(offset)) ? offset : null
-      }).then(function(symptoms) { 
-        if(symptoms) {
-          return res.status(200).send(symptoms);
-        }
-        else {
-          res.status(404).send({
-            error: 'no symptoms found'
-          });
-        }
-      }).catch(function(err) {
-        console.log(err);
-        res.status(500).send({
-          error: 'invalid fields'
-        });
-      })
+        Symptom.findAll({
+            order: [(order != null) ? order.split(':') : ['id', 'ASC']],
+            attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+            limit: (!isNaN(limit)) ? limit : null,
+            offset: (!isNaN(offset)) ? offset : null
+        }).then(function (symptoms) {
+            if (symptoms) {
+                return res.status(200).send(symptoms);
+            } else {
+                res.status(404).send({
+                    error: 'no symptoms found'
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send({
+                error: 'invalid fields'
+            });
+        })
     },
 
     /**
@@ -285,8 +272,8 @@ module.exports = {
      * @apiSuccess {String}   symptom.img         image of Symptom.
      * @apiSuccess {Date}   symptom.createdAt   creation's date of Symptom.
      * @apiSuccess {Date}   symptom.updatedAt   last update's date of Symptom.
-     * 
-     * 
+     *
+     *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
@@ -313,31 +300,30 @@ module.exports = {
      *     }
      */
     getAllMajorSymptom: function (req, res) {
-      var fields = req.body.fields;
-      var limit = parseInt(req.body.limit);
-      var offset = parseInt(req.body.offset);
-      var order = req.body.order;
+        let fields = req.body.fields;
+        let limit = parseInt(req.body.limit);
+        let offset = parseInt(req.body.offset);
+        let order = req.body.order;
 
-      Symptom.findAll({
-        where: {major: true},
-        order: [(order !=null) ? order.split(':') : ['id', 'ASC']],
-        attributes: (fields !=='*' && fields != null) ? fields.split(','): null,
-        limit: (!isNaN(limit)) ? limit : null,
-        offset: (!isNaN(offset)) ? offset : null
-      }).then(function(symptoms) { 
-        if(symptoms) {
-          return res.status(200).send(symptoms);
-        }
-        else {
-          res.status(404).send({
-            error: 'no symptoms found'
-          });
-        }
-      }).catch(function(err) {
-        console.log(err);
-        res.status(500).send({
-          error: 'invalid fields'
-        });
-      })
+        Symptom.findAll({
+            where: {major: true},
+            order: [(order != null) ? order.split(':') : ['id', 'ASC']],
+            attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+            limit: (!isNaN(limit)) ? limit : null,
+            offset: (!isNaN(offset)) ? offset : null
+        }).then(function (symptoms) {
+            if (symptoms) {
+                return res.status(200).send(symptoms);
+            } else {
+                res.status(404).send({
+                    error: 'no symptoms found'
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send({
+                error: 'invalid fields'
+            });
+        })
     }
 }

@@ -1,7 +1,8 @@
-const { Location, User } = require('./../models');
-const { awsClients } = require('./../utils');
+const {Location} = require('./../models');
+const {awsClients} = require('./../utils');
+
 module.exports = {
-  /**
+    /**
      * @api {post} /location Add Location
      * @apiName RegisterLocation
      * @apiGroup Location
@@ -23,28 +24,28 @@ module.exports = {
      *          "message": "Successfully created."
      *     }
      */
-  async registerLocation(req, res) {
-    try {
-      const { userID } = req;
-      const payload = {
-        id: userID,
-        imei: req.query.imei,
-        created_date: req.query.timestamp,
-        position: req.query.position,
-        status: req.query.status || 'unknown'
-      };
-      // logs requests
-      console.log(payload);
-      await awsClients.writeToKinesis(payload);
-      res.status(201).send({
-        success: true,
-        message: 'Successfully registered.',
-      });
-    } catch (error) {
-      res.status(401).send({ error });
-    }
-  },
-  /**
+    async registerLocation(req, res) {
+        try {
+            const {userID} = req;
+            const payload = {
+                id: userID,
+                imei: req.query.imei,
+                created_date: req.query.timestamp,
+                position: req.query.position,
+                status: req.query.status || 'unknown'
+            };
+            // logs requests
+            console.log(payload);
+            await awsClients.writeToKinesis(payload);
+            res.status(201).send({
+                success: true,
+                message: 'Successfully registered.',
+            });
+        } catch (error) {
+            res.status(401).send({error});
+        }
+    },
+    /**
      * @api {get} /location/:idUser Get user Locations by user id
      * @apiName GetUserLocations
      * @apiGroup Location
@@ -79,16 +80,16 @@ module.exports = {
      *          ]
      *     }
      */
-  getUserLocations(req, res) {
-    const { idUser } = req.params;
-    Location.findAll({
-      idUser,
-    })
-      .then((locations) => {
-        res.status(200).send({
-          locations,
-        });
-      })
-      .catch((error) => res.status(400).send(error));;;
-  }
+    getUserLocations(req, res) {
+        const {idUser} = req.params;
+        Location.findAll({
+            idUser,
+        })
+            .then((locations) => {
+                res.status(200).send({
+                    locations,
+                });
+            })
+            .catch((error) => res.status(400).send(error));
+    }
 }

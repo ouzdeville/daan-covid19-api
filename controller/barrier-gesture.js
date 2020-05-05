@@ -36,15 +36,15 @@ module.exports = {
      *     }
      */
     create: function (req, res) {
-        var title = req.query.title;
-        var img = req.query.img;
-        var content = req.query.content;
+        let title = req.query.title;
+        let img = req.query.img;
+        let content = req.query.content;
 
         if (content == null) {
             return res.status(400).send({message: 'missing parameters'});
         }
 
-        var newBarrierGesture = BarrierGesture.create({
+        let newBarrierGesture = BarrierGesture.create({
             title: title,
             img: img,
             content: content
@@ -88,7 +88,7 @@ module.exports = {
      */
 
     get: function (req, res) {
-        var barrierGestureId = req.params.id;
+        let barrierGestureId = req.params.id;
         BarrierGesture.findOne({
             attributes: ['id', 'title', 'img', 'content'],
             where: {id: barrierGestureId}
@@ -147,10 +147,10 @@ module.exports = {
      */
 
     getAllBarrierGesture: function (req, res) {
-        var fields = req.query.fields;
-        var limit = parseInt(req.query.limit);
-        var offset = parseInt(req.query.offset);
-        var order = req.query.order;
+        let fields = req.query.fields;
+        let limit = parseInt(req.query.limit);
+        let offset = parseInt(req.query.offset);
+        let order = req.query.order;
 
         BarrierGesture.findAll({
             order: [(order != null) ? order.split(':') : ['id', 'ASC']],

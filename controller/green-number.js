@@ -1,62 +1,60 @@
-const { GreenNumber } = require('./../models');
-
+const {GreenNumber} = require('./../models');
 
 module.exports = {
-
-  /**
- * @api {post} /green-number            Add GreenNumber
- * @apiName Create
- * @apiGroup GreenNumber
- * 
- * @apiParam {String} title                 title of GreenNumber.
- * @apiParam {String} number                number of GreenNumber.
- * 
- * @apiSuccess (Success 201) {Object}       greenNumber GreenNumber object
- * @apiSuccess (Success 201) {Boolean}      success If it works ot not
- * @apiSuccess (Success 201) {String}       message Response message
- * 
- *  
- * @apiSuccessExample Success-Response:
- *      HTTP/1.1 201 Created
- *      {
- *           "success": true,
- *           "message": "Successfully created.",
- *           "greenNumber": {
- *               "id": 2,
- *               "title": "SAMU",
- *               "number": "1515",
- *               "updatedAt": "2020-04-23T22:54:38.587Z",
- *               "createdAt": "2020-04-23T22:54:38.587Z"
- *            }
- *      }
- * 
- */
+    /**
+     * @api {post} /green-number            Add GreenNumber
+     * @apiName Create
+     * @apiGroup GreenNumber
+     *
+     * @apiParam {String} title                 title of GreenNumber.
+     * @apiParam {String} number                number of GreenNumber.
+     *
+     * @apiSuccess (Success 201) {Object}       greenNumber GreenNumber object
+     * @apiSuccess (Success 201) {Boolean}      success If it works ot not
+     * @apiSuccess (Success 201) {String}       message Response message
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *      HTTP/1.1 201 Created
+     *      {
+     *           "success": true,
+     *           "message": "Successfully created.",
+     *           "greenNumber": {
+     *               "id": 2,
+     *               "title": "SAMU",
+     *               "number": "1515",
+     *               "updatedAt": "2020-04-23T22:54:38.587Z",
+     *               "createdAt": "2020-04-23T22:54:38.587Z"
+     *            }
+     *      }
+     *
+     */
     create: function (req, res) {
-        var title = req.query.title;
-        var number = req.query.number;
+        let title = req.query.title;
+        let number = req.query.number;
 
         /* if (content == null) {
             return res.status(400).send({ message: 'missing parameters' });
         } */
 
-        var newGreenNumber = GreenNumber.create({
+        let newGreenNumber = GreenNumber.create({
             title: title,
             number: number,
-            
+
         })
-        .then(function(newGreenNumber){
-            return res.status(200).send({
-              success: true,
-              message: 'Successfully created.',
-              greenNumber: newGreenNumber
+            .then(function (newGreenNumber) {
+                return res.status(200).send({
+                    success: true,
+                    message: 'Successfully created.',
+                    greenNumber: newGreenNumber
+                });
+            })
+            .catch(function (err) {
+                console.log(err);
+                return res.status(400).send({
+                    error: 'Cannot add green number'
+                });
             });
-        })
-        .catch(function(err){
-          console.log(err);
-          return res.status(400).send({
-            error: 'Cannot add green number'
-          });
-        });
     },
 
     /**
@@ -85,24 +83,23 @@ module.exports = {
      *     }
      */
     get: function (req, res) {
-        var greenNumberId = req.body.id;
+        let greenNumberId = req.body.id;
         GreenNumber.findOne({
-          attributes: ['title','number'],
-          where: {id:greenNumberId}
-        }).then(function(greenNumber){
-          if(greenNumber) {
-            return res.status(200).send(greenNumber);
-          } 
-          else {
-            res.status(404).send({
-              error: 'Cannot add green number'
+            attributes: ['title', 'number'],
+            where: {id: greenNumberId}
+        }).then(function (greenNumber) {
+            if (greenNumber) {
+                return res.status(200).send(greenNumber);
+            } else {
+                res.status(404).send({
+                    error: 'Cannot add green number'
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send({
+                error: 'Cannot fetch green number'
             });
-          }
-        }).catch(function(err){
-          console.log(err);
-          res.status(500).send({
-            error: 'Cannot fetch green number'
-          });
         });
     },
 
@@ -142,30 +139,29 @@ module.exports = {
      *     }
      */
     getAllGreenNumber: function (req, res) {
-        var fields = req.query.fields;
-      var limit = parseInt(req.query.limit);
-      var offset = parseInt(req.query.offset);
-      var order = req.query.order;
+        let fields = req.query.fields;
+        let limit = parseInt(req.query.limit);
+        let offset = parseInt(req.query.offset);
+        let order = req.query.order;
 
-      GreenNumber.findAll({
-        order: [(order !=null) ? order.split(':') : ['id', 'ASC']],
-        attributes: (fields !=='*' && fields != null) ? fields.split(','): null,
-        limit: (!isNaN(limit)) ? limit : null,
-        offset: (!isNaN(offset)) ? offset : null
-      }).then(function(greenNumbers) {
-        if(greenNumbers) {
-          return res.status(201).send(greenNumbers);
-        }
-        else {
-          res.status(404).send({
-            error: 'no green number found'
-          });
-        }
-      }).catch(function(err) {
-        console.log(err);
-        res.status(500).send({
-          error: 'invalid fields'
-        });
-      })
+        GreenNumber.findAll({
+            order: [(order != null) ? order.split(':') : ['id', 'ASC']],
+            attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+            limit: (!isNaN(limit)) ? limit : null,
+            offset: (!isNaN(offset)) ? offset : null
+        }).then(function (greenNumbers) {
+            if (greenNumbers) {
+                return res.status(201).send(greenNumbers);
+            } else {
+                res.status(404).send({
+                    error: 'no green number found'
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+            res.status(500).send({
+                error: 'invalid fields'
+            });
+        })
     }
 }

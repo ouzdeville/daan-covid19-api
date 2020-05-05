@@ -1,7 +1,7 @@
-const { Prevalence, Zone } = require('./../models');
-const { prevalenceCron } = require('./../utils');
-var moment = require('moment');
-var fs = require('fs');
+const {Prevalence, Zone} = require('./../models');
+const {prevalenceCron} = require('./../utils');
+const moment = require('moment');
+const fs = require('fs');
 
 module.exports = {
     /**
@@ -174,8 +174,8 @@ module.exports = {
      *     }
      */
     async getprevalenceNow(req, res) {
-        var now = await moment().format("YYYY-MM-DD")
-        const { count } = await Zone.findAndCountAll();
+        let now = await moment().format("YYYY-MM-DD")
+        const {count} = await Zone.findAndCountAll();
         Prevalence.findAll({
             limit: count,
             where: {
@@ -242,7 +242,7 @@ module.exports = {
      */
 
     getByZone(req, res) {
-        const { idZone } = req.params;
+        const {idZone} = req.params;
         Prevalence.findAll({
             where: {
                 idZone: idZone
@@ -279,14 +279,12 @@ module.exports = {
                 code: 99,
                 message: "Refresh done",
             });
-
         } catch (error) {
             console.log(error);
             res.status(500).send({
                 success: false,
                 code: -1,
             });
-
         }
     },
     /**
@@ -304,7 +302,6 @@ module.exports = {
      */
 
     async updateGPS(req, res) {
-
         try {
             var districtsgps = await require('./../init_data/districts-sn.json');
             for (var district of districtsgps) {
@@ -324,14 +321,13 @@ module.exports = {
         } catch (error) {
             console.error(error);
             res.status(400).send(error)
-        };
+        }
 
         res.status(200).send({
             success: true,
             code: 99,
             message: "Refresh done",
         });
-
     },
 
     /**
@@ -347,15 +343,13 @@ module.exports = {
      *       "message":
      *     }
      */
-
     async runPolygon(req, res) {
-
         try {
-            var districtsgps = JSON.parse(fs.readFileSync('./init_data/Districts.geojson', 'utf8'));
+            let districtsgps = JSON.parse(fs.readFileSync('./init_data/Districts.geojson', 'utf8'));
             //console.log(districtsgps.features.length);
             for (var district of districtsgps.features) {
-                var polygon = district.geometry.coordinates[0][0];
-                if("Dakar"==district.properties.NomDS){
+                let polygon = district.geometry.coordinates[0][0];
+                if ("Dakar" == district.properties.NomDS) {
                     await Zone.update(
                         {
                             polygon: polygon,
@@ -365,8 +359,7 @@ module.exports = {
                                 name: "DAKAR-CENTRE"
                             }
                         });
-                }
-                else if("Dakar Ouest"==district.properties.NomDS){
+                } else if ("Dakar Ouest" == district.properties.NomDS) {
 
                     await Zone.update(
                         {
@@ -377,9 +370,7 @@ module.exports = {
                                 name: district.properties.NomDS.toUpperCase().split(' ').join('-')
                             }
                         });
-                }
-                
-                else if("Ndiass"==district.properties.NomDS){
+                } else if ("Ndiass" == district.properties.NomDS) {
 
                     await Zone.update(
                         {
@@ -390,8 +381,7 @@ module.exports = {
                                 name: "POPENGUINE"
                             }
                         });
-                }
-                else if("Ngueniene"==district.properties.NomDS){
+                } else if ("Ngueniene" == district.properties.NomDS) {
 
                     await Zone.update(
                         {
@@ -402,8 +392,7 @@ module.exports = {
                                 name: "JOAL"
                             }
                         });
-                }
-                else if("Nioro"==district.properties.NomDS){
+                } else if ("Nioro" == district.properties.NomDS) {
 
                     await Zone.update(
                         {
@@ -414,8 +403,7 @@ module.exports = {
                                 name: "NIORO DU RIP"
                             }
                         });
-                }
-                else if("Koki"==district.properties.NomDS){
+                } else if ("Koki" == district.properties.NomDS) {
 
                     await Zone.update(
                         {
@@ -426,8 +414,7 @@ module.exports = {
                                 name: "COKI"
                             }
                         });
-                }
-                else {
+                } else {
                     await Zone.update(
                         {
                             polygon: polygon,
@@ -438,19 +425,16 @@ module.exports = {
                             }
                         });
                 }
-
-
             }
         } catch (error) {
             console.error(error);
             res.status(400).send(error)
-        };
+        }
 
         res.status(200).send({
             success: true,
             code: 99,
             message: "Refresh done",
         });
-
     }
 };

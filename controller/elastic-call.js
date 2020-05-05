@@ -1,9 +1,9 @@
-const { Incubation } = require('./../models');
+const {Incubation} = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const { Client } = require('@elastic/elasticsearch')
-const { elasticClient } = require('./../utils');
-const { jwt } = require('./../providers');
+const {Client} = require('@elastic/elasticsearch')
+const {elasticClient} = require('./../utils');
+const {jwt} = require('./../providers');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
@@ -21,53 +21,53 @@ const client = new Client({
 
 module.exports = {
     /**
-    * @api {get} /user/trace/:id/:begin/:end Get user traces
-    * @apiHeader {String} authorization User unique token
-    * @apiName getUserTrace
-    * @apiGroup Contact
-    *
-    * @apiParam {Number} id User id
-    * @apiParam {Date} begin date
-    * @apiParam {Date} end date
-    *
-    * @apiSuccess (Success 200) {Boolean} success If it works ot not
-    * @apiSuccess (Success 200) {Object} resust Location objects
-    *
-    * @apiSuccessExample Success-Response:
-    *     HTTP/1.1 200 OK
-    *     {
-    *       "success": true,
-    *       "resust":[
-    *              {
-    *                  "_index": "dc19",
-    *                  "_type": "_doc",
-    *                   "_id": "uYT5mXEB0m4T_0Lwe8LZ",
-    *                   "_score": null,
-    *                   "_source": {
-    *                       "imei": "",
-    *                       "position": {
-    *                           "lat": 14.750403052963359,
-    *                           "lon": -17.37935504970754
-    *                       },
-    *                       "status": "unknown",
-    *                       "id": "dc0fc6c9-425d-4a23-89e1-ff238542a02e",
-    *                       "created_date": 1586782662538
-    *                   },
-    *                   "sort": [
-    *                       1586782662538
-    *                   ]
-    *               }
-    *           ]
-    *          
-    *       
-    *     }
-    */
+     * @api {get} /user/trace/:id/:begin/:end Get user traces
+     * @apiHeader {String} authorization User unique token
+     * @apiName getUserTrace
+     * @apiGroup Contact
+     *
+     * @apiParam {Number} id User id
+     * @apiParam {Date} begin date
+     * @apiParam {Date} end date
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} resust Location objects
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "resust":[
+     *              {
+     *                  "_index": "dc19",
+     *                  "_type": "_doc",
+     *                   "_id": "uYT5mXEB0m4T_0Lwe8LZ",
+     *                   "_score": null,
+     *                   "_source": {
+     *                       "imei": "",
+     *                       "position": {
+     *                           "lat": 14.750403052963359,
+     *                           "lon": -17.37935504970754
+     *                       },
+     *                       "status": "unknown",
+     *                       "id": "dc0fc6c9-425d-4a23-89e1-ff238542a02e",
+     *                       "created_date": 1586782662538
+     *                   },
+     *                   "sort": [
+     *                       1586782662538
+     *                   ]
+     *               }
+     *           ]
+     *
+     *
+     *     }
+     */
 
     async getUserTrace(req, res) {
         console.log("getUserTrace");
-        id = req.params.id;
-        begin = req.params.begin;
-        end = req.params.end;
+        let id = req.params.id;
+        let begin = req.params.begin;
+        let end = req.params.end;
         // Let's search!
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
@@ -84,20 +84,12 @@ module.exports = {
                 success: false,
                 code: -1,
             });
-
         }
-
-
-
-
-
     },
 
-
-
-    /** 
+    /**
      * @api {get} /user/contact/:id/:begin/:end Get all contacts
-     * @apiHeader {String} authorization User unique token 
+     * @apiHeader {String} authorization User unique token
      * @apiName getUserContacts
      * @apiGroup Contact
      *
@@ -139,9 +131,9 @@ module.exports = {
      */
     async getUserContacts(req, res) {
         try {
-            id = req.params.id;
-            begin = req.params.begin;
-            end = req.params.end;
+            let id = req.params.id;
+            let begin = req.params.begin;
+            let end = req.params.end;
             // Let's search!
             //console.log("ok");
             await elasticClient.getUserContacts(id, begin, end, function (result, buckets) {
@@ -153,20 +145,16 @@ module.exports = {
                     buckets: buckets,
                 });
             });
-
-
-
-
         } catch (error) {
             console.log(error);
             res.status(500).send({
                 success: false,
                 code: -1,
             });
-
         }
     },
-    /** 
+
+    /**
      * @api {post} /user/contact/position Get contacts at one Position
      * @apiHeader {String} authorization User unique token
      * @apiName getContactsAtPosition
@@ -210,8 +198,7 @@ module.exports = {
      *     }
      */
     async getContactsAtPositionAndDate(req, res) {
-
-        const { latitude, longitude, created_date, id } = req.body;
+        const {latitude, longitude, created_date, id} = req.body;
         try {
             await elasticClient.getContactsAtPositionAndDate(id, created_date, latitude, longitude, function (result) {
                 console.log(result);
@@ -227,14 +214,10 @@ module.exports = {
                 success: false,
                 code: -1,
             });
-
         }
-
-
     },
 
-
-    /** 
+    /**
      * @api {get} /user/zone/inside/:latitude/:longitude Inside zone
      * @apiHeader {String} authorization User unique token
      * @apiName isInAZoneElastic
@@ -289,8 +272,8 @@ module.exports = {
      *     }
      */
     async isInAZoneElastic(req, res) {
-        var area = {};
-        const { latitude, longitude } = req.params;
+        let area = {};
+        const {latitude, longitude} = req.params;
         try {
             await elasticClient.isInAZoneElastic(latitude, longitude, function (result) {
                 console.log(result);
@@ -306,12 +289,10 @@ module.exports = {
                 success: false,
                 code: -1,
             });
-
         }
-
     },
 
-    /** 
+    /**
      * @api {get} /user/incub/:idUser/:begin/:end Infected Contacts
      * @apiHeader {String} authorization User unique token
      * @apiName getIncubContact
@@ -353,7 +334,7 @@ module.exports = {
      *     }
      */
     async getIncubContact(req, res) {
-        const { idUser, begin, end } = req.params;
+        let {idUser, begin, end} = req.params;
         try {
             //get all contacts first
             await elasticClient.getUserContacts(idUser, begin, end, async function (result) {
@@ -378,8 +359,6 @@ module.exports = {
                             if (exist && !exist.length) {
                                 resultpositive.push(element);
                             }
-
-
                         });
                         counter -= 1;
                         if (counter === 0) {
@@ -391,8 +370,6 @@ module.exports = {
                             });
                             return;
                         }
-
-
                     });
                 } else {
                     res.status(200).send({
@@ -401,25 +378,15 @@ module.exports = {
                         resust: resultpositive,
                     });
                 }
-
-
             });
-
-
-
         } catch (error) {
             console.log(error);
             res.status(500).send({
                 success: false,
                 code: -1,
             });
-
         }
-
-
     },
-
-
 
     /**
      * @api {post} /zone Add Zone
@@ -428,9 +395,9 @@ module.exports = {
      * @apiGroup Zone
      * @apiParam {Number} name name of the zone
      * @apiParam {JSON} obersvation static information about this zone
-     * @apiParam {String} polygon in the format lat,lon;lat,lon;lat,lon;lat,lon 
-     * 
-     * 
+     * @apiParam {String} polygon in the format lat,lon;lat,lon;lat,lon;lat,lon
+     *
+     *
      * @apiSuccess (Success 201) {Boolean} success If it works ot not
      * @apiSuccess (Success 201) {Object} Zone a Zone object
      *
@@ -452,9 +419,9 @@ module.exports = {
         const zone = req.body;
         //lat,lon;lat,lon;lat,lon;lat,lon
         console.log(zone);
-        var polygon = [];
+        let polygon = [];
         const spolygone = zone.polygon + '';
-        latlons = spolygone.split(";");
+        let latlons = spolygone.split(";");
         latlons.forEach(latlon => {
             position = latlon.split(",");
             const location = [parseFloat(position[1]), parseFloat(position[0])];
@@ -489,14 +456,10 @@ module.exports = {
                 success: false,
                 code: -1,
             });
-
         }
-
-
     },
 
-
-    /** 
+    /**
      * @api {get} /zones zones list
      * @apiHeader {String} authorization User unique token
      * @apiName getZones
@@ -557,7 +520,6 @@ module.exports = {
      */
     async getZones(req, res) {
         try {
-
             await elasticClient.getZones(async function (resp) {
                 res.status(200).send({
                     success: true,
@@ -565,27 +527,23 @@ module.exports = {
                     resust: resp,
                 });
             });
-
         } catch (error) {
             console.log(error);
             res.status(500).send({
                 success: false,
                 code: -1,
             });
-
         }
     },
 
-
-
     gentoken(req, res) {
-        lists = ["+221776359893", "+221776359894"];
-        list = [];
-        ite = 0;
+        let lists = ["+221776359893", "+221776359894"];
+        let list = [];
+        let ite = 0;
         console.log(req.headers.authorization);
         lists.forEach((elem) => {
             ite++;
-            const token = jwt.sign({ phone: elem });
+            const token = jwt.sign({phone: elem});
             console.log(token);
             list.push(token);
             if (ite === lists.length)
@@ -593,13 +551,10 @@ module.exports = {
                     list,
                 });
         });
-
-
     },
 
     async registerLocation(req, res) {
-
-        const { userID } = req;
+        const {userID} = req;
         const payload = {
             id: userID,
             imei: req.query.imei,
@@ -624,11 +579,6 @@ module.exports = {
                 success: false,
                 code: -1,
             });
-
         }
-
-
     },
-
-
 }
