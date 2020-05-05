@@ -21,7 +21,7 @@ const client = new Client({
 
 module.exports = {
     /**
-    * @api {get} /user/contact/:id/:begin/:end Get user traces
+    * @api {get} /user/trace/:id/:begin/:end Get user traces
     * @apiHeader {String} authorization User unique token
     * @apiName getUserTrace
     * @apiGroup Contact

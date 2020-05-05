@@ -56,7 +56,7 @@ module.exports = {
     },
 
     /**
-     * @api {put} /symptom/:id Update Symptom
+     * @api {put} /symptom Update Symptom
      * @apiName Update
      * @apiGroup Symptom
      *
@@ -115,7 +115,7 @@ module.exports = {
 
 
     /**
-     * @api {put} /symptom/:id Update Symptom
+     * @api {delete} /symptom/:id Update Symptom
      * @apiName Delete
      * @apiGroup Symptom
      *
