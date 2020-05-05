@@ -3,11 +3,38 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 module.exports = {
+  
   /**
-   * Permet de recupérer tous les contacts entre les utilisateurs
-   * @param  {} req
-   * @param  {} res
-   */
+     * @api {get} /contacts Get all Contacts
+     * @apiName getContacts
+     * @apiGroup Contact
+     *
+     * @apiSuccess (Success 200) {Object[]} contacts List of Contact
+     * @apiSuccess (Success 200) {Number} contact.id Contact id
+     * @apiSuccess (Success 200) {Date} contact.contactStartingAt date of contact
+     * @apiSuccess (Success 200) {Number} contact.contactDuration duration of contact
+     * @apiSuccess (Success 200) {Number} contact.contactDistance distance of contact
+     * @apiSuccess (Success 200) {String} contact.lat latitude of contact
+     * @apiSuccess (Success 200) {Date} contact.lng longitude of contact
+     * @apiSuccess (Success 200) {UUID} contact.idUser1 id user 1
+     * @apiSuccess (Success 200) {UUID} contact.idUser2 id user 2
+     * @apiSuccess (Success 200) {Date} contact.createdAt date of creation of contact
+     * @apiSuccess (Success 200) {Date} contact.updateAt date of last update of Barri
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "": [
+     *         {
+     *            
+     *         },
+     *         {
+     *            
+     *         }
+     *       ]
+     *     }
+     */
   getContacts(req, res) {
     Contact.findAll({
       include: [{
@@ -29,10 +56,33 @@ module.exports = {
   },
 
   /**
-   * Permet de recuperer un contact a partir de son ID
-   * @param  {} req
-   * @param  {} res
-   */
+     * @api {get} /contact Get all Contacts
+     * @apiName getContacts
+     * @apiGroup Contact
+     * 
+     * @apiParam {Number} id id of the contact
+     *
+     * @apiSuccess (Success 200) {Object[]} contacts List of Contact
+     * @apiSuccess (Success 200) {Number} contact.id Contact id
+     * @apiSuccess (Success 200) {Date} contact.contactStartingAt date of contact
+     * @apiSuccess (Success 200) {Number} contact.contactDuration duration of contact
+     * @apiSuccess (Success 200) {Number} contact.contactDistance distance of contact
+     * @apiSuccess (Success 200) {String} contact.lat latitude of contact
+     * @apiSuccess (Success 200) {Date} contact.lng longitude of contact
+     * @apiSuccess (Success 200) {UUID} contact.idUser1 id user 1
+     * @apiSuccess (Success 200) {UUID} contact.idUser2 id user 2
+     * @apiSuccess (Success 200) {Date} contact.createdAt date of creation of contact
+     * @apiSuccess (Success 200) {Date} contact.updateAt date of last update of Barri
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *         {
+     *            
+     *         }
+     *     }
+     */
   getContact(req, res) {
     const {id} = req.params;
     Contact.findOne({
@@ -58,12 +108,42 @@ module.exports = {
     ;
     ;
   },
+  
   /**
-   * Permet de recuperer pour un user, les contacts pendant l'incubation
-   *
-   * @param  {} req
-   * @param  {} res
-   */
+     * @api {get} /contact/users/:idUser Get all Contacts for a user by UserId
+     * @apiName getIncubContact
+     * @apiGroup Contact
+     *
+     * 
+     * @apiParam {UUID} idUser id of the user
+     * 
+     * 
+     * @apiSuccess (Success 200) {Object[]} contacts List of Contact
+     * @apiSuccess (Success 200) {Number} contact.id Contact id
+     * @apiSuccess (Success 200) {Date} contact.contactStartingAt date of contact
+     * @apiSuccess (Success 200) {Number} contact.contactDuration duration of contact
+     * @apiSuccess (Success 200) {Number} contact.contactDistance distance of contact
+     * @apiSuccess (Success 200) {String} contact.lat latitude of contact
+     * @apiSuccess (Success 200) {Date} contact.lng longitude of contact
+     * @apiSuccess (Success 200) {UUID} contact.idUser1 id user 1
+     * @apiSuccess (Success 200) {UUID} contact.idUser2 id user 2
+     * @apiSuccess (Success 200) {Date} contact.createdAt date of creation of contact
+     * @apiSuccess (Success 200) {Date} contact.updateAt date of last update of Barri
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "": [
+     *         {
+     *            
+     *         },
+     *         {
+     *            
+     *         }
+     *       ]
+     *     }
+     */
   getIncubContact(req, res) {
     const {idUser} = req.params;
     Contact.findAll({

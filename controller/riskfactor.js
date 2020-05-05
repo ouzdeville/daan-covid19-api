@@ -51,7 +51,7 @@ module.exports = {
       },
   
       /**
-       * @api {put} /risk-factor/:id Update RiskFactor
+       * @api {put} /risk-factor Update RiskFactor
        * @apiName Update
        * @apiGroup RiskFactor
        *
@@ -107,7 +107,7 @@ module.exports = {
   
   
       /**
-       * @api {put} /risk-factor/:id Delete RiskFactor
+       * @api {delete} /risk-factor/:id Delete RiskFactor
        * @apiName Delete
        * @apiGroup RiskFactor
        *
@@ -144,7 +144,7 @@ module.exports = {
       },
   
       /**
-       * @api {get} /symptom/:id Get RiskFactor by RiskFactor id
+       * @api {get} /risk-factor/:id Get RiskFactor by RiskFactor id
        * @apiName Get
        * @apiGroup RiskFactor
        *

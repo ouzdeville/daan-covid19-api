@@ -52,7 +52,7 @@ module.exports = (app) => {
   app.get('/zones', auth, ZoneController.getZones);
   app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/user/inside/:latitude/:longitude', auth, ZoneController.isInAZone);
-  app.get('/contact', auth, ContactController.getContacts);
+  app.get('/contacts', auth, ContactController.getContacts);
   app.get('/contact/:id', auth, ContactController.getContact);
   //app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
 
@@ -60,9 +60,9 @@ module.exports = (app) => {
   app.post('/prevalence', auth, PrevalenceController.create);
   app.get('/prevalences', auth, PrevalenceController.getAll);
   app.get('/prevalence', auth, PrevalenceController.getprevalenceNow);
-  app.get('/prevalence/updatestat', auth, PrevalenceController.runPrevalence);
-  app.get('/prevalence/updategps', auth, PrevalenceController.updateGPS);
-  app.get('/prevalence/updatepolygon', auth, PrevalenceController.runPolygon);
+  app.get('/prevalence/run', PrevalenceController.runPrevalence);
+  app.get('/prevalence/rungps', PrevalenceController.updateGPS);
+  app.get('/prevalence/runPolygone', auth, PrevalenceController.runPolygon);
   app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 
   // Route Daily Report
