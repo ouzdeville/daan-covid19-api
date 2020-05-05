@@ -39,57 +39,58 @@ const upload = multer({
 module.exports = (app) => {
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
-  app.get('/users', UserController.getAllUsers);
+  app.get('/users', auth, UserController.getAllUsers);
   app.get('/user/refresh_token', auth, UserController.refreshToken);
   app.post('/user/verify_code', auth, UserController.verifyCode);
-  app.post('/location', LocationController.registerLocation);
+  app.post('/location', auth, LocationController.registerLocation);
+
   //app.post('/location', ElasticCallController.registerLocation);
   app.get('/location/:idUser', auth, LocationController.getUserLocations);
   app.get('/user/contacts/:idUser', auth, UserController.getContact);
   app.post('/user/signaler', auth, UserController.signaler);
-  app.post('/zone', ZoneController.createZone);
-  app.get('/zones', ZoneController.getZones);
-  app.get('/zone/:id', ZoneController.getZone);
-  app.get('/user/inside/:latitude/:longitude', ZoneController.isInAZone);
-  app.get('/contact', ContactController.getContacts);
-  app.get('/contact/:id', ContactController.getContact);
+  app.post('/zone', auth, ZoneController.createZone);
+  app.get('/zones', auth, ZoneController.getZones);
+  app.get('/zone/:id', auth, ZoneController.getZone);
+  app.get('/user/inside/:latitude/:longitude', auth, ZoneController.isInAZone);
+  app.get('/contact', auth, ContactController.getContacts);
+  app.get('/contact/:id', auth, ContactController.getContact);
   //app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
 
   // Route Prevalence
-  app.post('/prevalence', PrevalenceController.create);
-  app.get('/prevalences', PrevalenceController.getAll);
-  app.get('/prevalence', PrevalenceController.getprevalenceNow);
-  app.get('/prevalence/updatestat', PrevalenceController.runPrevalence);
-  app.get('/prevalence/updategps', PrevalenceController.updateGPS);
-  app.get('/prevalence/updatepolygon', PrevalenceController.runPolygon);
-  app.get('/prevalence/:idZone', PrevalenceController.getByZone);
+  app.post('/prevalence', auth, PrevalenceController.create);
+  app.get('/prevalences', auth, PrevalenceController.getAll);
+  app.get('/prevalence', auth, PrevalenceController.getprevalenceNow);
+  app.get('/prevalence/updatestat', auth, PrevalenceController.runPrevalence);
+  app.get('/prevalence/updategps', auth, PrevalenceController.updateGPS);
+  app.get('/prevalence/updatepolygon', auth, PrevalenceController.runPolygon);
+  app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 
   // Route Daily Report
-  app.post('/daily-report', DailyReportController.create);
-  app.get('/daily-report', DailyReportController.getAll);
-  app.get('/pdf/:filename', DailyReportController.getPDf);
-  app.get('/daily-report/last', DailyReportController.getLast);
-  app.get('/daily-report/last-with-diff', DailyReportController.getLastWithDiff);
-  app.get('/daily-report/:id', DailyReportController.get);
-  app.get('/daily-report/by-date/:date', DailyReportController.getByDate);
+  app.post('/daily-report', auth, DailyReportController.create);
+  app.get('/daily-report', auth, DailyReportController.getAll);
+  app.get('/pdf/:filename', auth, DailyReportController.getPDf);
+  app.get('/daily-report/last', auth, DailyReportController.getLast);
+  app.get('/daily-report/last-with-diff', auth, DailyReportController.getLastWithDiff);
+  app.get('/daily-report/:id', auth, DailyReportController.get);
+  app.get('/daily-report/by-date/:date', auth, DailyReportController.getByDate);
 
   // Route Barrier Gesture
-  app.post('/barrier-gesture', BarrierGestureController.create);
-  app.get('/barrier-gesture/:id', BarrierGestureController.get);
-  app.get('/barrier-gestures', BarrierGestureController.getAllBarrierGesture);
+  app.post('/barrier-gesture', auth, BarrierGestureController.create);
+  app.get('/barrier-gesture/:id', auth, BarrierGestureController.get);
+  app.get('/barrier-gestures', auth, BarrierGestureController.getAllBarrierGesture);
 
   // Route Green Number
-  app.post('/green-number', GreenNumberController.create);
-  app.get('/green-number/:id', GreenNumberController.get);
-  app.get('/green-numbers', GreenNumberController.getAllGreenNumber);
+  app.post('/green-number', auth, GreenNumberController.create);
+  app.get('/green-number/:id', auth, GreenNumberController.get);
+  app.get('/green-numbers', auth, GreenNumberController.getAllGreenNumber);
 
   // Route Symptom
-  app.post('/symptom', SymptomController.create);
-  app.get('/symptom/:id', SymptomController.get);
-  app.get('/symptoms', SymptomController.getAllSymptom);
-  app.get('/symptoms/major', SymptomController.getAllMajorSymptom);
-  app.put('/symptom', SymptomController.update);
-  app.delete('/symptom/:id', SymptomController.delete);
+  app.post('/symptom', auth, SymptomController.create);
+  app.get('/symptom/:id', auth, SymptomController.get);
+  app.get('/symptoms', auth, SymptomController.getAllSymptom);
+  app.get('/symptoms/major', auth, SymptomController.getAllMajorSymptom);
+  app.put('/symptom', auth, SymptomController.update);
+  app.delete('/symptom/:id', auth, SymptomController.delete);
 
   //elastic search
   app.get('/user/contact/:id/:begin/:end', auth, ElasticCallController.getUserContacts);
