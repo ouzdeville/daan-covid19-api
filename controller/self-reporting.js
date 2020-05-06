@@ -346,7 +346,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /self-report/symptoms/:idreport get all symptom by report
+     * @api {get} /self-report/:idreport/symptoms get all symptom by report
      * @apiName getAllSymptomByReport
      * @apiGroup Reporting
      *
@@ -385,7 +385,7 @@ module.exports = {
         Symptom.findAll({
             include: [{
                 model: SelfReporting, attributes: [],
-                where: {id: idreport},
+                where: { id: idreport },
                 as: 'SelfReporting'
             },
             ],
