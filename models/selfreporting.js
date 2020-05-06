@@ -48,8 +48,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         },
     }, {});
+
     SelfReporting.associate = function (models) {
-        // associations can be defined here
         SelfReporting.belongsToMany(models.Symptom,
             {
                 through: models.SelfReporting_Symptom,
@@ -68,5 +68,6 @@ module.exports = (sequelize, DataTypes) => {
 
         SelfReporting.belongsTo(models.User, {foreignKey: 'idUser'});
     };
+
     return SelfReporting;
 };
