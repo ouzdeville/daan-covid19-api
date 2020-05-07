@@ -89,7 +89,7 @@ module.exports = {
     getAllSelfReports(req, res) {
         //res.send({ message: 'hi :)' });
         SelfReporting.findAll({
-            attributes: ['id', 'reportingDate', 'firstname', 'lastname', 'email', 'adresse', 'department', 'region', 'lat', 'lng'],
+            // attributes: ['id', 'reportingDate', 'firstname', 'lastname', 'email', 'adresse', 'department', 'region', 'lat', 'lng'],
             include: [{
                 model: User, attributes: ['id', 'phone', 'active'],
             }, {

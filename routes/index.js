@@ -105,7 +105,7 @@ module.exports = (app) => {
 
   //reporting symptom and risk factor
   //deprecated
-  app.get('/self-reports', auth, SelfReportingController.getAllSelfReports);
+  // app.get('/self-reports', auth, SelfReportingController.getAllSelfReports);
   app.get('/reporting/self-reports', auth, SelfReportingController.getAllSelfReports);
   app.get('/reporting/self-reports/:id', auth, SelfReportingController.getById);
   app.get('/reporting/self-reports/by-user/:id', auth, SelfReportingController.getAllSelfReportsByUserId);
