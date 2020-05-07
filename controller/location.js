@@ -31,10 +31,10 @@ module.exports = {
             const {userID} = req;
             const payload = {
                 id: userID,
-                imei: req.query.imei,
-                created_date: req.query.timestamp,
-                position: req.query.position,
-                status: req.query.status || 'unknown'
+                imei: req.body.imei,
+                created_date: req.body.timestamp,
+                position: req.body.position,
+                status: req.body.status || 'unknown'
             };
             // logs requests
             console.log(payload);
