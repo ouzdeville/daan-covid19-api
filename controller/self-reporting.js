@@ -540,6 +540,7 @@ module.exports = {
             firstname, lastname, gender, dateOfBirth, age,
             email, adresse, department, region, lat, lng
         } = req.body;
+        reportingDate= new Date();
         try {
             if (idUser == null) {
                 res.status(400).send({
@@ -561,7 +562,8 @@ module.exports = {
                 department,
                 region,
                 lat,
-                lng
+                lng,
+                reportingDate
             }).then((report) => {
                 res.status(201).send({
                     success: true,

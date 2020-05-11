@@ -7,11 +7,11 @@ const {jwt} = require('./../providers');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
-    node: 'https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243',
-    auth: {
-        username: 'elastic',
-        password: 'A6JlhI1Yqt1Y2l0rtFE7ANSZ'
-    }
+    node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com',
+    //auth: {
+    //    username: '',
+    //    password: ''
+    //}
 });
 
 /**
@@ -537,7 +537,7 @@ module.exports = {
     },
 
     gentoken(req, res) {
-        let lists = ["+221776359893", "+221776359894"];
+        let lists = ["000000000"];
         let list = [];
         let ite = 0;
         console.log(req.headers.authorization);
@@ -556,7 +556,7 @@ module.exports = {
     async registerLocation(req, res) {
         const {userID} = req;
         const payload = {
-            id: userID,
+            id: userID, //SID
             imei: req.query.imei,
             created_date: req.query.timestamp,
             position: req.query.position,

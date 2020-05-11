@@ -26,8 +26,6 @@ module.exports = {
      */
     async registerLocation(req, res) {
         try {
-            console.log(req.query);
-            console.log(req.body);
             const {userID} = req;
             const payload = {
                 id: userID,

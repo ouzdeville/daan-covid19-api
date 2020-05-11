@@ -1,6 +1,6 @@
 
 const crypto = require('crypto');
-
+var fs = require('fs');
 module.exports = {
     KEY_SIZE: 256,
     SALT: "e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa",
@@ -11,6 +11,7 @@ module.exports = {
     MOD_LENGTH: 2048,
     KEY_FORMAT: "pem",
     PRINT_FORMAT: 'base64',
+    ALGO_ASYM:'rsa',
 
     getSymmetricKey(password) {
         const key = crypto.scryptSync(password, module.exports.SALT, module.exports.KEY_SIZE / 8);
@@ -56,7 +57,7 @@ module.exports = {
         return id;
     },
     generateKeyPair(password) {
-        const keyPair = crypto.generateKeyPairSync('rsa', {
+        const keyPair = crypto.generateKeyPairSync(module.exports.ALGO_ASYM, {
             modulusLength: module.exports.MOD_LENGTH,
             publicKeyEncoding: {
                 type: 'spki',
@@ -89,7 +90,8 @@ module.exports = {
         fs.writeFileSync(folder + "/private_key", keyPair.privateKey);
     },
     recupKey(path) {
-        const publicKey = fs.readFileSync(path, "utf8");
-        return publicKey;
+        const Key = fs.readFileSync(path, "utf8");
+        return Key;
     },
+    //const publicKeyPem = forge.pki.publicKeyToPem(cert.publicKey);
 }
