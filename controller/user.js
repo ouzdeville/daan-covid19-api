@@ -54,6 +54,8 @@ module.exports = {
             }
             const otp = await otpProvider.generateOTP(req.body.phone);
             const token = jwt.sign({phone: req.body.phone});
+            console.log("Token/:");
+            console.log(token);
             const exist = await User.findAll({
                 where: {
                     phone: token,
