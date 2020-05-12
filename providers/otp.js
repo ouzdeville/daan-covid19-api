@@ -36,12 +36,12 @@ module.exports = {
           associatedPhoneNumber: phone,
         },
       });
-      const token = jwt.sign({phone: phone});
+      const token = req.headers.authorization.split(' ')[1];
       User.update(
         { active: 'active' },
         {
           where: {
-            phone: token.token,
+            phone: token,
           },
         },
       );
