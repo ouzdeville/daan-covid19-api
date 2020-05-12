@@ -10,14 +10,15 @@ module.exports = {
       length: 4,
       pool: '0123456789',
     });
+    const sphone=cryptoUtil.getSID(phoneNumber,process.env.JWT_SECRET);
     await OTP.destroy({
       where: {
-        associatedPhoneNumber: phoneNumber,
+        associatedPhoneNumber: sphone,
       },
     });
     const otp = await OTP.create({
       code,
-      associatedPhoneNumber: phoneNumber,
+      associatedPhoneNumber: sphone,
     });
     await sendSms(phoneNumber, `Bienvenue sur Daan Covid19 votre code est: ${code}`);
     return otp;
@@ -40,7 +41,7 @@ module.exports = {
         { active: 'active' },
         {
           where: {
-            phone:cryptoUtil.getSID(phone,process.env.JWT_SECRET),
+            phone:phone,
           },
         },
       );
