@@ -61,7 +61,7 @@ module.exports = {
                     phone: {
                         [Op.like]: '%' + token.token.split('.')[1] + '%'
                     },
-                },
+                }, 
             });
             if (exist && !exist.length) {
                 User.create({
