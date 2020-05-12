@@ -37,6 +37,8 @@ module.exports = {
         },
       });
       const token = req.headers.authorization.split(' ')[1];
+      console.log("verifyOtp");
+      console.log(token);
       User.update(
         { active: 'active' },
         {
