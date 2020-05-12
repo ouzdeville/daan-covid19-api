@@ -111,9 +111,13 @@ module.exports = {
      */
     async verifyCode(req, res) {
         try {
+            const token = req.headers.authorization.split(' ')[1];
+            console.log("verifyOtp");
+            console.log(token);
             const verification = await otpProvider.verifyOtp({
                 code: req.body.code,
                 phone: req.phone,
+                token:token,
             });
             if (verification) {
                 res.send({success: true, message: 'Successfully verified.'});

@@ -23,7 +23,7 @@ module.exports = {
     return otp;
   },
 
-  async verifyOtp({ code, phone}) {
+  async verifyOtp({ code, phone,token}) {
     const exist = await OTP.findAll({
       where: {
         associatedPhoneNumber: phone,
@@ -36,9 +36,7 @@ module.exports = {
           associatedPhoneNumber: phone,
         },
       });
-      const token = req.headers.authorization.split(' ')[1];
-      console.log("verifyOtp");
-      console.log(token);
+      
       User.update(
         { active: 'active' },
         {
