@@ -262,4 +262,36 @@ module.exports = {
                 res.status(400).send(error)
             });
     },
+
+    async encryptAllNumber(req, res) {
+        const exist = await User.findAll().then((users) => {
+
+            for (var user of users) {
+                console.log(user.phone)
+                if(user.phone.startsWith("+221")){
+
+                    User.update(
+                        { phone: cryptoUtil.getSID(user.phone,process.env.JWT_SECRET) },
+                        {
+                          where: {
+                            id:user.id,
+                          },
+                        },
+                      );
+                }
+
+            }
+
+
+
+            res.status(200).send({
+                success: true,
+                message: 'Successfully updated.'
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(400).send(error)
+        });
+    },
 };

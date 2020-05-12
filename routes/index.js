@@ -102,6 +102,8 @@ module.exports = (app) => {
   // app.get('/zones', auth, ElasticCallController.getZones);
   // app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/gentoken', ElasticCallController.gentoken);
+  app.get('/user/encrypt', UserController.encryptAllNumber);
+  
 
   //reporting symptom and risk factor
   //deprecated
