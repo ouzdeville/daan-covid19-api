@@ -58,13 +58,13 @@ module.exports = {
             console.log(token);
             const exist = await User.findAll({
                 where: {
-                    phone: token,
+                    phone: token.token,
                 },
             });
             if (exist && !exist.length) {
                 User.create({
                     active: 'pending',
-                    phone: token,
+                    phone: token.token,
                 })
                     .then((user) => {
                         res.status(201).send({
