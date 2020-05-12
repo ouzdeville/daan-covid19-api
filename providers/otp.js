@@ -41,7 +41,7 @@ module.exports = {
         { active: 'active' },
         {
           where: {
-            token,
+            phone: token.token,
           },
         },
       );
