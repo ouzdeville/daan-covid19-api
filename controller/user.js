@@ -1,5 +1,7 @@
 const { User, Incubation, SelfReporting, } = require('./../models');
 const { otpProvider, jwt } = require('./../providers');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
 // const client = new Client({node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com'})
 
