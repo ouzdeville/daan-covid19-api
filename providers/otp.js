@@ -1,6 +1,7 @@
 const Chance = require('chance');
 const { OTP, User } = require('./../models');
 const { sendSms } = require('./smsProvider');
+const {jwt} = require('./../providers');
 const chance = new Chance();
 
 module.exports = {
@@ -35,11 +36,12 @@ module.exports = {
           associatedPhoneNumber: phone,
         },
       });
+      const token = jwt.sign({phone: req.body.phone});
       User.update(
         { active: 'active' },
         {
           where: {
-            phone,
+            token,
           },
         },
       );

@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
     req.phone = decodedToken.phone;
     const exist = await User.findAll({
       where: {
-        phone: decodedToken.phone,
+        phone: token,
       },
     });
     if (!exist || !exist.length) {

@@ -56,13 +56,13 @@ module.exports = {
             const token = jwt.sign({phone: req.body.phone});
             const exist = await User.findAll({
                 where: {
-                    phone: req.body.phone,
+                    phone: token,
                 },
             });
             if (exist && !exist.length) {
                 User.create({
                     active: 'pending',
-                    phone: req.body.phone,
+                    phone: token,
                 })
                     .then((user) => {
                         res.status(201).send({
