@@ -36,7 +36,7 @@ module.exports = {
           associatedPhoneNumber: phone,
         },
       });
-      const token = jwt.sign({phone: req.body.phone});
+      const token = jwt.sign({phone: phone});
       User.update(
         { active: 'active' },
         {
