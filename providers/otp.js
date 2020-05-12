@@ -1,7 +1,7 @@
 const Chance = require('chance');
 const { OTP, User } = require('./../models');
 const { sendSms } = require('./smsProvider');
-const { jwt } = require('./../providers');
+const {cryptoUtil} = require('../utils');
 const chance = new Chance();
 
 module.exports = {
@@ -23,36 +23,30 @@ module.exports = {
     return otp;
   },
 
-  async verifyOtp({ code, phone, token }) {
-    try {
-      const exist = await OTP.findAll({
+  async verifyOtp({ code, phone}) {
+    const exist = await OTP.findAll({
+      where: {
+        associatedPhoneNumber: phone,
+        code
+      },
+    });
+    if (exist && exist.length) {
+      await OTP.destroy({
         where: {
           associatedPhoneNumber: phone,
-          code
         },
       });
-      if (exist && exist.length) {
-        await OTP.destroy({
+      User.update(
+        { active: 'active' },
+        {
           where: {
-            associatedPhoneNumber: phone,
+            phone:cryptoUtil.getSID(phone,process.env.JWT_SECRET),
           },
-        });
-
-        User.update(
-          { active: 'active' },
-          {
-            where: {
-              phone: token,
-            },
-          },
-        );
-        return true;
-      }
-      return false;
-    } catch (error) {
-      throw (error);
+        },
+      );
+      return true;
     }
-
+    return false;
   }
 }
 
