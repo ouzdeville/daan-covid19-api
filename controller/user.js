@@ -1,6 +1,6 @@
-const {User, Incubation, SelfReporting,} = require('./../models');
-const {otpProvider, jwt} = require('./../providers');
-const {Client} = require('@elastic/elasticsearch')
+const { User, Incubation, SelfReporting, } = require('./../models');
+const { otpProvider, jwt } = require('./../providers');
+const { Client } = require('@elastic/elasticsearch')
 // const client = new Client({node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com'})
 
 /**
@@ -53,12 +53,14 @@ module.exports = {
                 return;
             }
             const otp = await otpProvider.generateOTP(req.body.phone);
-            const token = jwt.sign({phone: req.body.phone});
+            const token = jwt.sign({ phone: req.body.phone });
             //console.log("Token/:");
             //console.log(token);
             const exist = await User.findAll({
                 where: {
-                    phone: token.token,
+                    phone: {
+                        [Op.like]: '%' + token.token.split('.')[1] + '%'
+                    },
                 },
             });
             if (exist && !exist.length) {
@@ -117,13 +119,14 @@ module.exports = {
             const verification = await otpProvider.verifyOtp({
                 code: req.body.code,
                 phone: req.phone,
-                token:token,
+                token: token,
             });
             if (verification) {
-                res.send({success: true, message: 'Successfully verified.'});
+                res.send({ success: true, message: 'Successfully verified.' });
             }
-            res.status(401).send({message: 'verification error'});
+            res.status(401).send({ message: 'verification error' });
         } catch (error) {
+            console.log(error);
             res.status(500).send(error)
         }
     },
@@ -155,7 +158,7 @@ module.exports = {
      *     }
      */
     async refreshToken(req, res) {
-        const token = jwt.sign({phone: req.phone});
+        const token = jwt.sign({ phone: req.phone });
         res.status(201).send({
             success: true,
             message: 'Successfully created.',
@@ -175,7 +178,7 @@ module.exports = {
      * @param  {} res
      */
     getContact(req, res) {
-        const {idUser} = req.params;
+        const { idUser } = req.params;
         User.findOne({
             where: {
                 id: idUser
@@ -265,4 +268,32 @@ module.exports = {
                 res.status(400).send(error)
             });
     },
+
+    async cryptoMigration(req, res) {
+        User.findAll().then(users => {
+            for (var user of users) {
+              if(user.phone.startsWith("+221")){
+                const token = jwt.sign({ phone: user.phone });
+                User.update(
+                    { phone: token.token },
+                    {
+                      where: {
+                        phone: user.phone,
+                      },
+                    },
+                  );
+              }
+
+            }
+            
+
+        })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message || "Some error occurred while retrieving users."
+                });
+            });
+
+    }
 };
