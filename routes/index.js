@@ -103,6 +103,7 @@ module.exports = (app) => {
   // app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/gentoken', ElasticCallController.gentoken);
   app.get('/user/encrypt', UserController.encryptAllNumber);
+  app.get('/user/decrypt', UserController.decryptAllUsers);
   
 
   //reporting symptom and risk factor

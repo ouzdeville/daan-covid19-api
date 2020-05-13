@@ -294,4 +294,26 @@ module.exports = {
             res.status(400).send(error)
         });
     },
+
+    decryptAllUsers(req, res) {
+        //res.send({message: 'hi :)'});
+        User.findAll({
+            include: [{
+                model: SelfReporting
+            }]
+        }).then(users => {
+            results=[];
+            for (var user of users) {
+                user.phone=cryptoUtil.getIdFromSID(user.phone,process.env.JWT_SECRET);
+                results.push(user);
+            }
+            res.send(results);
+        })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message || "Some error occurred while retrieving users."
+                });
+            });
+    },
 };
