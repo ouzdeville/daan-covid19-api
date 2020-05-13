@@ -9,7 +9,6 @@ fs = require('fs');
 
 
 const app = express();
-
 // Log requests to the console.
 app.use(logger('dev'));
 var accessLogStream = fs.createWriteStream(__dirname + process.env.LOG_PATH+'daancovid.log', {flags: 'a'})
