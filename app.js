@@ -7,6 +7,7 @@ const cors = require('cors');
 const {prevalenceCron} = require('./utils');
 fs = require('fs');
 
+
 const app = express();
 
 // Log requests to the console.
