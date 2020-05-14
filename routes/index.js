@@ -136,4 +136,6 @@ module.exports = (app) => {
   // Screening
   app.post('/screening', auth, ScreeningController.create);
   app.get('/screening', auth, ScreeningController.getAll);
+  app.get('/screening/:id', auth, ScreeningController.get);
+  app.get('/screening/by-self-reporting/:idSelfReporting', auth, ScreeningController.getAllBySelfReporting);
 };

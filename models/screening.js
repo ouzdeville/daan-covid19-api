@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         },
         caseType: {
-            type: Sequelize.ENUM('CONTACT', 'COMMUNITY', 'IMPORTED'),
+            type: DataTypes.ENUM('CONTACT', 'COMMUNITY', 'IMPORTED'),
             allowNull: true
         },
         healthFacility: {
