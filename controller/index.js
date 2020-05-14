@@ -11,5 +11,6 @@ module.exports = {
     SelfReportingController: require('./self-reporting'),
     ElasticCallController: require('./elastic-call'),
     RiskFactorController: require('./riskfactor'),
-    PushNotificationController: require('./push-notification')
+    PushNotificationController: require('./push-notification'),
+    ScreeningController: require('./screening'),
 };

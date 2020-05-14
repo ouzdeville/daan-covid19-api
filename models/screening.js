@@ -13,18 +13,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true
         },
-        type: {
-            type: DataTypes.STRING,
+        caseType: {
+            type: Sequelize.ENUM('CONTACT', 'COMMUNITY', 'IMPORTED'),
             allowNull: true
         },
-        idUser: DataTypes.UUID,
         healthFacility: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        source: {
-            type: DataTypes.STRING,
-            allowNull: true
+        idSelfReporting: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
     }, {});
 
