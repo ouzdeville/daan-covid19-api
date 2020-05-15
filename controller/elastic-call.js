@@ -581,4 +581,25 @@ module.exports = {
             });
         }
     },
+
+    async getAllTrace(req, res) {
+        console.log("getALLTrace");
+        // Let's search!
+        try {
+            await elasticClient.getAllTrace(function (result) {
+                console.log(result);
+                res.status(200).send({
+                    success: true,
+                    code: 99,
+                    resust: result,
+                });
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+        }
+    },
 }
