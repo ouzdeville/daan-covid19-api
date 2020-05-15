@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const DailyReport = sequelize.define('DailyReport', {
-    
     reportDate: {
       type:DataTypes.DATEONLY,
       allowNull: true
@@ -66,5 +65,6 @@ module.exports = (sequelize, DataTypes) => {
   DailyReport.associate = function(models) {
     // associations can be defined here
   };
+
   return DailyReport;
 };

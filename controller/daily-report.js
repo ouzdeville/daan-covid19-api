@@ -3,6 +3,13 @@ const fs = require('fs');
 const path = require('path');
 const request = require("request-promise-native");
 const urlRegex = require('url-regex');
+const moment = require('moment');
+moment.locale('fr');
+
+const OneSignal = require('onesignal-node');
+
+const client = new OneSignal.Client('3552b3b3-6e98-417e-a5a3-e73b723a6eb6',
+    'OWM1OTNjMzEtYjhiYi00ZmIzLWI0N2UtMjcyMTVkZjYwN2My');
 
 module.exports = {
     /**
@@ -47,7 +54,7 @@ module.exports = {
             filename = req.body.dailyStatement;
         }
 
-        let reportDate = req.body.reportDate;
+        let {reportDate, numberOfPositiveCases} = req.body;
 
         const data = {
             reportDate: req.body.reportDate,
@@ -93,6 +100,33 @@ module.exports = {
                     });
                 })
                 .catch((error) => res.status(400).send(error));
+        }
+
+        let today = await moment().format("YYYY-MM-DD")
+
+        let titre = "Communiqué du " + moment().format('LL');
+        let contenu = numberOfPositiveCases + " cas positifs";
+
+        if (today === reportDate) {
+            const notification = {
+                headings: {
+                    'en': titre,
+                    'fr': titre
+                },
+                contents: {
+                    'en': contenu,
+                    'fr': contenu
+                },
+                included_segments: ['Subscribed Users'],
+            };
+
+            client.createNotification(notification)
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error)
+                });
         }
     },
 
