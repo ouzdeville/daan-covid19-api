@@ -7,7 +7,8 @@ const {
   GreenNumberController, SymptomController,
   PrevalenceController, DailyReportController,
   ElasticCallController, RiskFactorController,
-  PushNotificationController, ScreeningController
+  PushNotificationController, ScreeningController,
+  PushNotificationOsController
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
@@ -129,9 +130,11 @@ module.exports = (app) => {
   app.delete('/risk-factor/:id', auth, RiskFactorController.delete);
 
   // Push notification
-  app.post('/push-notification', auth, PushNotificationController.sendMessage);
-  app.post('/push-notification/add-token', auth, PushNotificationController.addToken);
-  app.get('/push-notification/send', auth, PushNotificationController.pushBackOffice);
+  app.post('/fb/push-notification', auth, PushNotificationController.sendMessage);
+  app.post('/fb/push-notification/add-token', auth, PushNotificationController.addToken);
+  app.get('/fb/push-notification/send', auth, PushNotificationController.pushBackOffice);
+
+  app.post('/push-notification', auth, PushNotificationOsController.sendMessage);
 
   // Screening
   app.post('/screening', auth, ScreeningController.create);

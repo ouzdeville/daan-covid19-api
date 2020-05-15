@@ -12,5 +12,6 @@ module.exports = {
     ElasticCallController: require('./elastic-call'),
     RiskFactorController: require('./riskfactor'),
     PushNotificationController: require('./push-notification'),
+    PushNotificationOsController: require('./push-notification-one-signal'),
     ScreeningController: require('./screening'),
 };

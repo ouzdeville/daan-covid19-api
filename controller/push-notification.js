@@ -34,7 +34,7 @@ function sendPushNotification(message) {
 
 module.exports = {
     /**
-     * @api {post} /push-notification/add-token Add the client Firebase token to receive message
+     * @api {post} /fb/push-notification/add-token Add the client Firebase token to receive message
      * @apiName AddToken
      * @apiGroup PushNotification
      *
@@ -78,7 +78,7 @@ module.exports = {
     },
 
     /**
-     * @api {post} /push-notification Send push notification
+     * @api {post} /fb/push-notification Send push notification
      * @apiName SendPushNotification
      * @apiGroup PushNotification
      *
