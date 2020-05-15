@@ -95,6 +95,7 @@ module.exports = (app) => {
 
   //elastic search
   app.get('/user/contact/:id/:begin/:end', auth, ElasticCallController.getUserContacts);
+  app.get('/user/trace/all', ElasticCallController.getAllTrace);
   app.get('/user/trace/:id/:begin/:end', auth, ElasticCallController.getUserTrace);
   app.post('/user/contact/position', auth, ElasticCallController.getContactsAtPositionAndDate);
   //app.get('/user/inside/:latitude/:longitude', auth, ElasticCallController.isInAZoneElastic);
@@ -105,6 +106,7 @@ module.exports = (app) => {
   app.get('/gentoken', ElasticCallController.gentoken);
   app.get('/user/encrypt', UserController.encryptAllNumber);
   app.get('/user/decrypt', UserController.decryptAllUsers);
+  
   
 
   //reporting symptom and risk factor
