@@ -106,6 +106,7 @@ module.exports = (app) => {
   app.get('/gentoken', ElasticCallController.gentoken);
   app.get('/user/encrypt', UserController.encryptAllNumber);
   app.get('/user/decrypt', UserController.decryptAllUsers);
+  app.get('/testsms', ElasticCallController.sendsms);
   
   
 
