@@ -7,6 +7,8 @@ const uuid = require('uuid/v4');
 module.exports = {
   async sendSms(receiver, message, subject = 'Daan Covid19') {
     console.log(receiver);
+    console.log(process.env.SMS_GATEWAY);
+    console.log(process.env.SMS_GATEWAY_TOKEN);
     // return await awsClients.sns().publish({
     //   Message: message,
     //   Subject: subject,
