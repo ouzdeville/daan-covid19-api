@@ -6,6 +6,7 @@ const uuid = require('uuid/v4');
 
 module.exports = {
   async sendSms(receiver, message, subject = 'Daan Covid19') {
+    console.log(receiver);
     // return await awsClients.sns().publish({
     //   Message: message,
     //   Subject: subject,
