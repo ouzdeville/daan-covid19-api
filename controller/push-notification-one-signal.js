@@ -41,6 +41,9 @@ module.exports = {
                 'fr': body,
             },
             included_segments: ['Subscribed Users'],
+            small_icon: 'ic_stat_onesignal_default',
+            large_icon: 'https://www.zupimages.net/up/20/20/jyik.png',
+            android_accent_color: '04baba'
         };
 
         client.createNotification(notification)
