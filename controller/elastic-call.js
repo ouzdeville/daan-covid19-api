@@ -1,9 +1,9 @@
-const {Incubation} = require('./../models');
+const { Incubation } = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {Client} = require('@elastic/elasticsearch')
-const {elasticClient} = require('./../utils');
-const {jwt} = require('./../providers');
+const { Client } = require('@elastic/elasticsearch')
+const { elasticClient } = require('./../utils');
+const { jwt,smsProviders } = require('./../providers');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
@@ -198,7 +198,7 @@ module.exports = {
      *     }
      */
     async getContactsAtPositionAndDate(req, res) {
-        const {latitude, longitude, created_date, id} = req.body;
+        const { latitude, longitude, created_date, id } = req.body;
         try {
             await elasticClient.getContactsAtPositionAndDate(id, created_date, latitude, longitude, function (result) {
                 console.log(result);
@@ -273,7 +273,7 @@ module.exports = {
      */
     async isInAZoneElastic(req, res) {
         let area = {};
-        const {latitude, longitude} = req.params;
+        const { latitude, longitude } = req.params;
         try {
             await elasticClient.isInAZoneElastic(latitude, longitude, function (result) {
                 console.log(result);
@@ -334,7 +334,7 @@ module.exports = {
      *     }
      */
     async getIncubContact(req, res) {
-        let {idUser, begin, end} = req.params;
+        let { idUser, begin, end } = req.params;
         try {
             //get all contacts first
             await elasticClient.getUserContacts(idUser, begin, end, async function (result) {
@@ -543,7 +543,7 @@ module.exports = {
         console.log(req.headers.authorization);
         lists.forEach((elem) => {
             ite++;
-            const token = jwt.sign({phone: elem});
+            const token = jwt.sign({ phone: elem });
             console.log(token);
             list.push(token);
             if (ite === lists.length)
@@ -554,7 +554,7 @@ module.exports = {
     },
 
     async registerLocation(req, res) {
-        const {userID} = req;
+        const { userID } = req;
         const payload = {
             id: userID, //SID
             imei: req.query.imei,
@@ -602,4 +602,8 @@ module.exports = {
             });
         }
     },
+
+    async sendsms(req, res) {
+        await smsProviders.sendSms("+221776359893", `Bienvenue Ouz`);
+    }
 }
