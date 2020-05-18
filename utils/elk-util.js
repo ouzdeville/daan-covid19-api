@@ -76,10 +76,10 @@ module.exports = {
                 console.log("Source");
                 console.log(source);
 
-                begin1 = hit._source.created_date - 1300;
-                end1 = hit._source.created_date + 1300;
-                //console.log("5 min before"+begin1);
-                //console.log("5 min after"+end1);
+                begin1 = hit._source.created_date - 300000;
+                end1 = hit._source.created_date + 300000;
+                console.log("5 min before"+begin1);
+                console.log("5 min after"+end1);
                 const { body } = await client.search({
                     index: indexlocation,
                     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
@@ -113,7 +113,7 @@ module.exports = {
                                 },
                                 "filter": {
                                     "geo_distance": {
-                                        "distance": "2m",
+                                        "distance": "50m",
                                         "position": {
                                             "lat": source.position.lat,
                                             "lon": source.position.lon
