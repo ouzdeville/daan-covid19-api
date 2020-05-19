@@ -139,7 +139,8 @@ module.exports = {
             begin=new Date(begin).getTime();
             end=new Date(end).getTime();
             //Let's search!
-            console.log("-"+begin);
+            console.log("begin:"+begin);
+            console.log("end:"+end);
             await elasticClient.getUserContacts(id, begin, end,position, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({

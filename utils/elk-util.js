@@ -76,8 +76,8 @@ module.exports = {
                 console.log("Source");
                 console.log(source);
 
-                begin1 = hit._source.created_date - 300000;
-                end1 = hit._source.created_date + 300000;
+                begin1 = hit._source.created_date - 3600000;
+                end1 = hit._source.created_date + 3600000;
                 console.log("5 min before"+begin1);
                 console.log("5 min after"+end1);
                 const { body } = await client.search({
