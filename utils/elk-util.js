@@ -25,7 +25,7 @@ module.exports = {
      * @param  {date} end   in format "yyyy-mm-dd"
      * @param  {function} callback
      */
-    async getUserContacts(id, begin, end, callback) {
+    async getUserContacts(id, begin, end,position, callback) {
         try {
             const { body } = await client.search({
                 index: indexlocation,
@@ -104,7 +104,7 @@ module.exports = {
                                 },
                                 "filter": {
                                     "geo_distance": {
-                                        "distance": "50m",
+                                        "distance": position+"m",
                                         "position": {
                                             "lat": source.position.lat,
                                             "lon": source.position.lon

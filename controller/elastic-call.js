@@ -134,9 +134,10 @@ module.exports = {
             let id = req.params.id;
             let begin = req.params.begin;
             let end = req.params.end;
+            let position=req.params.position;
             // Let's search!
             //console.log("ok");
-            await elasticClient.getUserContacts(id, begin, end, function (result, buckets) {
+            await elasticClient.getUserContacts(id, begin, end,position, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({
                     success: true,
