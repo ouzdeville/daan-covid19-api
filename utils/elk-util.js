@@ -90,15 +90,6 @@ module.exports = {
                                 "must": [
                                     {
                                         "match_all": {}
-                                    },
-                                    {
-                                        "range": {
-                                            "created_date": {
-                                                "gte": begin1,
-                                                "lte": end1,
-                                                "format": "epoch_millis"
-                                            }
-                                        }
                                     }
                                 ],
 
