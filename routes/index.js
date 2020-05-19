@@ -40,7 +40,7 @@ const upload = multer({
 module.exports = (app) => {
   // Back Office Users
   app.post('/bo-user/auth', BackOfficeUserController.auth);
-  app.post('/bo-user', boAuth, BackOfficeUserController.create);
+  app.post('/bo-user', BackOfficeUserController.create);
   app.get('/bo-user', boAuth, BackOfficeUserController.getAll);
   app.put('/bo-user/updatePassword', boAuth, BackOfficeUserController.updatePassword);
 
