@@ -25,7 +25,7 @@ module.exports = {
      * @param  {date} end   in format "yyyy-mm-dd"
      * @param  {function} callback
      */
-    async getUserContacts(id, begin, end,precision, callback) {
+    async getUserContacts(id, begin, end, precision, callback) {
         try {
             const { body } = await client.search({
                 index: indexlocation,
@@ -71,7 +71,7 @@ module.exports = {
             var result = [];
             var itemsProcessed = 0;
             for (var hit of hits) {
-            //hits.forEach(async (hit) => {
+                //hits.forEach(async (hit) => {
                 console.log("My new Position:" + id);
                 source = hit._source;
                 console.log("Source");
@@ -79,8 +79,8 @@ module.exports = {
 
                 begin1 = hit._source.created_date - 300000;
                 end1 = hit._source.created_date + 300000;
-                console.log("5 min before"+begin1);
-                console.log("5 min after"+end1);
+                console.log("5 min before" + begin1);
+                console.log("5 min after" + end1);
                 const { body } = await client.search({
                     index: indexlocation,
                     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
@@ -105,24 +105,24 @@ module.exports = {
                                 },
                                 "filter": [
                                     {
-                                    "geo_distance": {
-                                        "distance": precision+"m",
-                                        "position": {
-                                            "lat": source.position.lat,
-                                            "lon": source.position.lon
+                                        "geo_distance": {
+                                            "distance": precision + "m",
+                                            "position": {
+                                                "lat": source.position.lat,
+                                                "lon": source.position.lon
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "range": {
+                                            "created_date": {
+                                                "gte": begin1,
+                                                "lte": end1,
+                                                "format": "epoch_millis"
+                                            }
                                         }
                                     }
-                                },
-                                {
-                                    "range": {
-                                        "created_date": {
-                                            "gte": begin1,
-                                            "lte": end1,
-                                            "format": "epoch_millis"
-                                        }
-                                    }
-                                }
-                            ]
+                                ]
 
                             }
                         },
@@ -155,8 +155,8 @@ module.exports = {
                     //console.log(result);
                     callback(result, body.aggregations);
                 }
-
-            });
+            }
+            //});
 
 
         } catch (error) {
