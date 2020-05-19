@@ -265,10 +265,9 @@ module.exports = {
 
     async encryptAllNumber(req, res) {
         const exist = await User.findAll().then((users) => {
-
             for (var user of users) {
                 console.log(user.phone)
-                if(user.phone.startsWith("+221")){
+                if(user.phone.includes("221")){
 
                     User.update(
                         { phone: cryptoUtil.getSID(user.phone,process.env.JWT_SECRET) },
@@ -279,7 +278,6 @@ module.exports = {
                         },
                       );
                 }
-
             }
 
 

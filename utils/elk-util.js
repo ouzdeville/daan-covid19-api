@@ -47,7 +47,7 @@ module.exports = {
                                         "created_date": {
                                             "gte": begin,
                                             "lte": end,
-                                            "format": "yyyy-mm-dd"
+                                            "format": "epoch_millis"
                                         }
                                     }
                                 }
@@ -90,6 +90,15 @@ module.exports = {
                                 "must": [
                                     {
                                         "match_all": {}
+                                    },
+                                    {
+                                        "range": {
+                                            "created_date": {
+                                                "gte": begin1,
+                                                "lte": end1,
+                                                "format": "epoch_millis"
+                                            }
+                                        }
                                     }
                                 ],
 

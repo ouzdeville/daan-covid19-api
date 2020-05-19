@@ -131,12 +131,15 @@ module.exports = {
      */
     async getUserContacts(req, res) {
         try {
+            console.log("GetUserContacts");
             let id = req.params.id;
             let begin = req.params.begin;
             let end = req.params.end;
             let position=req.params.position;
-            // Let's search!
-            //console.log("ok");
+            begin=new Date(begin).getTime();
+            end=new Date(end).getTime();
+            //Let's search!
+            console.log("-"+begin);
             await elasticClient.getUserContacts(id, begin, end,position, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({
