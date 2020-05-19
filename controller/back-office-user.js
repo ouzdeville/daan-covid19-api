@@ -33,7 +33,7 @@ module.exports = {
                 userName: userName
             }
         }).then((user) => {
-            bcrypt.compare(password, user.password).then(function(result) {
+            bcrypt.compare(password, user.password).then(function (result) {
                 if (result) {
                     const token = jwt.sign({userName: user.userName});
                     res.status(200).send({
@@ -57,6 +57,51 @@ module.exports = {
                 error: true,
                 message: "Nom d'utilisateur ou mot de passe invalide"
             });
+        });
+    },
+
+    updatePassword(req, res) {
+        const {oldPassword, newPassword} = req.body;
+
+        const errorMessage = {
+            error: true,
+            message: "Une erreur est survenue lors de la modification du mot de passe"
+        }
+
+        BackOfficeUser.findOne({
+            where: {
+                id: req.boUserID
+            }
+        }).then((user) => {
+            bcrypt.compare(oldPassword, user.password).then(function (result) {
+                if (result) {
+                    BackOfficeUser.update(
+                        {password: bcrypt.hashSync(newPassword, saltRounds)},
+                        {where: {id: req.boUserID}}
+                    )
+                        .then((user) => {
+                            res.status(201).send({
+                                success: true,
+                                message: 'Successfully updated.'
+                            });
+                        })
+                        .catch((error) => res.status(400).send(errorMessage));
+
+                    res.status(200).send({
+                        error: false,
+                        message: "Mot de passe modifié avec succès"
+                    });
+                } else {
+                    res.status(400).send({
+                        error: true,
+                        message: "Ancien mot de passe non valide"
+                    });
+                }
+            }).catch(err => {
+                res.status(400).send(errorMessage);
+            })
+        }).catch(err => {
+            res.status(400).send(errorMessage);
         });
     },
 
