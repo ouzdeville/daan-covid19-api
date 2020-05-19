@@ -223,60 +223,7 @@ module.exports = {
         }
     },
 
-    /**
-     * @api {get} /user/zone/inside/:latitude/:longitude Inside zone
-     * @apiHeader {String} authorization User unique token
-     * @apiName isInAZoneElastic
-     * @apiGroup Zone
-     *
-     * @apiParam {Number} latitude GPS latitude
-     * @apiParam {Number} longitude GPS longitude
-     *
-     * @apiSuccess (Success 200) {Boolean} success If it works ot not
-     * @apiSuccess (Success 200) {Object} result Location objects
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *       "success": true,
-     *       "result":{
-     *          "zone": {
-     *               "polygon": {
-     *                   "type": "polygon",
-     *                   "coordinates": [
-     *                       [
-     *                           [
-     *                               -17.4962,
-     *                               14.7007
-     *                           ],
-     *                           [
-     *                               -17.4274,
-     *                               14.7007
-     *                           ],
-     *                           [
-     *                               -17.4274,
-     *                               14.7535
-     *                           ],
-     *                           [
-     *                               -17.4962,
-     *                               14.7535
-     *                           ],
-     *                           [
-     *                               -17.4962,
-     *                               14.7007
-     *                           ]
-     *                       ]
-     *                   ]
-     *               },
-     *               "name": "Dakar",
-     *               "observation": "épicentre du pays"
-     *           }
-     * 
-     *       }
-     *          
-     *       
-     *     }
-     */
+    
     async isInAZoneElastic(req, res) {
         let area = {};
         const { latitude, longitude } = req.params;
