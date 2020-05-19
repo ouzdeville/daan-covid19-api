@@ -96,6 +96,7 @@ module.exports = {
      * @apiParam {Number} id User id
      * @apiParam {Date} begin date in format "yyyy-mm-dd"
      * @apiParam {Date} end date in format "yyyy-mm-dd"
+     * @apiParam {Number} precision Number in meters 
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
      * @apiSuccess (Success 200) {Object} resust Location objects
@@ -135,7 +136,7 @@ module.exports = {
             let id = req.params.id;
             let begin = req.params.begin;
             let end = req.params.end;
-            let position=req.params.position;
+            let precision=req.params.precision;
             begin=new Date(begin).getTime();
             end=new Date(end).getTime();
             //Let's search!

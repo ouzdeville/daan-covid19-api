@@ -70,7 +70,8 @@ module.exports = {
             hits = body.hits.hits;
             var result = [];
             var itemsProcessed = 0;
-            hits.forEach(async (hit) => {
+            for (var hit of hits) {
+            //hits.forEach(async (hit) => {
                 console.log("My new Position:" + id);
                 source = hit._source;
                 console.log("Source");

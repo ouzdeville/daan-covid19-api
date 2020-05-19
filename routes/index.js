@@ -94,7 +94,7 @@ module.exports = (app) => {
   app.delete('/symptom/:id', auth, SymptomController.delete);
 
   //elastic search
-  app.get('/user/contact/:id/:begin/:end/:position', auth, ElasticCallController.getUserContacts);
+  app.get('/user/contact/:id/:begin/:end/:precision', auth, ElasticCallController.getUserContacts);
   app.get('/user/trace/all', ElasticCallController.getAllTrace);
   app.get('/user/trace/:id/:begin/:end', auth, ElasticCallController.getUserTrace);
   app.post('/user/contact/position', auth, ElasticCallController.getContactsAtPositionAndDate);
