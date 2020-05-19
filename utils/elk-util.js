@@ -46,8 +46,7 @@ module.exports = {
                                     "range": {
                                         "created_date": {
                                             "gte": begin,
-                                            "lte": end,
-                                            "format": "epoch_millis"
+                                            "lte": end
                                         }
                                     }
                                 }
