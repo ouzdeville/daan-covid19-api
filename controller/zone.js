@@ -2,6 +2,30 @@ const { Zone } = require('./../models');
 const { insidePolygon } = require('geolocation-utils');
 
 module.exports = {
+    /**
+     * @api {post} /zone Add Zone
+     * @apiHeader {String} authorization User unique token
+     * @apiName CreateZone
+     * @apiGroup Zone
+     * @apiParam {Number} name name of the zone
+     * @apiParam {JSON} obersvation static information about this zone
+     * @apiParam {String} polygon in the format lat,lon;lat,lon;lat,lon;lat,lon
+     * @apiParam {idParent} Id zone parent
+     *
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {Object} Zone a Zone object
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully created.",
+     *       "zone":{ 
+     *              id: 'dc19zone',
+     *            }
+     *     }
+     */
     createZone(req, res) {
         const data = {
             name: req.body.name,
@@ -33,6 +57,65 @@ module.exports = {
             .catch((error) => res.status(400).send(error));
     },
 
+    /**
+     * @api {get} /zones zones list
+     * @apiHeader {String} authorization User unique token
+     * @apiName getZones
+     * @apiGroup Zone
+     *
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} resust Location objects
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "result":[
+     *              {
+     *                   "_index": "dc19zone",
+     *                   "_type": "_doc",
+     *                   "_id": "McmhnXEBunV4c_XiukIA",
+     *                   "_score": 1,
+     *                   "_source": {
+     *                       "zone": {
+     *                           "polygon": {
+     *                               "type": "polygon",
+     *                               "coordinates": [
+     *                                   [
+     *                                       [
+     *                                           -17.4962,
+     *                                           14.7007
+     *                                       ],
+     *                                       [
+     *                                           -17.4274,
+     *                                           14.7007
+     *                                       ],
+     *                                       [
+     *                                           -17.4274,
+     *                                           14.7535
+     *                                       ],
+     *                                       [
+     *                                           -17.4962,
+     *                                           14.7535
+     *                                       ],
+     *                                       [
+     *                                           -17.4962,
+     *                                           14.7007
+     *                                       ]
+     *                                   ]
+     *                               ]
+     *                           },
+     *                           "name": "Dakar",
+     *                           "observation": "épicentre du pays"
+     *                       }
+     *                   }
+     *               }
+     *           ]
+     *          
+     *       
+     *     }
+     */
     getZones(req, res) {
         Zone.findAll()
             .then((zones) => {
@@ -43,6 +126,66 @@ module.exports = {
             .catch((error) => res.status(400).send(error));
     },
 
+
+    /**
+     * @api {get} /zone/:id zone list
+     * @apiHeader {String} authorization User unique token
+     * @apiName getZone
+     * @apiGroup Zone
+     *
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} resust Location objects
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "result":[
+     *              {
+     *                   "_index": "dc19zone",
+     *                   "_type": "_doc",
+     *                   "_id": "McmhnXEBunV4c_XiukIA",
+     *                   "_score": 1,
+     *                   "_source": {
+     *                       "zone": {
+     *                           "polygon": {
+     *                               "type": "polygon",
+     *                               "coordinates": [
+     *                                   [
+     *                                       [
+     *                                           -17.4962,
+     *                                           14.7007
+     *                                       ],
+     *                                       [
+     *                                           -17.4274,
+     *                                           14.7007
+     *                                       ],
+     *                                       [
+     *                                           -17.4274,
+     *                                           14.7535
+     *                                       ],
+     *                                       [
+     *                                           -17.4962,
+     *                                           14.7535
+     *                                       ],
+     *                                       [
+     *                                           -17.4962,
+     *                                           14.7007
+     *                                       ]
+     *                                   ]
+     *                               ]
+     *                           },
+     *                           "name": "Dakar",
+     *                           "observation": "épicentre du pays"
+     *                       }
+     *                   }
+     *               }
+     *           ]
+     *          
+     *       
+     *     }
+     */
     getZone(req, res) {
         const { id } = req.params;
         Zone.findAll({

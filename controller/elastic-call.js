@@ -21,7 +21,7 @@ const client = new Client({
 
 module.exports = {
     /**
-     * @api {get} /user/trace/:id/:begin/:end Get user traces
+     * @api {get} /user/trace/:id/:begin/:end Get historique
      * @apiHeader {String} authorization User unique token
      * @apiName getUserTrace
      * @apiGroup Contact
@@ -88,7 +88,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /user/contact/:id/:begin/:end Get all contacts
+     * @api {get} /user/contact/:id/:begin/:end/:precision Get all contacts by date
      * @apiHeader {String} authorization User unique token
      * @apiName getUserContacts
      * @apiGroup Contact
@@ -161,7 +161,7 @@ module.exports = {
     },
 
     /**
-     * @api {post} /user/contact/position Get contacts at one Position
+     * @api {post} /user/contact/position Get contacts at a Position
      * @apiHeader {String} authorization User unique token
      * @apiName getContactsAtPosition
      * @apiGroup Contact
@@ -341,33 +341,7 @@ module.exports = {
         }
     },
 
-    /**
-     * @api {post} /zone Add Zone
-     * @apiHeader {String} authorization User unique token
-     * @apiName CreateZone
-     * @apiGroup Zone
-     * @apiParam {Number} name name of the zone
-     * @apiParam {JSON} obersvation static information about this zone
-     * @apiParam {String} polygon in the format lat,lon;lat,lon;lat,lon;lat,lon
-     *
-     *
-     * @apiSuccess (Success 201) {Boolean} success If it works ot not
-     * @apiSuccess (Success 201) {Object} Zone a Zone object
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 201 Created
-     *     {
-     *       "success": true,
-     *       "message": "Successfully created.",
-     *       "zone":{ 
-     *              _index: 'dc19zone',
-     *              _type: '_doc',
-     *               _id: '1',
-     *               _version: 1,
-     *               created: true 
-     *            }
-     *     }
-     */
+    
     async createZone(req, res) {
         const zone = req.body;
         //lat,lon;lat,lon;lat,lon;lat,lon
@@ -412,65 +386,7 @@ module.exports = {
         }
     },
 
-    /**
-     * @api {get} /zones zones list
-     * @apiHeader {String} authorization User unique token
-     * @apiName getZones
-     * @apiGroup Zone
-     *
-     *
-     * @apiSuccess (Success 200) {Boolean} success If it works ot not
-     * @apiSuccess (Success 200) {Object} resust Location objects
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *       "success": true,
-     *       "result":[
-     *              {
-     *                   "_index": "dc19zone",
-     *                   "_type": "_doc",
-     *                   "_id": "McmhnXEBunV4c_XiukIA",
-     *                   "_score": 1,
-     *                   "_source": {
-     *                       "zone": {
-     *                           "polygon": {
-     *                               "type": "polygon",
-     *                               "coordinates": [
-     *                                   [
-     *                                       [
-     *                                           -17.4962,
-     *                                           14.7007
-     *                                       ],
-     *                                       [
-     *                                           -17.4274,
-     *                                           14.7007
-     *                                       ],
-     *                                       [
-     *                                           -17.4274,
-     *                                           14.7535
-     *                                       ],
-     *                                       [
-     *                                           -17.4962,
-     *                                           14.7535
-     *                                       ],
-     *                                       [
-     *                                           -17.4962,
-     *                                           14.7007
-     *                                       ]
-     *                                   ]
-     *                               ]
-     *                           },
-     *                           "name": "Dakar",
-     *                           "observation": "épicentre du pays"
-     *                       }
-     *                   }
-     *               }
-     *           ]
-     *          
-     *       
-     *     }
-     */
+    
     async getZones(req, res) {
         try {
             await elasticClient.getZones(async function (resp) {
