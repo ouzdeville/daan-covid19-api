@@ -25,7 +25,7 @@ module.exports = {
      * @param  {date} end   in format "yyyy-mm-dd"
      * @param  {function} callback
      */
-    async getUserContacts(id, begin, end,position, callback) {
+    async getUserContacts(id, begin, end,precision, callback) {
         try {
             const { body } = await client.search({
                 index: indexlocation,
@@ -46,7 +46,8 @@ module.exports = {
                                     "range": {
                                         "created_date": {
                                             "gte": begin,
-                                            "lte": end
+                                            "lte": end,
+                                            "format": "epoch_millis"
                                         }
                                     }
                                 }
@@ -75,8 +76,8 @@ module.exports = {
                 console.log("Source");
                 console.log(source);
 
-                begin1=hit._source.created_date - 3600000;
-                end1 = hit._source.created_date + 3600000;
+                begin1 = hit._source.created_date - 300000;
+                end1 = hit._source.created_date + 300000;
                 console.log("5 min before"+begin1);
                 console.log("5 min after"+end1);
                 const { body } = await client.search({
@@ -94,7 +95,8 @@ module.exports = {
                                         "range": {
                                             "created_date": {
                                                 "gte": begin1,
-                                                "lte": end1
+                                                "lte": end1,
+                                                "format": "epoch_millis"
                                             }
                                         }
                                     }
@@ -111,7 +113,7 @@ module.exports = {
                                 },
                                 "filter": {
                                     "geo_distance": {
-                                        "distance": position+"m",
+                                        "distance": precision+"m",
                                         "position": {
                                             "lat": source.position.lat,
                                             "lon": source.position.lon
