@@ -7,7 +7,7 @@ const {
     BarrierGestureController, SelfReportingController,
     GreenNumberController, SymptomController,
     PrevalenceController, DailyReportController,
-    RiskFactorController,
+    RiskFactorController, ElasticCallController,
     PushNotificationController, ScreeningController,
     PushNotificationOsController, BackOfficeUserController
 } = require('./../controller');
@@ -66,6 +66,13 @@ router.get('/symptoms', boAuth, SymptomController.getAllSymptom);
 router.get('/symptoms/major', boAuth, SymptomController.getAllMajorSymptom);
 router.put('/symptom', boAuth, SymptomController.update);
 router.delete('/symptom/:id', boAuth, SymptomController.delete);
+
+//elastic search
+router.get('/user/contact/:id/:begin/:end/:precision', boAuth, ElasticCallController.getUserContacts);
+router.get('/user/trace/all', boAuth, ElasticCallController.getAllTrace);
+router.get('/user/trace/:id/:begin/:end', boAuth, ElasticCallController.getUserTrace);
+router.post('/user/contact/position', boAuth, ElasticCallController.getContactsAtPositionAndDate);
+router.get('/user/incub/:idUser/:begin/:end', boAuth, ElasticCallController.getIncubContact);
 
 // self reporting
 router.get('/reporting/self-reports', boAuth, SelfReportingController.getAllSelfReports);

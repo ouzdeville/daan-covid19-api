@@ -152,7 +152,7 @@ module.exports = {
             begin = new Date(begin).getTime();
             end = new Date(end).getTime();
             sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
-            if (sphone != "") {
+            if (sphone !== "") {
                 await User.findAll({
                     where: {
                         phone: sphone,
