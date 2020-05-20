@@ -139,7 +139,7 @@ module.exports = {
             let precision = req.params.precision;
             begin = new Date(begin).getTime();
             end = new Date(end).getTime();
-            sid = await module.exports.getIdFromPhone(id);
+            sid = module.exports.getIdFromPhone(id);
             if (sid != "") {
                 id = sid;
             }
@@ -487,14 +487,15 @@ module.exports = {
     async sendsms(req, res) {
         await smsProviders.sendSms("+221776359893", `Bienvenue Ouz`);
     },
-    async getIdFromPhone(phone) {
+    getIdFromPhone(phone) {
         sphone = cryptoUtil.getSID(phone, process.env.JWT_SECRET);
         if (sphone != "") {
-            await User.findAll({
+            User.findAll({
                 where: {
                     phone: sphone,
                 },
             }).then((users) => {
+                console.log(users);
                 if (users && users.length) {
                     return users[0].id;
                 } else {
