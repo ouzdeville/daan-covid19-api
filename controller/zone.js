@@ -256,20 +256,24 @@ module.exports = {
      *     }
      */
     isInAZone(req, res) {
-        let area = {};
+        let area =[];
         let { latitude, longitude } = req.params;
-        let location = [parseFloat(latitude), parseFloat(longitude)];
+       // let location = [parseFloat(longitude),parseFloat(latitude)];
+        let location ={
+            latitude: parseFloat(latitude),
+             longitude: parseFloat(longitude)
+            }
         //console.log(location);
         Zone.findAll().then((zones) => {
             zones.forEach(zone => {
                 var poly = (zone.polygon);
                 //poly=JSON.parse(poly);
                 rst = false;
-                console.log(poly);
+                //console.log(poly);
                 if (poly != null)
                     rst = insidePolygon(location, poly);
                 if (rst) {
-                    area = zone;
+                    area.push(zone);
                 }
             });
             res.status(200).send({ area, });

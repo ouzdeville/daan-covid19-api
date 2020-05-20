@@ -100,9 +100,9 @@ module.exports = (app) => {
   app.post('/user/contact/position', auth, ElasticCallController.getContactsAtPositionAndDate);
   //app.get('/user/inside/:latitude/:longitude', auth, ElasticCallController.isInAZoneElastic);
   app.get('/user/incub/:idUser/:begin/:end', auth, ElasticCallController.getIncubContact);
-  // app.post('/zone', auth, ElasticCallController.createZone);
-  // app.get('/zones', auth, ElasticCallController.getZones);
-  // app.get('/zone/:id', auth, ZoneController.getZone);
+  //app.post('/zone', auth, ElasticCallController.createZone);
+  //app.get('/zones', auth, ElasticCallController.getZones);
+  //app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/gentoken', ElasticCallController.gentoken);
   app.get('/user/encrypt', UserController.encryptAllNumber);
   app.get('/user/decrypt', UserController.decryptAllUsers);
