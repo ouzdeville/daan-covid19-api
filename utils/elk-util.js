@@ -31,7 +31,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
-                    "size": 10000,
+                    "size": 1000,
                     "query": {
                         "bool": {
                             "must": [
@@ -86,7 +86,7 @@ module.exports = {
                     index: indexlocation,
                     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                     body: {
-                        "size": 10000,
+                        "size": 1000,
                         "query": {
                             "bool": {
 
