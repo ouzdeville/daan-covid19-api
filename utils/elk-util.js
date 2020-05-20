@@ -31,6 +31,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
+                    "size": 10000,
                     "query": {
                         "bool": {
                             "must": [
@@ -85,6 +86,7 @@ module.exports = {
                     index: indexlocation,
                     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                     body: {
+                        "size": 10000,
                         "query": {
                             "bool": {
 
@@ -184,6 +186,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
+                    "size": 10000,
                     "query": {
                         "bool": {
                             "must": [
@@ -247,6 +250,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
+                    "size": 10000,
                     "query": {
                         "bool": {
 
@@ -287,6 +291,7 @@ module.exports = {
                         }
                     }
                 },
+
                 "sort": [
                     {
                         "created_date": {

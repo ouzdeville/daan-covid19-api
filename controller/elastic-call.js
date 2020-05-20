@@ -69,10 +69,8 @@ module.exports = {
         let id = req.params.id;
         let begin = req.params.begin;
         let end = req.params.end;
-        // Let's search!
-        
         try {
-            await elasticClient.getUserTrace(id, begin, end, function (result) {
+            await elasticClient.getUserTrace(module.exports.getIdFromPhone(id), begin, end, function (result) {
                 console.log(result);
                 res.status(200).send({
                     success: true,
@@ -500,7 +498,7 @@ module.exports = {
                 if (users && users.length) {
                     return users[0].id;
                 } else {
-                    return "";
+                    return phone;
                 }
             });
 
