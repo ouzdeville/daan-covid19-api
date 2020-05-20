@@ -69,8 +69,20 @@ module.exports = {
         let id = req.params.id;
         let begin = req.params.begin;
         let end = req.params.end;
+        sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+        if (sphone != "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    id=users[0].id;
+                } 
+            });
+        }
         try {
-            await elasticClient.getUserTrace(module.exports.getIdFromPhone(id), begin, end, function (result) {
+            await elasticClient.getUserTrace(id, begin, end, function (result) {
                 console.log(result);
                 res.status(200).send({
                     success: true,
