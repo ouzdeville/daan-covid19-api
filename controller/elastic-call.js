@@ -77,8 +77,8 @@ module.exports = {
                 },
             }).then((users) => {
                 if (users && users.length) {
-                    id=users[0].id;
-                } 
+                    id = users[0].id;
+                }
             });
         }
         try {
@@ -151,9 +151,17 @@ module.exports = {
             let precision = req.params.precision;
             begin = new Date(begin).getTime();
             end = new Date(end).getTime();
-            sid = module.exports.getIdFromPhone(id);
-            if (sid != "") {
-                id = sid;
+            sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+            if (sphone != "") {
+                await User.findAll({
+                    where: {
+                        phone: sphone,
+                    },
+                }).then((users) => {
+                    if (users && users.length) {
+                        id = users[0].id;
+                    }
+                });
             }
             //Let's search!
             console.log("begin:" + begin);
@@ -220,10 +228,18 @@ module.exports = {
      *     }
      */
     async getContactsAtPositionAndDate(req, res) {
-        const { latitude, longitude, created_date, id } = req.body;
-        sid = await module.exports.getIdFromPhone(id);
-        if (sid != "") {
-            id = sid;
+        let { latitude, longitude, created_date, id } = req.body;
+        sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+        if (sphone != "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    id = users[0].id;
+                }
+            });
         }
         try {
             await elasticClient.getContactsAtPositionAndDate(id, created_date, latitude, longitude, function (result) {
@@ -308,9 +324,17 @@ module.exports = {
      */
     async getIncubContact(req, res) {
         let { idUser, begin, end } = req.params;
-        sid = await module.exports.getIdFromPhone(idUser);
-        if (sid != "") {
-            idUser = sid;
+        sphone = cryptoUtil.getSID(idUser, process.env.JWT_SECRET);
+        if (sphone != "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    idUser=users[0].id;
+                } 
+            });
         }
         try {
             //get all contacts first
