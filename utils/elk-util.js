@@ -93,6 +93,15 @@ module.exports = {
                                 "must": [
                                     {
                                         "match_all": {}
+                                    },
+                                    {
+                                        "range": {
+                                            "created_date": {
+                                                "gte": begin1,
+                                                "lte": end1,
+                                                "format": "epoch_millis"
+                                            }
+                                        }
                                     }
                                 ],
 
@@ -112,15 +121,6 @@ module.exports = {
                                             "position": {
                                                 "lat": source.position.lat,
                                                 "lon": source.position.lon
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "range": {
-                                            "created_date": {
-                                                "gte": begin1,
-                                                "lte": end1,
-                                                "format": "epoch_millis"
                                             }
                                         }
                                     }
