@@ -8,10 +8,10 @@ const {
   PrevalenceController, DailyReportController,
   ElasticCallController, RiskFactorController,
   PushNotificationController, ScreeningController,
-  PushNotificationOsController
+  PushNotificationOsController, BackOfficeUserController
 } = require('./../controller');
 
-const { auth } = require('./../middlewares');
+const { auth, boAuth } = require('./../middlewares');
 
 DIR='./pdf/';
 
@@ -38,6 +38,13 @@ const upload = multer({
 });
 
 module.exports = (app) => {
+  // Back Office Users
+  app.post('/bo-user/auth', BackOfficeUserController.auth);
+  app.post('/bo-user', boAuth, BackOfficeUserController.create);
+  app.get('/bo-user', boAuth, BackOfficeUserController.getAll);
+  app.put('/bo-user/updatePassword', boAuth, BackOfficeUserController.updatePassword);
+
+  // End Users
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
   app.get('/users', auth, UserController.getAllUsers);

@@ -8,7 +8,6 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        allowNull: false,
       },
       phone: {
         type: Sequelize.STRING,
