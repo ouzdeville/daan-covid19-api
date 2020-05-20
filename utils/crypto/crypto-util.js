@@ -11,7 +11,7 @@ module.exports = {
     MOD_LENGTH: 2048,
     KEY_FORMAT: "pem",
     PRINT_FORMAT: 'base64',
-    ALGO_ASYM:'rsa',
+    ALGO_ASYM: 'rsa',
 
     getSymmetricKey(password) {
         const key = crypto.scryptSync(password, module.exports.SALT, module.exports.KEY_SIZE / 8);
@@ -41,7 +41,7 @@ module.exports = {
                 decipher.final()
             ]).toString(module.exports.CLEAR_ENCODE);
         } catch (error) {
-            console.error(error);
+            throw(error);
         };
     },
 
@@ -52,9 +52,13 @@ module.exports = {
     },
 
     getIdFromSID(SID, password) {
-        key = module.exports.getSymmetricKey(password);
-        id = module.exports.Decrypt(SID, key)
-        return id;
+        try {
+            key = module.exports.getSymmetricKey(password);
+            id = module.exports.Decrypt(SID, key)
+            return id;
+        } catch (error) {
+            return "";
+        }
     },
     generateKeyPair(password) {
         const keyPair = crypto.generateKeyPairSync(module.exports.ALGO_ASYM, {

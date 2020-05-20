@@ -1,9 +1,10 @@
-const { Incubation } = require('./../models');
+const { Incubation, User } = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
 const { elasticClient } = require('./../utils');
-const { jwt,smsProviders } = require('./../providers');
+const { jwt, smsProviders } = require('./../providers');
+const { cryptoUtil } = require('../utils');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
@@ -69,6 +70,10 @@ module.exports = {
         let begin = req.params.begin;
         let end = req.params.end;
         // Let's search!
+        sid = await module.exports.getIdFromPhone(id);
+        if (sid != "") {
+            id = sid;
+        }
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 console.log(result);
@@ -136,13 +141,17 @@ module.exports = {
             let id = req.params.id;
             let begin = req.params.begin;
             let end = req.params.end;
-            let precision=req.params.precision;
-            begin=new Date(begin).getTime();
-            end=new Date(end).getTime();
+            let precision = req.params.precision;
+            begin = new Date(begin).getTime();
+            end = new Date(end).getTime();
+            sid = await module.exports.getIdFromPhone(id);
+            if (sid != "") {
+                id = sid;
+            }
             //Let's search!
-            console.log("begin:"+begin);
-            console.log("end:"+end);
-            await elasticClient.getUserContacts(id, begin, end,precision, function (result, buckets) {
+            console.log("begin:" + begin);
+            console.log("end:" + end);
+            await elasticClient.getUserContacts(id, begin, end, precision, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({
                     success: true,
@@ -205,6 +214,10 @@ module.exports = {
      */
     async getContactsAtPositionAndDate(req, res) {
         const { latitude, longitude, created_date, id } = req.body;
+        sid = await module.exports.getIdFromPhone(id);
+        if (sid != "") {
+            id = sid;
+        }
         try {
             await elasticClient.getContactsAtPositionAndDate(id, created_date, latitude, longitude, function (result) {
                 console.log(result);
@@ -223,7 +236,7 @@ module.exports = {
         }
     },
 
-    
+
     async isInAZoneElastic(req, res) {
         let area = {};
         const { latitude, longitude } = req.params;
@@ -288,9 +301,13 @@ module.exports = {
      */
     async getIncubContact(req, res) {
         let { idUser, begin, end } = req.params;
+        sid = await module.exports.getIdFromPhone(idUser);
+        if (sid != "") {
+            idUser = sid;
+        }
         try {
             //get all contacts first
-            await elasticClient.getUserContacts(idUser, begin, end, async function (result) {
+            await elasticClient.getUserContacts(idUser, begin, end, 2, async function (result) {
                 var resultpositive = [];
                 var counter = result.length;
                 if (counter) {
@@ -341,7 +358,7 @@ module.exports = {
         }
     },
 
-    
+
     async createZone(req, res) {
         const zone = req.body;
         //lat,lon;lat,lon;lat,lon;lat,lon
@@ -386,7 +403,7 @@ module.exports = {
         }
     },
 
-    
+
     async getZones(req, res) {
         try {
             await elasticClient.getZones(async function (resp) {
@@ -474,5 +491,22 @@ module.exports = {
 
     async sendsms(req, res) {
         await smsProviders.sendSms("+221776359893", `Bienvenue Ouz`);
+    },
+    async getIdFromPhone(phone) {
+        sphone = cryptoUtil.getSID(phone, process.env.JWT_SECRET);
+        if (sphone != "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    return users[0].id;
+                } else {
+                    return "";
+                }
+            });
+
+        }
     }
 }

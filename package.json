@@ -7,7 +7,7 @@
     "version": "1.0.0",
     "description": "apiDoc daan-covid19-api",
     "title": "apiDoc daan-covid19-api",
-    "url": "https://daan-covid19-api.herokuapp.com"
+    "url": "https://dk5sml6ak1pazrh09.daancovid19.sn"
   },
   "main": "index.js",
   "scripts": {
