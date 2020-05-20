@@ -70,10 +70,7 @@ module.exports = {
         let begin = req.params.begin;
         let end = req.params.end;
         // Let's search!
-        sid = await module.exports.getIdFromPhone(id);
-        if (sid != "") {
-            id = sid;
-        }
+        
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 console.log(result);
