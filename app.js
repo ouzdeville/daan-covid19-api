@@ -5,8 +5,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const {prevalenceCron} = require('./utils');
-fs = require('fs');
-
+const fs = require('fs');
 
 const app = express();
 // Log requests to the console.
@@ -38,6 +37,8 @@ if (process.env.ACTIVATE_CORS === 'true') {
 }
 
 app.use(cors(corsOptions));
+
+app.use('/bo/v1', require('./routes/back-office'));
 
 require('./routes')(app);
 
