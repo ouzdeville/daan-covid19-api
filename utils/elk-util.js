@@ -428,7 +428,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
-                    "size":0,
+                    "size":10000,
                     "query": {
 
                         "match_all": {}
