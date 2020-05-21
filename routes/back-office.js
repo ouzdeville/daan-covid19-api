@@ -19,6 +19,7 @@ router.post('/bo-user/auth', BackOfficeUserController.auth);
 router.post('/bo-user', boAuth, BackOfficeUserController.create);
 router.get('/bo-user', boAuth, BackOfficeUserController.getAll);
 router.put('/bo-user/updatePassword', boAuth, BackOfficeUserController.updatePassword);
+router.put('/bo-user/:id', boAuth, BackOfficeUserController.update);
 
 // End Users
 router.get('/user', boAuth, UserController.get);

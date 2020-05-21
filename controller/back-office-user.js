@@ -173,7 +173,7 @@ module.exports = {
         }).then((user) => {
             bcrypt.compare(password, user.password).then(function (result) {
                 if (result) {
-                    const token = jwt.sign({userName: user.userName});
+                    const token = jwt.sign({boUserID: user.id});
                     res.status(200).send({
                         success: true,
                         userName: user.userName,
@@ -337,5 +337,68 @@ module.exports = {
                 });
             })
             .catch((error) => res.status(400).send(error));
+    },
+
+    /**
+     * @api {put} /bo-user/:id/update Update user
+     * @apiName UpdateBackOfficeUser
+     * @apiGroup BackOfficeUser
+     *
+     * @apiParam {String} userName userName
+     * @apiParam {String} email email
+     * @apiParam {String} role role
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not (true)
+     * @apiSuccess (Success 200) {String} message Response message
+     *
+     * @apiError (Error 401) {Boolean} success If it works ot not (false)
+     * @apiError (Error 401) {String} message Response message
+     *
+     * @apiSuccessExample Success-Response
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully updated."
+     *     }
+     *
+     * @apiErrorExample Other Error
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "succes": false,
+     *       "message": "An error occured when updating the user"
+     *     }
+     */
+    update(req, res) {
+        const id = req.params.id;
+
+        let data;
+
+        if (parseInt(req.boUserID) === parseInt(id)) {
+            data = {
+                userName: req.body.userName,
+                email: req.body.email,
+            }
+        } else {
+            data = {
+                userName: req.body.userName,
+                email: req.body.email,
+                role: req.body.role,
+            }
+        }
+
+        BackOfficeUser.update(
+            data,
+            {where: {id: id}}
+        )
+            .then((user) => {
+                res.status(201).send({
+                    success: true,
+                    message: 'Successfully updated.'
+                });
+            })
+            .catch((error) => res.status(400).send({
+                succes: false,
+                message: "An error occured when updating the user"
+            }));
     },
 }

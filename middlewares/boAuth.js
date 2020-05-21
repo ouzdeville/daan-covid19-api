@@ -5,19 +5,20 @@ module.exports = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token);
-    req.userName = decodedToken.userName;
+    req.boUserID = decodedToken.boUserID;
 
-    const exist = await BackOfficeUser.findAll({
+    const user = await BackOfficeUser.findOne({
       where: {
-        userName: decodedToken.userName,
+        id: decodedToken.boUserID,
       },
     });
 
-    if (!exist || !exist.length) {
+    req.userName = user.userName;
+
+    if (!user) {
       res.status(401).send({error: 'invalid token.'});
       return;
     }
-    req.boUserID = exist[0].id;
     next();
   } catch(error) {
     console.log(error);
