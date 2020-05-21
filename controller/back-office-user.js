@@ -340,19 +340,19 @@ module.exports = {
     },
 
     /**
-     * @api {put} /bo-user/:id/update Update user
+     * @api {put} /bo-user/:id Update user
      * @apiName UpdateBackOfficeUser
      * @apiGroup BackOfficeUser
      *
      * @apiParam {String} userName userName
      * @apiParam {String} email email
-     * @apiParam {String} role role
+     * @apiParam {String} role role (a user can't update his own role)
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not (true)
      * @apiSuccess (Success 200) {String} message Response message
      *
-     * @apiError (Error 401) {Boolean} success If it works ot not (false)
-     * @apiError (Error 401) {String} message Response message
+     * @apiError (Error 400) {Boolean} success If it works ot not (false)
+     * @apiError (Error 400) {String} message Response message
      *
      * @apiSuccessExample Success-Response
      *     HTTP/1.1 201 Created
