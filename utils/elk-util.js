@@ -89,7 +89,6 @@ module.exports = {
                         "size": 0,
                         "query": {
                             "bool": {
-
                                 "must": [
                                     {
                                         "match_all": {}
@@ -100,15 +99,6 @@ module.exports = {
                                                 "gte": begin1,
                                                 "lte": end1,
                                                 "format": "epoch_millis"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "geo_distance": {
-                                            "distance": precision + "m",
-                                            "position": {
-                                                "lat": source.position.lat,
-                                                "lon": source.position.lon
                                             }
                                         }
                                     }
@@ -124,7 +114,15 @@ module.exports = {
                                     }
                                 },
                                 "filter": [
-                                    
+                                    {
+                                        "geo_distance": {
+                                            "distance": precision + "m",
+                                            "position": {
+                                                "lat": source.position.lat,
+                                                "lon": source.position.lon
+                                            }
+                                        }
+                                    }
                                 ]
 
                             }
@@ -227,7 +225,7 @@ module.exports = {
             hits = body.hits.hits;
             var result = [];
             var itemsProcessed = 0;
-            request={
+            request = {
                 "size": 0,
                 "query": {
                     "bool": {
@@ -253,7 +251,7 @@ module.exports = {
                     "users": {
                         "terms": {
                             "field": "id",
-                            "size" : 50
+                            "size": 50
                         }
                     }
                 }
