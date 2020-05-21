@@ -249,8 +249,7 @@ module.exports = {
                 "aggs": {
                     "users": {
                         "terms": {
-                            "field": "id",
-                            "size": 50
+                            "field": "id"
                         }
                     }
                 }
