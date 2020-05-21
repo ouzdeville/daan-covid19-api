@@ -294,20 +294,21 @@ module.exports = {
                 if (itemsProcessed === hits.length) {
                     //console.log("Results1:");
                     //console.log(result);
-                    callback(result, body.aggregations);
+                    const { body1 } = await client.search({
+                        index: indexlocation,
+                        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                        body: requete
+
+                    });
+
+                    //hits = body1.hits.hits;
+                    console.log(body1);
+                    callback(body1, body.aggregations);
                 }
             }
             //});
-            
-            const { body1 } = await client.search({
-                index: indexlocation,
-                // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-                body: requete
-               
-            });
 
-            hits = body1.hits.hits;
-            console.log(body1);
+
 
         } catch (error) {
             throw (error);
