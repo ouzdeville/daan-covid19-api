@@ -173,6 +173,144 @@ module.exports = {
     },
 
     /**
+     * Get the contacts of all users
+     * @param  {uuid} id the user id
+     * @param  {date} begin in format "yyyy-mm-dd"
+     * @param  {date} end   in format "yyyy-mm-dd"
+     * @param  {function} callback
+     */
+    async getUserContactsNew(id, begin, end, precision, callback) {
+        try {
+            const { body } = await client.search({
+                index: indexlocation,
+                // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                body: {
+                    "size": 10000,
+                    "query": {
+                        "bool": {
+                            "must": [
+                                {
+                                    "term": {
+                                        "id": {
+                                            "value": id,
+                                            "boost": 1.0
+                                        }
+                                    }
+                                },
+                                {
+                                    "range": {
+                                        "created_date": {
+                                            "gte": begin,
+                                            "lte": end,
+                                            "format": "epoch_millis"
+                                        }
+                                    }
+                                }
+                            ],
+                            "adjust_pure_negative": true,
+                            "boost": 1.0
+                        }
+                    },
+                    "sort": [
+                        {
+                            "created_date": {
+                                "order": "asc"
+                            }
+                        }
+                    ]
+                }
+            });
+
+
+            hits = body.hits.hits;
+            var result = [];
+            var itemsProcessed = 0;
+            requete = {
+                "size": 10000,
+                "query": {
+                    "bool": {
+                        "must_not": {
+                            "term": {
+                                "id": {
+                                    "value": id,
+                                    "boost": 1.0
+                                }
+                            }
+                        },
+                        "must": {
+                            "dis_max": {
+                                "queries": [],
+                                "tie_breaker": 1.0
+                            }
+                        }
+                    }
+                },
+                "aggs": {
+                    "users": {
+                        "terms": {
+                            "field": "id",
+                            "size": 50
+                        }
+                    }
+                }
+            };
+            for (var hit of hits) {
+                console.log("My new Position:" + id);
+                source = hit._source;
+                console.log("Source");
+                console.log(source);
+
+                begin1 = hit._source.created_date - 300000;
+                end1 = hit._source.created_date + 300000;
+                console.log("5 min before" + begin1);
+                console.log("5 min after" + end1);
+
+                elem = {
+                    "bool": {
+                        "must": [{
+                            "range": {
+                                "created_date": {
+                                    "gte": begin1,
+                                    "lte": end1,
+                                    "format": "epoch_second"
+                                }
+                            }
+                        },
+                        {
+                            "geo_distance": {
+                                "distance": precision + "m",
+                                "position": {
+                                    "lat": source.position.lat,
+                                    "lon": source.position.lon
+                                }
+                            }
+                        }
+                        ]
+                    }
+                };
+                requete.query.bool.must.dis_max.queries.push(elem);
+
+                itemsProcessed++;
+                if (itemsProcessed === hits.length) {
+                    //console.log("Results1:");
+                    //console.log(result);
+                    callback(result, body.aggregations);
+                }
+            }
+            //});
+            console.log(requete);
+
+        } catch (error) {
+            throw (error);
+        }
+
+
+
+
+
+
+    },
+    /**
      * Get All GPS position of a user from begin to end
      * @param  {UUID} id of the user
      * @param  {date} begin the begin date
@@ -428,7 +566,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
-                    "size":10000,
+                    "size": 10000,
                     "query": {
 
                         "match_all": {}

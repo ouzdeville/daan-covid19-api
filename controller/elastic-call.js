@@ -166,7 +166,7 @@ module.exports = {
             //Let's search!
             console.log("begin:" + begin);
             console.log("end:" + end);
-            await elasticClient.getUserContacts(id, begin, end, precision, function (result, buckets) {
+            await elasticClient.getUserContactsNew(id, begin, end, precision, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({
                     success: true,
