@@ -69,7 +69,7 @@ router.put('/symptom', boAuth, SymptomController.update);
 router.delete('/symptom/:id', boAuth, SymptomController.delete);
 
 //elastic search
-router.get('/user/contact/:id/:begin/:end/:precision', boAuth, ElasticCallController.getUserContacts);
+router.get('/user/contact/:id/:begin/:end/:distance/:time', boAuth, ElasticCallController.getUserContacts);
 router.get('/user/trace/all', boAuth, ElasticCallController.getAllTrace);
 router.get('/user/trace/:id/:begin/:end', boAuth, ElasticCallController.getUserTrace);
 router.post('/user/contact/position', boAuth, ElasticCallController.getContactsAtPositionAndDate);
