@@ -1,7 +1,8 @@
-const {Prevalence, Zone} = require('./../models');
-const {prevalenceCron} = require('./../utils');
+const { Prevalence, Zone } = require('./../models');
+const { prevalenceCron } = require('./../utils');
 const moment = require('moment');
 const fs = require('fs');
+const turf = require('@turf/turf');
 
 module.exports = {
     /**
@@ -175,7 +176,7 @@ module.exports = {
      */
     async getprevalenceNow(req, res) {
         let now = await moment().format("YYYY-MM-DD")
-        const {count} = await Zone.findAndCountAll();
+        const { count } = await Zone.findAndCountAll();
         Prevalence.findAll({
             limit: count,
             where: {
@@ -242,7 +243,7 @@ module.exports = {
      */
 
     getByZone(req, res) {
-        const {idZone} = req.params;
+        const { idZone } = req.params;
         Prevalence.findAll({
             where: {
                 idZone: idZone
@@ -346,13 +347,17 @@ module.exports = {
     async runPolygon(req, res) {
         try {
             let districtsgps = JSON.parse(fs.readFileSync('./init_data/Districts.geojson', 'utf8'));
-            //console.log(districtsgps.features.length);
+            console.log('districtsgps.features.length');
+
             for (var district of districtsgps.features) {
                 let polygon = district.geometry.coordinates[0][0];
+                var tpolygon = turf.polygon([polygon]);
+                var area = turf.area(tpolygon);
                 if ("Dakar" == district.properties.NomDS) {
                     await Zone.update(
                         {
                             polygon: polygon,
+                            area:area,
                         },
                         {
                             where: {
@@ -364,6 +369,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: district.geometry.coordinates[1][0],
+                            area:area,
                         },
                         {
                             where: {
@@ -375,6 +381,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
+                            area:area,
                         },
                         {
                             where: {
@@ -386,6 +393,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
+                            area:area,
                         },
                         {
                             where: {
@@ -397,6 +405,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
+                            area:area,
                         },
                         {
                             where: {
@@ -408,6 +417,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
+                            area:area,
                         },
                         {
                             where: {
@@ -418,6 +428,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
+                            area:area,
                         },
                         {
                             where: {

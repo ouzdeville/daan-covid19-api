@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         longitude: DataTypes.FLOAT,
         latitude: DataTypes.FLOAT,
         men: DataTypes.INTEGER,
-        women: DataTypes.INTEGER
+        women: DataTypes.INTEGER,
+        area: DataTypes.FLOAT,
     }, {});
 
     Zone.associate = function (models) {
