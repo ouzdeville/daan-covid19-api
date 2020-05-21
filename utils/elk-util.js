@@ -298,13 +298,16 @@ module.exports = {
                 }
             }
             //});
-            console.log(requete.query.bool.must.dis_max.queries);
+            
             const { body1 } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: requete
                
             });
+
+            hits = body1.hits.hits;
+            console.log(hits);
 
         } catch (error) {
             throw (error);
