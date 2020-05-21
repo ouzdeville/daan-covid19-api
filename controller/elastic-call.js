@@ -164,8 +164,8 @@ module.exports = {
                 });
             }
             //Let's search!
-            console.log("begin:" + begin);
-            console.log("end:" + end);
+            //console.log("begin:" + begin);
+            //console.log("end:" + end);
             await elasticClient.getUserContactsNew(id, begin, end, precision, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({

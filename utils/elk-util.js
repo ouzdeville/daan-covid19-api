@@ -299,7 +299,7 @@ module.exports = {
             }
             //});
             console.log(requete.query.bool.must.dis_max.queries);
-            const { body } = await client.search({
+            const { body1 } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: requete
