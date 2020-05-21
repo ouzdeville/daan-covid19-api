@@ -134,7 +134,10 @@ module.exports = {
      * @apiParam {String} password password
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not (true)
-     * @apiSuccess (Success 200) {String} message Response message
+     * @apiSuccess (Success 200) {String} userName
+     * @apiSuccess (Success 200) {String} email
+     * @apiSuccess (Success 200) {String} role
+     * @apiSuccess (Success 200) {Object} token token
      *
      * @apiError (Error 401) {Boolean} success If it works ot not (false)
      * @apiError (Error 401) {String} message Response message
@@ -143,6 +146,9 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *     {
      *       "success": true,
+     *       "userName": "sidya",
+     *       "email": "cheikh.camara@gsietechnology.com",
+     *       "role": "superadmin",
      *       "token": {
      *         "token": "<token>",
      *         "expiresIn": 2592000,
@@ -170,6 +176,9 @@ module.exports = {
                     const token = jwt.sign({userName: user.userName});
                     res.status(200).send({
                         success: true,
+                        userName: user.userName,
+                        email: user.email,
+                        role: user.role,
                         token: token
                     });
                 } else {
