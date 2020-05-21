@@ -255,15 +255,9 @@ module.exports = {
                 }
             };
             for (var hit of hits) {
-                console.log("My new Position:" + id);
                 source = hit._source;
-                console.log("Source");
-                console.log(source);
-
                 begin1 = hit._source.created_date - 300000;
                 end1 = hit._source.created_date + 300000;
-                console.log("5 min before" + begin1);
-                console.log("5 min after" + end1);
 
                 elem = {
                     "bool": {
@@ -300,9 +294,10 @@ module.exports = {
                         body: requete
 
                     });
-
+                    var myJSON = JSON.stringify(requete);
                     //hits = body1.hits.hits;
-                    console.log(body1);
+                    console.log("Result of request");
+                    console.log(myJSON);
                     callback(body1, body.aggregations);
                 }
             }
