@@ -307,7 +307,7 @@ module.exports = {
             });
 
             hits = body1.hits.hits;
-            console.log(hits);
+            console.log(body1);
 
         } catch (error) {
             throw (error);
