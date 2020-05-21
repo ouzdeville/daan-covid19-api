@@ -100,7 +100,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /user/contact/:id/:begin/:end/:precision Get all contacts by date
+     * @api {get} /user/contact/:id/:begin/:end/:distance/:time Get all contacts by date
      * @apiHeader {String} authorization User unique token
      * @apiName getUserContacts
      * @apiGroup Contact
@@ -108,7 +108,8 @@ module.exports = {
      * @apiParam {Number} id User id
      * @apiParam {Date} begin date in format "yyyy-mm-dd"
      * @apiParam {Date} end date in format "yyyy-mm-dd"
-     * @apiParam {Number} precision Number in meters 
+     * @apiParam {Number} distance Number in meters
+     * @apiParam {Number} time Number + or - time intervale 
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
      * @apiSuccess (Success 200) {Object} resust Location objects
@@ -138,6 +139,30 @@ module.exports = {
      *                   ]
      *               }
      *           ]
+     *          "buckets": {
+     *           "users": {
+     *               "doc_count_error_upper_bound": 0,
+     *               "sum_other_doc_count": 0,
+     *               "buckets": [
+     *                   {
+     *                       "key": "ad1581a1-6af0-4814-8a53-56825777f40a",
+     *                       "doc_count": 29
+     *                   },
+     *                   {
+     *                       "key": "08795296-b702-4768-899b-f3e54bd3eed0",
+     *                       "doc_count": 12
+     *                   },
+     *                   {
+     *                       "key": "50665aa1-44fb-4a5c-a3eb-ecf70bb58cdf",
+     *                       "doc_count": 2
+     *                   },
+     *                   {
+     *                       "key": "08ba4fd2-ab07-4294-93e6-f649adee6cab",
+     *                       "doc_count": 1
+     *                   }
+     *               ]
+     *           }
+     *       }
      *          
      *       
      *     }
@@ -148,7 +173,8 @@ module.exports = {
             let id = req.params.id;
             let begin = req.params.begin;
             let end = req.params.end;
-            let precision = req.params.precision;
+            let distance = req.params.distance;
+            let time = req.params.time;
             begin = new Date(begin).getTime();
             end = new Date(end).getTime();
             sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
@@ -166,7 +192,7 @@ module.exports = {
             //Let's search!
             //console.log("begin:" + begin);
             //console.log("end:" + end);
-            await elasticClient.getUserContacts(id, begin, end, precision, function (result, buckets) {
+            await elasticClient.getUserContactsNew(id, begin, end, distance, time, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({
                     success: true,
@@ -332,8 +358,8 @@ module.exports = {
                 },
             }).then((users) => {
                 if (users && users.length) {
-                    idUser=users[0].id;
-                } 
+                    idUser = users[0].id;
+                }
             });
         }
         try {

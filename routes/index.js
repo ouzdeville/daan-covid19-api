@@ -80,7 +80,7 @@ module.exports = (app) => {
   app.get('/symptoms/major', auth, SymptomController.getAllMajorSymptom);
 
   //elastic search
-  app.get('/user/contact/:id/:begin/:end/:precision', auth, ElasticCallController.getUserContacts);
+  app.get('/user/contact/:id/:begin/:end/:distance/:time', auth, ElasticCallController.getUserContacts);
   app.get('/user/trace/all', ElasticCallController.getAllTrace);
   app.get('/user/trace/:id/:begin/:end', auth, ElasticCallController.getUserTrace);
   app.post('/user/contact/position', auth, ElasticCallController.getContactsAtPositionAndDate);

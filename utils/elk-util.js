@@ -25,13 +25,13 @@ module.exports = {
      * @param  {date} end   in format "yyyy-mm-dd"
      * @param  {function} callback
      */
-    async getUserContacts(id, begin, end, precision, callback) {
+    async getUserContacts(id, begin, end, distance,time, callback) {
+        console.log("getUserContacts");
         try {
             const { body } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-                body: {
-                    "size": 10000,
+                body: { 
                     "query": {
                         "bool": {
                             "must": [
@@ -71,6 +71,7 @@ module.exports = {
             hits = body.hits.hits;
             var result = [];
             var itemsProcessed = 0;
+            deltatime=time*60000
             for (var hit of hits) {
                 //hits.forEach(async (hit) => {
                 console.log("My new Position:" + id);
@@ -78,8 +79,8 @@ module.exports = {
                 console.log("Source");
                 console.log(source);
 
-                begin1 = hit._source.created_date - 300000;
-                end1 = hit._source.created_date + 300000;
+                begin1 = hit._source.created_date - deltatime;
+                end1 = hit._source.created_date + deltatime;
                 console.log("5 min before" + begin1);
                 console.log("5 min after" + end1);
                 const { body } = await client.search({
@@ -108,7 +109,7 @@ module.exports = {
                                 "filter": [
                                     {
                                         "geo_distance": {
-                                            "distance": precision + "m",
+                                            "distance": distance + "m",
                                             "position": {
                                                 "lat": source.position.lat,
                                                 "lon": source.position.lon
@@ -179,7 +180,7 @@ module.exports = {
      * @param  {date} end   in format "yyyy-mm-dd"
      * @param  {function} callback
      */
-    async getUserContactsNew(id, begin, end, precision, callback) {
+    async getUserContactsNew(id, begin, end, distance,time, callback) {
         try {
             const { body } = await client.search({
                 index: indexlocation,
@@ -254,10 +255,11 @@ module.exports = {
                     }
                 }
             };
+            deltatime=time*60000;
             for (var hit of hits) {
                 source = hit._source;
-                begin1 = hit._source.created_date - 300000;
-                end1 = hit._source.created_date + 300000;
+                begin1 = hit._source.created_date - deltatime;
+                end1 = hit._source.created_date + deltatime;
 
                 elem = {
                     "bool": {
@@ -272,7 +274,7 @@ module.exports = {
                         },
                         {
                             "geo_distance": {
-                                "distance": precision + "m",
+                                "distance": distance + "m",
                                 "position": {
                                     "lat": source.position.lat,
                                     "lon": source.position.lon
@@ -288,17 +290,17 @@ module.exports = {
                 if (itemsProcessed === hits.length) {
                     //console.log("Results1:");
                     //console.log(result);
-                    const { body1 } = await client.search({
+                    const { body } = await client.search({
                         index: indexlocation,
                         // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                         body: requete
 
                     });
-                    var myJSON = JSON.stringify(body1);
-                    //hits = body1.hits.hits;
-                    console.log("Result of request");
-                    console.log(myJSON);
-                    callback(body1, body.aggregations);
+                    //var myJSON = JSON.stringify(body);
+                    hits = body.hits.hits;
+                    //console.log("Result of request");
+                    //console.log(myJSON);
+                    callback(hits, body.aggregations);
                 }
             }
             //});
