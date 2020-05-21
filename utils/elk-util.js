@@ -428,6 +428,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
+                    "size":0,
                     "query": {
 
                         "match_all": {}
@@ -436,7 +437,7 @@ module.exports = {
                     "sort": [
                         {
                             "created_date": {
-                                "order": "asc"
+                                "order": "desc"
                             }
                         }
                     ]
