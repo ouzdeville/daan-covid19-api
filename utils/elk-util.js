@@ -294,7 +294,7 @@ module.exports = {
                         body: requete
 
                     });
-                    var myJSON = JSON.stringify(requete);
+                    var myJSON = JSON.stringify(body1);
                     //hits = body1.hits.hits;
                     console.log("Result of request");
                     console.log(myJSON);
