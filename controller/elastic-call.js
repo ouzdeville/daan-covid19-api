@@ -81,31 +81,47 @@ module.exports = {
                 }
             });
         }
+        console.log("ID:" + id);
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 var i, j;
-                zones = Zone.findAll();
-                console.log(zones);
-                /*for (i = 0; i < result.length; i++) {
-                    result[i].zones = [];
-                    console.log(zones)
+                zoneslist = [];
+
+                Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {
-                        var poly = (zones[j].polygon);
-                        //poly=JSON.parse(poly);
-                        rst = false;
-                        console.log(result[i]._source)
-                        if (poly != null)
-                            //rst = insidePolygon(result[i]._source.position, poly);
+                        area = {
+                            id: zones[j].id,
+                            name: zones[j].name,
+                            duration: 0
+                        };
+                        for (i = 0; i < result.length; i++) {
+                            var poly = (zones[j].polygon);
+                            //poly=JSON.parse(poly);
+                            rst = false;
+
+                            if (poly != null)
+                                rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
-                                //result[i].zones.push(zones[j]);
+                                area.duration += 5;
                             }
+
+                        }
+                        if (0 < area.duration)
+                            zoneslist.push(area);
+                        if (j == zones.length - 1) {
+                            res.status(200).send({
+                                success: true,
+                                code: 99,
+                                resust: result,
+                                zones: zoneslist
+                            });
+                        }
                     }
-                }*/
-                res.status(200).send({
-                    success: true,
-                    code: 99,
-                    resust: result,
+
+
                 });
+
+
             });
         } catch (error) {
             console.log(error);
