@@ -85,12 +85,11 @@ module.exports = {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 var i, j;
                 zones = Zone.findAll();
+                console.log(zones)
                 for (i = 0; i < result.length; i++) {
                     result[i].zones = [];
-                    //console.log(result[i]._source)
-
+                    console.log(zones)
                     for (j = 0; j < zones.length; j++) {
-
                         var poly = (zones[j].polygon);
                         //poly=JSON.parse(poly);
                         rst = false;
