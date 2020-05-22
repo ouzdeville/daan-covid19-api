@@ -86,13 +86,13 @@ module.exports = {
                 var i;
                 for (i = 0; i < result.length; i++) {
                     result[i].zones = [];
+                    console.log(result[i]);
                     //console.log(location);
                     Zone.findAll().then((zones) => {
                         zones.forEach(zone => {
                             var poly = (zone.polygon);
                             //poly=JSON.parse(poly);
                             rst = false;
-                            //console.log(poly);
                             if (poly != null)
                                 rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
