@@ -84,27 +84,23 @@ module.exports = {
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 var i, j;
-                Zone.findAll().then((zones) => {
+                zones = Zone.findAll();
+                console.log(zones);
+                /*for (i = 0; i < result.length; i++) {
+                    result[i].zones = [];
+                    console.log(zones)
                     for (j = 0; j < zones.length; j++) {
                         var poly = (zones[j].polygon);
                         //poly=JSON.parse(poly);
-                        for (i = 0; i < result.length; i++) {
-                            result[i].zones = [];
-                            rst = false;
-                            console.log(result[i]._source)
-                            if (poly != null)
-                                rst = insidePolygon(result[i]._source.position, poly);
+                        rst = false;
+                        console.log(result[i]._source)
+                        if (poly != null)
+                            //rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
-                                result[i].zones.push(zones[j]);
+                                //result[i].zones.push(zones[j]);
                             }
-
-                        }
-
-
-
                     }
-
-                });
+                }*/
                 res.status(200).send({
                     success: true,
                     code: 99,
