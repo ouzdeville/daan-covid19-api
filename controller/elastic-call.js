@@ -1,10 +1,11 @@
-const { Incubation, User } = require('./../models');
+const { Incubation, User,Zone } = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
 const { elasticClient } = require('./../utils');
 const { jwt, smsProviders } = require('./../providers');
 const { cryptoUtil } = require('../utils');
+const { insidePolygon } = require('geolocation-utils');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
