@@ -59,7 +59,25 @@ module.exports = {
      *                       1586782662538
      *                   ]
      *               }
+     *           ],
+     *          "zones": [
+     *               {
+     *                   "id": "6e979c16-ec60-489d-97ac-0adc099d586a",
+     *                   "name": "DAKAR-NORD",
+     *                   "duration": 80  duration in minutes
+     *               },
+     *               {
+     *                   "id": "77baa645-1143-48ca-b899-85c3230372e6",
+     *                   "name": "DAKAR-OUEST",
+     *                   "duration": 470
+     *               },
+     *               {
+     *                   "id": "494d486d-e2f9-4425-846e-98400f75e144",
+     *                   "name": "DAKAR-CENTRE",
+     *                   "duration": 15
+     *               }
      *           ]
+     * 
      *
      *
      *     }
