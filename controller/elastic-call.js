@@ -1,4 +1,4 @@
-const { Incubation, User,Zone } = require('./../models');
+const { Incubation, User, Zone } = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
@@ -83,24 +83,24 @@ module.exports = {
         }
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
-                var i;
+                var i, j;
+                zones = Zone.findAll();
                 for (i = 0; i < result.length; i++) {
                     result[i].zones = [];
-                    console.log(result[i]._source)
-                    Zone.findAll().then((zones) => {
-                        zones.forEach(zone => {
-                            var poly = (zone.polygon);
-                            //poly=JSON.parse(poly);
-                            rst = false;
-                            if (poly != null)
-                                //rst = insidePolygon(result[i]._source.position, poly);
+                    //console.log(result[i]._source)
+
+                    for (j = 0; j < zones.length; j++) {
+
+                        var poly = (zones[j].polygon);
+                        //poly=JSON.parse(poly);
+                        rst = false;
+                        console.log(result[i]._source)
+                        if (poly != null)
+                            //rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
-                                //result[i].zones.push(zone);
+                                //result[i].zones.push(zones[j]);
                             }
-                        });
-
-
-                    });
+                    }
                 }
                 res.status(200).send({
                     success: true,
