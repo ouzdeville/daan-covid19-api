@@ -104,24 +104,27 @@ module.exports = {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 var i, j;
                 zoneslist = [];
-
+                let initenaires = [];
+                let initenaire = [];
                 Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {
                         area = {
                             id: zones[j].id,
                             name: zones[j].name,
                             type: zones[j].type,
-                            duration: 0
+                            duration: 0,
+                            source:[]
                         };
                         for (i = 0; i < result.length; i++) {
                             var poly = (zones[j].polygon);
-                            //poly=JSON.parse(poly);
+                            
                             rst = false;
 
                             if (poly != null)
                                 rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
                                 area.duration += 5;
+                                area.source.push(result[i]);
                             }
 
                         }
@@ -490,10 +493,10 @@ module.exports = {
      */
     async getIncubContact(req, res) {
         let { idUser, begin, end } = req.params;
-            let distance = req.params.distance;
-            let time = req.params.time;
-            begin = new Date(begin).getTime();
-            end = new Date(end).getTime();
+        let distance = req.params.distance;
+        let time = req.params.time;
+        begin = new Date(begin).getTime();
+        end = new Date(end).getTime();
         sphone = cryptoUtil.getSID(idUser, process.env.JWT_SECRET);
         if (sphone != "") {
             await User.findAll({
@@ -508,7 +511,7 @@ module.exports = {
         }
         try {
             //get all contacts first
-            await elasticClient.getUserContactsNew(idUser, begin, end, distance,time, async function (result) {
+            await elasticClient.getUserContactsNew(idUser, begin, end, distance, time, async function (result) {
                 var resultpositive = [];
                 var counter = result.length;
                 if (counter) {
