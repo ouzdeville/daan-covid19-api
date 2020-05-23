@@ -151,6 +151,91 @@ module.exports = {
         }
     },
 
+    async getUserTraceV2(req, res) {
+        let id = req.params.id;
+        let begin = req.params.begin;
+        let end = req.params.end;
+        sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+        if (sphone != "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    id = users[0].id;
+                }
+            });
+        }
+        console.log("ID:" + id);
+        try {
+            await elasticClient.getUserTrace(id, begin, end, function (result) {
+                let r = result;
+                r = r.map((e, i) => {
+                    return {
+                        id: e._source.id,
+                        created_date: new Date(e._source.created_date),
+                        position: e._source.position,
+                        duration_since_last: (i === 0) ? null : Math.round((e._source.created_date - r[i - 1]._source.created_date) / 60000),
+                    }
+                })
+
+                let initenaires = []
+                let initenaire = []
+                r.forEach((e, i) => {
+                    if (e.duration_since_last === null || e.duration_since_last < 10) {
+                        initenaire.push(e)
+                    } else {
+                        initenaires.push(initenaire);
+                        initenaire = [e]
+                    }
+                })
+
+
+                var i, j;
+                zoneslist = [];
+
+                Zone.findAll().then((zones) => {
+                    for (j = 0; j < zones.length; j++) {
+                        area = {
+                            id: zones[j].id,
+                            name: zones[j].name,
+                            type: zones[j].type,
+                            duration: 0
+                        };
+                        for (i = 0; i < result.length; i++) {
+                            var poly = (zones[j].polygon);
+                            //poly=JSON.parse(poly);
+                            rst = false;
+
+                            if (poly != null)
+                                rst = insidePolygon(result[i]._source.position, poly);
+                            if (rst) {
+                                area.duration += 5;
+                            }
+                        }
+                        if (0 < area.duration)
+                            zoneslist.push(area);
+                        if (j == zones.length - 1) {
+                            res.status(200).send({
+                                success: true,
+                                code: 99,
+                                itineraires: initenaires,
+                                zones: zoneslist
+                            });
+                        }
+                    }
+                });
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+        }
+    },
+
     /**
      * @api {get} /user/contact/:id/:begin/:end/:distance/:time Get all contacts by date
      * @apiHeader {String} authorization User unique token

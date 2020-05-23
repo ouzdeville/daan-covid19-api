@@ -72,6 +72,7 @@ router.delete('/symptom/:id', boAuth, SymptomController.delete);
 router.get('/user/contact/:id/:begin/:end/:distance/:time', boAuth, ElasticCallController.getUserContacts);
 router.get('/user/trace/all', boAuth, ElasticCallController.getAllTrace);
 router.get('/user/trace/:id/:begin/:end', boAuth, ElasticCallController.getUserTrace);
+router.get('/user/trace/v2/:id/:begin/:end', boAuth, ElasticCallController.getUserTraceV2);
 router.post('/user/contact/position', boAuth, ElasticCallController.getContactsAtPositionAndDate);
 router.get('/user/incub/:idUser/:begin/:end', boAuth, ElasticCallController.getIncubContact);
 
