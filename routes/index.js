@@ -85,7 +85,7 @@ module.exports = (app) => {
   app.get('/user/trace/:id/:begin/:end', auth, ElasticCallController.getUserTrace);
   app.post('/user/contact/position', auth, ElasticCallController.getContactsAtPositionAndDate);
   //app.get('/user/inside/:latitude/:longitude', auth, ElasticCallController.isInAZoneElastic);
-  app.get('/user/incub/:idUser/:begin/:end', auth, ElasticCallController.getIncubContact);
+  app.get('/user/incub/:idUser/:begin/:end/:distance/:time', auth, ElasticCallController.getIncubContact);
   //app.post('/zone', auth, ElasticCallController.createZone);
   //app.get('/zones', auth, ElasticCallController.getZones);
   //app.get('/zone/:id', auth, ZoneController.getZone);

@@ -110,6 +110,7 @@ module.exports = {
                         area = {
                             id: zones[j].id,
                             name: zones[j].name,
+                            type: zones[j].type,
                             duration: 0
                         };
                         for (i = 0; i < result.length; i++) {
@@ -359,13 +360,16 @@ module.exports = {
     },
 
     /**
-     * @api {get} /user/incub/:idUser/:begin/:end Infected Contacts
+     * @api {get} /user/incub/:id/:begin/:end/:distance/:time Infected Contacts
      * @apiHeader {String} authorization User unique token
      * @apiName getIncubContact
      * @apiGroup Contact
      *
-     * @apiParam {Number} latitude GPS latitude
-     * @apiParam {Number} longitude GPS longitude
+     * @apiParam {Number} id User id
+     * @apiParam {Date} begin date in format "yyyy-mm-dd"
+     * @apiParam {Date} end date in format "yyyy-mm-dd"
+     * @apiParam {Number} distance Number in meters
+     * @apiParam {Number} time Number + or - time intervale 
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
      * @apiSuccess (Success 200) {Object} resust Location objects
@@ -401,6 +405,10 @@ module.exports = {
      */
     async getIncubContact(req, res) {
         let { idUser, begin, end } = req.params;
+            let distance = req.params.distance;
+            let time = req.params.time;
+            begin = new Date(begin).getTime();
+            end = new Date(end).getTime();
         sphone = cryptoUtil.getSID(idUser, process.env.JWT_SECRET);
         if (sphone != "") {
             await User.findAll({
@@ -415,7 +423,7 @@ module.exports = {
         }
         try {
             //get all contacts first
-            await elasticClient.getUserContacts(idUser, begin, end, 2, async function (result) {
+            await elasticClient.getUserContactsNew(idUser, begin, end, distance,time, async function (result) {
                 var resultpositive = [];
                 var counter = result.length;
                 if (counter) {
