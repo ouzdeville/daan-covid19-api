@@ -2,7 +2,7 @@ const multer = require('multer');
 
 const {
   UserController, LocationController,
-  ZoneController,
+  ZoneController, TestController,
   BarrierGestureController, SelfReportingController,
   GreenNumberController, SymptomController,
   PrevalenceController, DailyReportController,
@@ -112,4 +112,6 @@ module.exports = (app) => {
   app.get('/risk-factors', auth, RiskFactorController.getAllRiskFactor);
   app.get('/self-report/risk-factors/:idreport', SelfReportingController.getAllRiskByReport);
   app.get('/self-report/:idreport/symptoms', SelfReportingController.getAllSymptomByReport);
+
+  app.get('/test', TestController.out);
 };

@@ -88,7 +88,7 @@ module.exports = {
         let begin = req.params.begin;
         let end = req.params.end;
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
-        if (sphone != "") {
+        if (sphone !== "") {
             await User.findAll({
                 where: {
                     phone: sphone,
@@ -159,7 +159,7 @@ module.exports = {
         let begin = req.params.begin;
         let end = req.params.end;
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
-        if (sphone != "") {
+        if (sphone !== "") {
             await User.findAll({
                 where: {
                     phone: sphone,
@@ -174,29 +174,30 @@ module.exports = {
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 let r = result;
-                r = r.map((e, i) => {
-                    return {
+
+                let initenaires = [];
+                let initenaire = [];
+
+                r.forEach((e, idx) => {
+                    let duration_since_last = (idx === 0) ? null : Math.round((e._source.created_date - r[idx - 1]._source.created_date) / 60000);
+
+                    let elem = {
                         id: e._source.id,
                         created_date: new Date(e._source.created_date),
                         position: e._source.position,
-                        duration_since_last: (i === 0) ? null : Math.round((e._source.created_date - r[i - 1]._source.created_date) / 60000),
+                        duration_since_last: duration_since_last,
                     }
-                })
 
-                let initenaires = []
-                let initenaire = []
-                r.forEach((e, i) => {
-                    if (e.duration_since_last === null || e.duration_since_last < 10) {
-                        initenaire.push(e)
+                    if (duration_since_last === null || duration_since_last < 10) {
+                        initenaire.push(elem)
                     } else {
                         initenaires.push(initenaire);
-                        initenaire = [e]
+                        initenaire = [elem]
                     }
                 })
 
-
-                var i, j;
-                zoneslist = [];
+                let i, j;
+                let zoneslist = [];
 
                 Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {

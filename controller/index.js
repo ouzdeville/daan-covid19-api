@@ -15,4 +15,5 @@ module.exports = {
     PushNotificationController: require('./push-notification'),
     PushNotificationOsController: require('./push-notification-one-signal'),
     ScreeningController: require('./screening'),
+    TestController: require('./test'),
 };
