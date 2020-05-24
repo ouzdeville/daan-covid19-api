@@ -155,10 +155,8 @@ module.exports = {
     },
 
     async getUserTraceV2(req, res) {
-        let id = req.params.id;
-        let begin = req.params.begin;
-        let end = req.params.end;
-        sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+        let {id, begin, end} = req.params;
+        const sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
         if (sphone !== "") {
             await User.findAll({
                 where: {
@@ -170,11 +168,10 @@ module.exports = {
                 }
             });
         }
-        console.log("ID:" + id);
+
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 let r = result;
-
                 let initenaires = [];
                 let initenaire = [];
 
@@ -201,16 +198,16 @@ module.exports = {
 
                 Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {
-                        area = {
+                        let area = {
                             id: zones[j].id,
                             name: zones[j].name,
                             type: zones[j].type,
                             duration: 0
                         };
                         for (i = 0; i < result.length; i++) {
-                            var poly = (zones[j].polygon);
+                            let poly = (zones[j].polygon);
                             //poly=JSON.parse(poly);
-                            rst = false;
+                            let rst = false;
 
                             if (poly != null)
                                 rst = insidePolygon(result[i]._source.position, poly);
@@ -220,7 +217,7 @@ module.exports = {
                         }
                         if (0 < area.duration)
                             zoneslist.push(area);
-                        if (j == zones.length - 1) {
+                        if (j === zones.length - 1) {
                             res.status(200).send({
                                 success: true,
                                 code: 99,
