@@ -394,7 +394,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /bo-user/:id Change statut of a user
+     * @api {get} /bo-user/:id/change-statut Change statut of a user
      * @apiName ChangeStatutBackOfficeUser
      * @apiGroup BackOfficeUser
      *
