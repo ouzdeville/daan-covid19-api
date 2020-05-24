@@ -1,4 +1,4 @@
-const json_data = require('../http_request_test/out.json')
+const json_data = require('./out.json')
 
 module.exports = {
     out: function (req, res) {

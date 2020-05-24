@@ -340,6 +340,121 @@ module.exports = {
     },
 
     /**
+     * @api {get} /bo-user/:id Get User by ID
+     * @apiName GetBackOfficeUser
+     * @apiGroup BackOfficeUser
+     *
+     * @apiSuccess (Success 200) {Number} id ID
+     * @apiSuccess (Success 200) {String} userName userName
+     * @apiSuccess (Success 200) {String} email email
+     * @apiSuccess (Success 200) {String} role role
+     * @apiSuccess (Success 200) {Boolean} actif actif
+     * @apiSuccess (Success 200) {Date} createdAt createdAt
+     * @apiSuccess (Success 200) {Object} CreatedBy CreatedBy
+     * @apiSuccess (Success 200) {Number} CreatedBy.id ID
+     * @apiSuccess (Success 200) {String} CreatedBy.userName userName
+     * @apiSuccess (Success 200) {String} CreatedBy.email email
+     *
+     * @apiSuccessExample Success-Response
+     *     HTTP/1.1 200 OK
+     *     {
+     *       {
+     *         "id": 9,
+     *         "userName": "cscamara",
+     *         "email": "cheikh.camara@gsietechnology.com",
+     *         "role": "superadmin",
+     *         "actif": true,
+     *         "createdAt": "2020-05-19T20:50:25.023Z",
+     *         "CreatedBy": {
+     *           "id": 5,
+     *           "userName": "sidya",
+     *           "email": "sidya.camara@gmail.com"
+     *         }
+     *       }
+     *     }
+     */
+    get(req, res) {
+        const {id} = req.params;
+
+        BackOfficeUser.findOne({
+            attributes: ['id', 'userName', 'email', 'role', 'actif', 'createdAt'],
+            include: [{
+                model: BackOfficeUser,
+                as: 'CreatedBy',
+                attributes: ['id', 'userName', 'email'],
+            }],
+            where: {
+                id: id
+            }
+        })
+            .then((user) => {
+                res.status(200).send(user);
+            })
+            .catch((error) => res.status(400).send(error));
+    },
+
+    /**
+     * @api {get} /bo-user/:id Change statut of a user
+     * @apiName ChangeStatutBackOfficeUser
+     * @apiGroup BackOfficeUser
+     *
+     * @apiSuccess (Created 201) {Number} id ID
+     * @apiSuccess (Created 201) {String} userName userName
+     * @apiSuccess (Created 201) {String} email email
+     * @apiSuccess (Created 201) {String} role role
+     * @apiSuccess (Created 201) {Boolean} actif actif
+     * @apiSuccess (Created 201) {Date} createdAt createdAt
+     * @apiSuccess (Created 201) {Object} CreatedBy CreatedBy
+     * @apiSuccess (Created 201) {Number} CreatedBy.id ID
+     * @apiSuccess (Created 201) {String} CreatedBy.userName userName
+     * @apiSuccess (Created 201) {String} CreatedBy.email email
+     *
+     * @apiSuccessExample Success-Response
+     *     HTTP/1.1 200 OK
+     *     {
+     *       {
+     *         "id": 9,
+     *         "userName": "cscamara",
+     *         "email": "cheikh.camara@gsietechnology.com",
+     *         "role": "superadmin",
+     *         "actif": false,
+     *         "createdAt": "2020-05-19T20:50:25.023Z",
+     *         "CreatedBy": {
+     *           "id": 5,
+     *           "userName": "sidya",
+     *           "email": "sidya.camara@gmail.com"
+     *         }
+     *       }
+     *     }
+     */
+    changeStatut(req, res) {
+        const {id} = req.params;
+
+        BackOfficeUser.findOne({
+            attributes: ['id', 'userName', 'email', 'role', 'actif', 'createdAt'],
+            include: [{
+                model: BackOfficeUser,
+                as: 'CreatedBy',
+                attributes: ['id', 'userName', 'email'],
+            }],
+            where: {
+                id: id
+            }
+        })
+            .then((user) => {
+                BackOfficeUser.update(
+                    {actif: !user.actif},
+                    {where: {id: id}}
+                )
+                    .then((user2) => {
+                        res.status(201).send(user);
+                    })
+                    .catch((error) => res.status(400).send(error));
+            })
+            .catch((error) => res.status(400).send(error));
+    },
+
+    /**
      * @api {put} /bo-user/:id Update user
      * @apiName UpdateBackOfficeUser
      * @apiGroup BackOfficeUser
