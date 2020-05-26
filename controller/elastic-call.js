@@ -711,5 +711,105 @@ module.exports = {
             });
 
         }
-    }
+    },
+
+    async getRiskLevel(req, res) {
+        console.log("getRiskLevel");
+        let id = req.params.id;
+        let begin = new Date('2020-05-10 15:17:51.273+00');
+        let end = new Date();
+        sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+        if (sphone != "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    id = users[0].id;
+                }
+            });
+        }
+        console.log("ID:" + id);
+        try {
+            await elasticClient.getUserTrace(id, begin, end, function (result) {
+                var i, j;
+                zoneslist = [];
+                numberOfConfirmedCases=0;
+                let riskRate = 0;
+                const BETA = 1.75;
+                const ALPHA = 0.50;
+                Zone.findAll().then((zones) => {
+                    for (j = 0; j < zones.length; j++) {
+                        area = {
+                            id: zones[j].id,
+                            name: zones[j].name,
+                            type: zones[j].type,
+                            men: zones[j].men,
+                            women: zones[j].women,
+                            area: zones[j].area,
+                            duration: 0
+                        };
+                        for (i = 0; i < result.length; i++) {
+                            var poly = (zones[j].polygon);
+                            //poly=JSON.parse(poly);
+                            rst = false;
+
+                            if (poly != null)
+                                rst = insidePolygon(result[i]._source.position, poly);
+                            if (rst) {
+                                area.duration += 5;
+                            }
+
+                        }
+                        if (0 < area.duration)
+                            zoneslist.push(area);
+                        if (j == zones.length - 1) {
+                            let numberOfConfirmedCases = 0;
+                            zoneslist.forEach(element => {
+                                Prevalence.findOne({
+                                    where: {
+                                        idZone: element.id
+                                    }
+                                }).then(prevalence=>{
+                                    numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
+                                })
+                            });
+                            let populationSize = element.women + element.men;
+                            degreeOfExposure =  (populationSize / element.area) * element.duration;
+                            zoneRiskLevel = numberOfConfirmedCases / populationSize; 
+                            riskRate += degreeOfExposure * zoneRiskLevel;
+                            if(riskRate <= 0){
+                                res.send({
+                                    riskLevel: "NO_EXPOSURE"
+                                });
+                            }else if (riskRate <= ALPHA) {
+                                res.send({
+                                    riskLevel: "LOW_EXPOSURE"
+                                });
+                            }else if (riskRate <= BETA) {
+                                res.send({
+                                    riskLevel: "AVERAGE_EXPOSURE"
+                                });
+                            }else{
+                                res.send({
+                                    riskLevel: "HIGH_EXPOSURE"
+                                });
+                            }
+                        }
+                    }
+
+
+                });
+
+
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+        }
+    },
 }
