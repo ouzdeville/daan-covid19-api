@@ -89,7 +89,7 @@ module.exports = (app) => {
   //app.post('/zone', auth, ElasticCallController.createZone);
   //app.get('/zones', auth, ElasticCallController.getZones);
   //app.get('/zone/:id', auth, ZoneController.getZone);
-  app.get('/user/risk-level/:id', ElasticCallController.getRiskLevel);
+  app.get('/user/risk-level/:id', auth, ElasticCallController.getRiskLevel);
   app.get('/gentoken', ElasticCallController.gentoken);
   app.get('/user/encrypt', UserController.encryptAllNumber);
   app.get('/user/decrypt', UserController.decryptAllUsers);
