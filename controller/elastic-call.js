@@ -716,8 +716,8 @@ module.exports = {
     async getRiskLevel(req, res) {
         console.log("getRiskLevel");
         let id = req.params.id;
-        let begin = new Date('2020-05-10 15:17:51.273+00');
-        let end = new Date();
+        let begin = new Date('2020-05-10 15:17:51.273+00').getTime();
+        let end = new Date().getTime();
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
         if (sphone != "") {
             await User.findAll({
