@@ -77,6 +77,7 @@ router.get('/user/trace/:id/:begin/:end', boAuth, ElasticCallController.getUserT
 router.get('/user/trace/v2/:id/:begin/:end', boAuth, ElasticCallController.getUserTraceV2);
 router.post('/user/contact/position', boAuth, ElasticCallController.getContactsAtPositionAndDate);
 router.get('/user/incub/:idUser/:begin/:end', boAuth, ElasticCallController.getIncubContact);
+router.get('/user/risk-level/:id', boAuth, ElasticCallController.getRiskLevel);
 
 // self reporting
 router.get('/reporting/self-reports', boAuth, SelfReportingController.getAllSelfReports);
