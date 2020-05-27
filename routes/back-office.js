@@ -36,6 +36,7 @@ router.get('/zone/:id', boAuth, ZoneController.getZone);
 router.get('/user/inside/:latitude/:longitude', boAuth, ZoneController.isInAZone);
 router.get('/contacts', boAuth, ContactController.getContacts);
 router.get('/contact/:id', boAuth, ContactController.getContact);
+router.post('/user/signaler', boAuth, UserController.signaler);
 
 // Route Prevalence
 router.post('/prevalence', boAuth, PrevalenceController.create);
