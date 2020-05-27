@@ -232,6 +232,10 @@ module.exports = {
      *
      * @apiHeader Authorization Token <<token>>
      *
+     * @apiParam {Date} debutincubation Date début incubation
+     * @apiParam {Date} finincubation Date fin incubation
+     * @apiParam {Number} idUser idUser
+     *
      * @apiSuccess (Success 201) {Object} result
      *
      * @apiSuccessExample Success-Response:
