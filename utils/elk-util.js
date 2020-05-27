@@ -347,7 +347,7 @@ module.exports = {
                                         "created_date": {
                                             "gte": begin,
                                             "lte": end,
-                                            "format": "yyyy-mm-dd"
+                                            "format": "yyyy-MM-dd"
                                         }
                                     }
                                 }
