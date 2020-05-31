@@ -1,4 +1,4 @@
-const { Incubation, User, Zone } = require('./../models');
+const { Incubation, User, Zone,Prevalence } = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
