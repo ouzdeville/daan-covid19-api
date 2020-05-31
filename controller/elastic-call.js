@@ -6,6 +6,7 @@ const { elasticClient } = require('./../utils');
 const { jwt, smsProviders } = require('./../providers');
 const { cryptoUtil } = require('../utils');
 const { insidePolygon } = require('geolocation-utils');
+const moment = require('moment');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
@@ -113,11 +114,11 @@ module.exports = {
                             name: zones[j].name,
                             type: zones[j].type,
                             duration: 0,
-                            source:[]
+                            source: []
                         };
                         for (i = 0; i < result.length; i++) {
                             var poly = (zones[j].polygon);
-                            
+
                             rst = false;
 
                             if (poly != null)
@@ -155,7 +156,7 @@ module.exports = {
     },
 
     async getUserTraceV2(req, res) {
-        let {id, begin, end} = req.params;
+        let { id, begin, end } = req.params;
         const sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
         if (sphone !== "") {
             await User.findAll({
@@ -716,8 +717,10 @@ module.exports = {
     async getRiskLevel(req, res) {
         console.log("getRiskLevel");
         let id = req.params.id;
-        let begin = new Date('2020-05-10 15:17:51.273+00').getTime();
-        let end = new Date().getTime();
+        let end = await moment().format("YYYY-MM-DD");
+        let begin = await moment().add(-14, 'days').format("YYYY-MM-DD");
+        console.log(begin);
+        console.log(end);
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
         if (sphone != "") {
             await User.findAll({
@@ -735,12 +738,23 @@ module.exports = {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 var i, j;
                 zoneslist = [];
-                numberOfConfirmedCases=0;
                 let riskRate = 0;
                 const BETA = 1.75;
                 const ALPHA = 0.50;
                 Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {
+                        let numberOfConfirmedCases = 0;
+                        let populationSize = 1;
+                        let densite = 0;
+                        Prevalence.findOne({
+                            where: {
+                                idZone: zones[j].id
+                            },
+                            order: [['createdAt', 'DESC']]
+                        }).then(prevalence => {
+                            numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
+
+                        });
                         area = {
                             id: zones[j].id,
                             name: zones[j].name,
@@ -748,8 +762,22 @@ module.exports = {
                             men: zones[j].men,
                             women: zones[j].women,
                             area: zones[j].area,
-                            duration: 0
+                            duration: 0,
+                            numberOfConfirmedCases: 0,
+                            populationSize: 0,
+                            densite: 0,
+                            degreeOfExposure:0
                         };
+                        if (numberOfConfirmedCases != null)
+                            area.numberOfConfirmedCases = numberOfConfirmedCases;
+                        if (area.men != null)
+                            area.populationSize += area.men;
+                        if (area.women != null)
+                            area.populationSize += area.women;
+                        if (zones[j].area != null)
+                            area.densite = area.populationSize / zones[j].area;
+                        zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
+                        
                         for (i = 0; i < result.length; i++) {
                             var poly = (zones[j].polygon);
                             //poly=JSON.parse(poly);
@@ -759,39 +787,25 @@ module.exports = {
                                 rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
                                 area.duration += 5;
+                                a.degreeOfExposure += (area.densite) * 5;
+                                riskRate += zoneRiskLevel*(area.densite) * 5;
                             }
 
                         }
-                        if (0 < area.duration)
-                            zoneslist.push(area);
                         if (j == zones.length - 1) {
-                            let numberOfConfirmedCases = 0;
-                            zoneslist.forEach(element => {
-                                Prevalence.findOne({
-                                    where: {
-                                        idZone: element.id
-                                    }
-                                }).then(prevalence=>{
-                                    numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
-                                })
-                            });
-                            let populationSize = element.women + element.men;
-                            degreeOfExposure =  (populationSize / element.area) * element.duration;
-                            zoneRiskLevel = numberOfConfirmedCases / populationSize; 
-                            riskRate += degreeOfExposure * zoneRiskLevel;
-                            if(riskRate <= 0){
+                            if (riskRate <= 0) {
                                 res.send({
                                     riskLevel: "NO_EXPOSURE"
                                 });
-                            }else if (riskRate <= ALPHA) {
+                            } else if (riskRate <= ALPHA) {
                                 res.send({
                                     riskLevel: "LOW_EXPOSURE"
                                 });
-                            }else if (riskRate <= BETA) {
+                            } else if (riskRate <= BETA) {
                                 res.send({
                                     riskLevel: "AVERAGE_EXPOSURE"
                                 });
-                            }else{
+                            } else {
                                 res.send({
                                     riskLevel: "HIGH_EXPOSURE"
                                 });
