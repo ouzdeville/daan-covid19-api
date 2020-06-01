@@ -1,4 +1,4 @@
-const { Incubation, User, Zone,Prevalence } = require('./../models');
+const { Incubation, User, Zone, Prevalence } = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { Client } = require('@elastic/elasticsearch')
@@ -744,8 +744,6 @@ module.exports = {
                 Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {
                         let numberOfConfirmedCases = 0;
-                        let populationSize = 1;
-                        let densite = 0;
                         Prevalence.findOne({
                             where: {
                                 idZone: zones[j].id
@@ -766,7 +764,8 @@ module.exports = {
                             numberOfConfirmedCases: 0,
                             populationSize: 0,
                             densite: 0,
-                            degreeOfExposure:0
+                            degreeOfExposure: 0,
+                            zoneRiskLevel: 0
                         };
                         if (numberOfConfirmedCases != null)
                             area.numberOfConfirmedCases = numberOfConfirmedCases;
@@ -776,8 +775,8 @@ module.exports = {
                             area.populationSize += area.women;
                         if (zones[j].area != null)
                             area.densite = area.populationSize / zones[j].area;
-                        zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
-                        
+                        area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
+
                         for (i = 0; i < result.length; i++) {
                             var poly = (zones[j].polygon);
                             //poly=JSON.parse(poly);
@@ -788,11 +787,12 @@ module.exports = {
                             if (rst) {
                                 area.duration += 5;
                                 a.degreeOfExposure += (area.densite) * 5;
-                                riskRate += zoneRiskLevel*(area.densite) * 5;
+                                riskRate += area.zoneRiskLevel * (area.densite) * 5;
                             }
 
                         }
                         if (j == zones.length - 1) {
+                            console.log("riskRate:" + riskRate);
                             if (riskRate <= 0) {
                                 res.send({
                                     riskLevel: "NO_EXPOSURE"
