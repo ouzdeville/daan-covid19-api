@@ -751,6 +751,7 @@ module.exports = {
                             },
                             order: [['createdAt', 'DESC']]
                         }).then(prevalence => {
+                            console.log("prevalence.numberOfConfirmedCases:"+prevalence.numberOfConfirmedCases);
                             numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
 
                         });
@@ -763,7 +764,7 @@ module.exports = {
                             area: zones[j].area,
                             duration: 0,
                             numberOfConfirmedCases: 0,
-                            populationSize: 0,
+                            populationSize: 1,
                             densite: 0,
                             degreeOfExposure: 0,
                             zoneRiskLevel: 0
