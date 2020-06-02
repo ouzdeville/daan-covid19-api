@@ -259,26 +259,26 @@ module.exports = {
                 console.log(userIds);
                 res.status(200).send(userIds);
             })
-            return;
-        }
+        } else {
 
-        await Incubation.create({
-            id: 0,
-            incubationStartedAt: debutincubation,
-            incubationEndedAt: finincubation,
-            idUser: idUser
-        })
-            .then(() => {
-
-                res.status(201).send({
-                    success: true,
-                    message: 'Successfully updated.'
-                });
+            await Incubation.create({
+                id: 0,
+                incubationStartedAt: debutincubation,
+                incubationEndedAt: finincubation,
+                idUser: idUser
             })
-            .catch((error) => {
-                console.log(error);
-                res.status(400).send(error)
-            });
+                .then(() => {
+
+                    res.status(201).send({
+                        success: true,
+                        message: 'Successfully updated.'
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    res.status(400).send(error)
+                });
+        }
     },
 
     async encryptAllNumber(req, res) {
