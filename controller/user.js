@@ -250,16 +250,6 @@ module.exports = {
     async signaler(req, res) {
         let {debutincubation, finincubation, idUser, sendNotification} = req.body;
 
-        await elasticClient.getUserContactsNew(id, debutincubation, finincubation, 2, 1000, function (result, buckets) {
-            const userIds = buckets.users.buckets.map(function (bucket) {
-                return bucket.key
-            })
-
-            console.log(userIds);
-            res.status(200).send(userIds);
-        })
-        return;
-
         await Incubation.create({
             id: 0,
             incubationStartedAt: debutincubation,
