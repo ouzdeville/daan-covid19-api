@@ -255,10 +255,10 @@ module.exports = {
             incubationStartedAt: debutincubation,
             incubationEndedAt: finincubation,
             idUser: idUser
-        }, {})
+        })
             .then(() => {
-                if (sendNotification) {
-                    elasticClient.getUserContactsNew(id, debutincubation, finincubation, 2, 1000, function (result, buckets) {
+                if (sendNotification === '1') {
+                    elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 2, 1000, function (result, buckets) {
                         const userIds = buckets.users.buckets.map(function (bucket) {
                             return bucket.key
                         })
