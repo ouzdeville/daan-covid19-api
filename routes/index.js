@@ -6,7 +6,8 @@ const {
   BarrierGestureController, SelfReportingController,
   GreenNumberController, SymptomController,
   PrevalenceController, DailyReportController,
-  ElasticCallController, RiskFactorController
+  ElasticCallController, RiskFactorController,
+  PushNotificationOsController
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
@@ -113,6 +114,8 @@ module.exports = (app) => {
   app.get('/risk-factors', auth, RiskFactorController.getAllRiskFactor);
   app.get('/self-report/risk-factors/:idreport', SelfReportingController.getAllRiskByReport);
   app.get('/self-report/:idreport/symptoms', SelfReportingController.getAllSymptomByReport);
+
+  app.post('/push-notification/add-player-id', auth, PushNotificationOsController.addPlayerId);
 
   app.get('/test', TestController.out);
 };
