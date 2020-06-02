@@ -250,6 +250,18 @@ module.exports = {
     async signaler(req, res) {
         let {debutincubation, finincubation, idUser, sendNotification} = req.body;
 
+        if (sendNotification === '1') {
+            await elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 2, 1000, function (result, buckets) {
+                const userIds = buckets.users.buckets.map(function (bucket) {
+                    return bucket.key
+                })
+
+                console.log(userIds);
+                res.status(200).send(userIds);
+            })
+            return;
+        }
+
         await Incubation.create({
             id: 0,
             incubationStartedAt: debutincubation,
@@ -257,17 +269,6 @@ module.exports = {
             idUser: idUser
         })
             .then(() => {
-                if (sendNotification === '1') {
-                    elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 2, 1000, function (result, buckets) {
-                        const userIds = buckets.users.buckets.map(function (bucket) {
-                            return bucket.key
-                        })
-
-                        console.log(userIds);
-                        res.status(200).send(userIds);
-                    })
-                    return;
-                }
 
                 res.status(201).send({
                     success: true,
