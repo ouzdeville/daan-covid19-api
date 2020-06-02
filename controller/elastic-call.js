@@ -741,20 +741,10 @@ module.exports = {
                 let riskRate = 0;
                 const BETA = 1.75;
                 const ALPHA = 0.50;
-                Zone.findAll().then((zones) => {
+                Zone.findAll().then(async(zones) => {
                     for (j = 0; j < zones.length; j++) {
                         console.log(zones[j].name)
                         let numberOfConfirmedCases = 0;
-                        Prevalence.findOne({
-                            where: {
-                                idZone: zones[j].id
-                            },
-                            order: [['createdAt', 'DESC']]
-                        }).then(prevalence => {
-                            console.log("prevalence.numberOfConfirmedCases:"+prevalence.numberOfConfirmedCases);
-                            numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
-
-                        });
                         area = {
                             id: zones[j].id,
                             name: zones[j].name,
@@ -769,23 +759,33 @@ module.exports = {
                             degreeOfExposure: 0,
                             zoneRiskLevel: 0
                         };
-                        console.log("numberOfConfirmedCases:"+numberOfConfirmedCases);
-                        console.log("area.populationSize:"+area.populationSize);
-                        if (numberOfConfirmedCases != null)
-                            area.numberOfConfirmedCases = numberOfConfirmedCases;
                         if (area.men != null)
                             area.populationSize += area.men;
                         if (area.women != null)
                             area.populationSize += area.women;
                         if (zones[j].area != null)
                             area.densite = area.populationSize / zones[j].area;
-                        area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
+
+                        console.log("area.populationSize:" + area.populationSize);
+                        await Prevalence.findOne({
+                            where: {
+                                idZone: zones[j].id
+                            },
+                            order: [['createdAt', 'DESC']]
+                        }).then(prevalence => {
+                            numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
+                            console.log("numberOfConfirmedCases:" + numberOfConfirmedCases);
+                            if (numberOfConfirmedCases != null)
+                                area.numberOfConfirmedCases = numberOfConfirmedCases;
+                            area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
+                            
+
+                        });
 
                         for (i = 0; i < result.length; i++) {
                             var poly = (zones[j].polygon);
                             //poly=JSON.parse(poly);
                             rst = false;
-
                             if (poly != null)
                                 rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
@@ -798,8 +798,9 @@ module.exports = {
                             }
 
                         }
+
                         if (j == zones.length - 1) {
-                            
+
                             if (riskRate <= 0) {
                                 res.send({
                                     riskLevel: "NO_EXPOSURE"
