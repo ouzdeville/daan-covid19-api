@@ -45,7 +45,7 @@ module.exports = (app) => {
   app.post('/location', auth, LocationController.registerLocation);
 
   //app.post('/location', ElasticCallController.registerLocation);
-  app.post('/user/signaler', auth, UserController.signaler);
+  // app.post('/user/signaler', auth, UserController.signaler);
   app.get('/zones', auth, ZoneController.getZones);
   app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/user/inside/:latitude/:longitude', auth, ZoneController.isInAZone);

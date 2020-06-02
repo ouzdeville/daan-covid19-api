@@ -2,6 +2,7 @@ const {User, Incubation, SelfReporting,} = require('./../models');
 const {otpProvider, jwt} = require('./../providers');
 const {cryptoUtil} = require('../utils');
 const {Client} = require('@elastic/elasticsearch')
+const {elasticClient} = require('./../utils');
 // const client = new Client({node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com'})
 
 /**
@@ -54,7 +55,7 @@ module.exports = {
                 return;
             }
             const otp = await otpProvider.generateOTP(req.body.phone);
-            sphone=cryptoUtil.getSID(req.body.phone,process.env.JWT_SECRET);
+            sphone = cryptoUtil.getSID(req.body.phone, process.env.JWT_SECRET);
             const token = jwt.sign({phone: sphone});
             const exist = await User.findAll({
                 where: {
@@ -151,7 +152,7 @@ module.exports = {
      *     }
      */
     async refreshToken(req, res) {
-        sphone=cryptoUtil.getSID(req.phone,process.env.JWT_SECRET);
+        sphone = cryptoUtil.getSID(req.phone, process.env.JWT_SECRET);
         const token = jwt.sign({phone: sphone});
         res.status(201).send({
             success: true,
@@ -235,6 +236,7 @@ module.exports = {
      * @apiParam {Date} debutincubation Date début incubation
      * @apiParam {Date} finincubation Date fin incubation
      * @apiParam {UUID} idUser idUser
+     * @apiParam {Boolean} sendNotification if we have to notify contacts or not
      *
      * @apiSuccess (Success 201) {Object} result
      *
@@ -246,9 +248,8 @@ module.exports = {
      *     }
      */
     async signaler(req, res) {
-        let debutincubation = req.body.debutincubation;
-        let finincubation = req.body.finincubation;
-        let idUser = req.body.idUser;
+        let {debutincubation, finincubation, idUser, sendNotification} = req.body
+
         await Incubation.create({
             id: 0,
             incubationStartedAt: debutincubation,
@@ -256,6 +257,18 @@ module.exports = {
             idUser: idUser
         }, {})
             .then(() => {
+                if (sendNotification) {
+                    elasticClient.getUserContactsNew(id, debutincubation, finincubation, 2, 1000, function (result, buckets) {
+                        const userIds = buckets.users.buckets.map(function (bucket) {
+                            return bucket.key
+                        })
+
+                        console.log(userIds);
+                        res.status(200).send(userIds);
+                    })
+                    return;
+                }
+
                 res.status(201).send({
                     success: true,
                     message: 'Successfully updated.'
@@ -271,30 +284,27 @@ module.exports = {
         const exist = await User.findAll().then((users) => {
             for (var user of users) {
                 console.log(user.phone)
-                if(user.phone.includes("221")){
+                if (user.phone.includes("221")) {
 
                     User.update(
-                        { phone: cryptoUtil.getSID(user.phone,process.env.JWT_SECRET) },
+                        {phone: cryptoUtil.getSID(user.phone, process.env.JWT_SECRET)},
                         {
-                          where: {
-                            id:user.id,
-                          },
+                            where: {
+                                id: user.id,
+                            },
                         },
-                      );
+                    );
                 }
             }
-
-
-
             res.status(200).send({
                 success: true,
                 message: 'Successfully updated.'
             });
         })
-        .catch((error) => {
-            console.log(error);
-            res.status(400).send(error)
-        });
+            .catch((error) => {
+                console.log(error);
+                res.status(400).send(error)
+            });
     },
 
     decryptAllUsers(req, res) {
@@ -304,9 +314,9 @@ module.exports = {
                 model: SelfReporting
             }]
         }).then(users => {
-            results=[];
+            results = [];
             for (var user of users) {
-                user.phone=cryptoUtil.getIdFromSID(user.phone,process.env.JWT_SECRET);
+                user.phone = cryptoUtil.getIdFromSID(user.phone, process.env.JWT_SECRET);
                 results.push(user);
             }
             res.send(results);
@@ -317,5 +327,7 @@ module.exports = {
                         err.message || "Some error occurred while retrieving users."
                 });
             });
-    },
-};
+    }
+    ,
+}
+;
