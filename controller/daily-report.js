@@ -119,7 +119,7 @@ module.exports = {
                 },
                 included_segments: ['Subscribed Users'],
                 small_icon: 'ic_stat_onesignal_default',
-                large_icon: 'https://www.zupimages.net/up/20/20/jyik.png',
+                large_icon: 'https://www.zupimages.net/up/20/22/unph.png',
                 android_accent_color: '04baba'
             };
 
