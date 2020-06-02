@@ -786,7 +786,7 @@ module.exports = {
                                 rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
                                 area.duration += 5;
-                                a.degreeOfExposure += (area.densite) * 5;
+                                area.degreeOfExposure += (area.densite) * 5;
                                 riskRate += area.zoneRiskLevel * (area.densite) * 5;
                                 console.log("riskRate:" + area.zoneRiskLevel);
                                 console.log("area.zoneRiskLevel:" + area.densite);
