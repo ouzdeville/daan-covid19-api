@@ -743,7 +743,7 @@ module.exports = {
                 const ALPHA = 0.50;
                 Zone.findAll().then(async(zones) => {
                     for (j = 0; j < zones.length; j++) {
-                        console.log(zones[j].name)
+                       
                         let numberOfConfirmedCases = 0;
                         area = {
                             id: zones[j].id,
@@ -766,7 +766,7 @@ module.exports = {
                         if (zones[j].area != null)
                             area.densite = area.populationSize / zones[j].area;
 
-                        console.log("area.populationSize:" + area.populationSize);
+                        
                         await Prevalence.findOne({
                             where: {
                                 idZone: zones[j].id
@@ -774,7 +774,7 @@ module.exports = {
                             order: [['createdAt', 'DESC']]
                         }).then(prevalence => {
                             numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
-                            console.log("numberOfConfirmedCases:" + numberOfConfirmedCases);
+                            
                             if (numberOfConfirmedCases != null)
                                 area.numberOfConfirmedCases = numberOfConfirmedCases;
                             area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
@@ -789,12 +789,14 @@ module.exports = {
                             if (poly != null)
                                 rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
+
                                 area.duration += 5;
                                 area.degreeOfExposure += (area.densite) * 5;
                                 riskRate += area.zoneRiskLevel * (area.densite) * 5;
-                                console.log("area.zoneRiskLevel:" + area.zoneRiskLevel);
-                                console.log("area.densite:" + area.densite);
-                                console.log("riskRate:" + riskRate);
+                                console.log(zones[j].name+":area.populationSize:" + area.populationSize);
+                                console.log(zones[j].name+":area.zoneRiskLevel:" + area.zoneRiskLevel);
+                                console.log(zones[j].name+":area.densite:" + area.densite);
+                                console.log(zones[j].name+":riskRate:" + riskRate);
                             }
 
                         }
