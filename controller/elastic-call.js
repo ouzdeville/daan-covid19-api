@@ -788,11 +788,14 @@ module.exports = {
                                 area.duration += 5;
                                 a.degreeOfExposure += (area.densite) * 5;
                                 riskRate += area.zoneRiskLevel * (area.densite) * 5;
+                                console.log("riskRate:" + area.zoneRiskLevel);
+                                console.log("area.zoneRiskLevel:" + area.densite);
+                                console.log("riskRate:" + riskRate);
                             }
 
                         }
                         if (j == zones.length - 1) {
-                            console.log("riskRate:" + riskRate);
+                            
                             if (riskRate <= 0) {
                                 res.send({
                                     riskLevel: "NO_EXPOSURE"
