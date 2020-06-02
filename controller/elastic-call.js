@@ -743,6 +743,7 @@ module.exports = {
                 const ALPHA = 0.50;
                 Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {
+                        console.log(zones[j].name)
                         let numberOfConfirmedCases = 0;
                         Prevalence.findOne({
                             where: {
@@ -767,6 +768,8 @@ module.exports = {
                             degreeOfExposure: 0,
                             zoneRiskLevel: 0
                         };
+                        console.log("numberOfConfirmedCases:"+numberOfConfirmedCases);
+                        console.log("area.populationSize:"+area.populationSize);
                         if (numberOfConfirmedCases != null)
                             area.numberOfConfirmedCases = numberOfConfirmedCases;
                         if (area.men != null)
@@ -788,8 +791,8 @@ module.exports = {
                                 area.duration += 5;
                                 area.degreeOfExposure += (area.densite) * 5;
                                 riskRate += area.zoneRiskLevel * (area.densite) * 5;
-                                console.log("riskRate:" + area.zoneRiskLevel);
-                                console.log("area.zoneRiskLevel:" + area.densite);
+                                console.log("area.zoneRiskLevel:" + area.zoneRiskLevel);
+                                console.log("area.densite:" + area.densite);
                                 console.log("riskRate:" + riskRate);
                             }
 
