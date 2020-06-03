@@ -792,6 +792,7 @@ module.exports = {
 
                                 area.duration += 5;
                                 area.degreeOfExposure += (area.densite) * 5;
+                                area.riskRate += area.zoneRiskLevel * (area.densite) * 5;
                                 riskRate += area.zoneRiskLevel * (area.densite) * 5;
                                 console.log(zones[j].name+":area.populationSize:" + area.populationSize);
                                 console.log(zones[j].name+":area.zoneRiskLevel:" + area.zoneRiskLevel);
@@ -801,23 +802,29 @@ module.exports = {
 
                         }
 
+                        if (0 < area.duration)
+                            zoneslist.push(area);
                         if (j == zones.length - 1) {
 
                             if (riskRate <= 0) {
                                 res.send({
-                                    riskLevel: "NO_EXPOSURE"
+                                    riskLevel: "NO_EXPOSURE",
+                                    zoneslist:zoneslist
                                 });
                             } else if (riskRate <= ALPHA) {
                                 res.send({
-                                    riskLevel: "LOW_EXPOSURE"
+                                    riskLevel: "LOW_EXPOSURE",
+                                    zoneslist:zoneslist
                                 });
                             } else if (riskRate <= BETA) {
                                 res.send({
-                                    riskLevel: "AVERAGE_EXPOSURE"
+                                    riskLevel: "AVERAGE_EXPOSURE",
+                                    zoneslist:zoneslist
                                 });
                             } else {
                                 res.send({
-                                    riskLevel: "HIGH_EXPOSURE"
+                                    riskLevel: "HIGH_EXPOSURE",
+                                    zoneslist:zoneslist
                                 });
                             }
                         }
