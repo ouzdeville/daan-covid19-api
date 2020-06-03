@@ -1,4 +1,4 @@
-const { Location, Zone,Prevalence } = require('./../models');
+const { Location, Zone, Prevalence } = require('./../models');
 const { awsClients } = require('./../utils');
 const { insidePolygon } = require('geolocation-utils');
 
@@ -56,7 +56,10 @@ module.exports = {
                             }],
                             order: [['createdAt', 'DESC']]
                         }).then(prevalence => {
-                            zoneslist.push(prevalence);
+                            if (prevalence) {
+                                prevalence.Zone.polygon = null;
+                                zoneslist.push(prevalence);
+                            }
                         });
                     }
                     if (j == zones.length - 1) {
@@ -74,7 +77,7 @@ module.exports = {
                     }
                 }
             });
-           
+
         } catch (error) {
             res.status(401).send({ error });
         }
