@@ -757,7 +757,8 @@ module.exports = {
                             populationSize: 1,
                             densite: 0,
                             degreeOfExposure: 0,
-                            zoneRiskLevel: 0
+                            zoneRiskLevel: 0,
+                            riskRate:0
                         };
                         if (area.men != null)
                             area.populationSize += area.men;
