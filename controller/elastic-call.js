@@ -778,7 +778,7 @@ module.exports = {
                             if (numberOfConfirmedCases != null)
                                 area.numberOfConfirmedCases = numberOfConfirmedCases;
                             area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
-                            
+                               
 
                         });
 
