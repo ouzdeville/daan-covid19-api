@@ -240,7 +240,7 @@ module.exports = {
      * @apiParam {Date} debutincubation Date début incubation
      * @apiParam {Date} finincubation Date fin incubation
      * @apiParam {UUID} idUser idUser
-     * @apiParam {Boolean} sendNotification if we have to notify contacts or not
+     * @apiParam {String} sendNotification '1' if you want to send notification to contacts
      *
      * @apiSuccess (Success 201) {Object} result
      *
