@@ -836,4 +836,127 @@ module.exports = {
             });
         }
     },
+
+    async getRiskLevelV2(req, res) {
+        console.log("getRiskLevelV2");
+        let id = req.params.id;
+        let end = await moment().format("YYYY-MM-DD");
+        let begin = await moment().add(-14, 'days').format("YYYY-MM-DD");
+        console.log(begin);
+        console.log(end);
+        sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+        if (sphone != "") {
+            await User.findAll({
+                where: {                                                                                             
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    id = users[0].id;
+                }
+            });
+        }
+        console.log("ID:" + id);
+        try {
+            await elasticClient.getUserTrace(id, begin, end, function (result) {
+                var i, j;
+                zoneslist = [];
+                let riskRate = 0;
+                const BETA = 1.75;
+                const ALPHA = 0.50;
+                Zone.findAll().then(async(zones) => {
+                    for (j = 0; j < zones.length; j++) {
+                       
+                        let numberOfConfirmedCases = 0;
+                        area = {
+                            id: zones[j].id,
+                            name: zones[j].name,
+                            type: zones[j].type,
+                            men: zones[j].men,
+                            women: zones[j].women,
+                            area: zones[j].area,
+                            duration: 0,
+                            numberOfConfirmedCases: 0,
+                            populationSize: 1,
+                            densite: 0,
+                            degreeOfExposure: 0,
+                            zoneRiskLevel: 0
+                        };
+                        if (area.men != null)
+                            area.populationSize += area.men;
+                        if (area.women != null)
+                            area.populationSize += area.women;
+                        if (zones[j].area != null)
+                            area.densite = area.populationSize / zones[j].area;
+
+                        
+                        await Prevalence.findOne({
+                            where: {
+                                idZone: zones[j].id
+                            },
+                            order: [['createdAt', 'DESC']]
+                        }).then(prevalence => {
+                            numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
+                            
+                            if (numberOfConfirmedCases != null)
+                                area.numberOfConfirmedCases = numberOfConfirmedCases;
+                            area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
+                            
+
+                        });
+
+                        for (i = 0; i < result.length; i++) {
+                            var poly = (zones[j].polygon);
+                            //poly=JSON.parse(poly);
+                            rst = false;
+                            if (poly != null)
+                                rst = insidePolygon(result[i]._source.position, poly);
+                            if (rst) {
+
+                                area.duration += 5;
+                                area.degreeOfExposure += (area.densite) * 5;
+                                riskRate += area.zoneRiskLevel * (area.densite) * 5;
+                                console.log(zones[j].name+":area.populationSize:" + area.populationSize);
+                                console.log(zones[j].name+":area.zoneRiskLevel:" + area.zoneRiskLevel);
+                                console.log(zones[j].name+":area.densite:" + area.densite);
+                                console.log(zones[j].name+":riskRate:" + riskRate);
+                            }
+
+                        }
+
+                        if (j == zones.length - 1) {
+
+                            if (riskRate <= 0) {
+                                res.send({
+                                    riskLevel: "NO_EXPOSURE"
+                                });
+                            } else if (riskRate <= ALPHA) {
+                                res.send({
+                                    riskLevel: "LOW_EXPOSURE"
+                                });
+                            } else if (riskRate <= BETA) {
+                                res.send({
+                                    riskLevel: "AVERAGE_EXPOSURE"
+                                });
+                            } else {
+                                res.send({
+                                    riskLevel: "HIGH_EXPOSURE"
+                                });
+                            }
+                        }
+                    }
+
+
+                });
+
+
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+        }
+    },
 }
