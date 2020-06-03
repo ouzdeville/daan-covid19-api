@@ -1,5 +1,6 @@
-const {Location} = require('./../models');
-const {awsClients} = require('./../utils');
+const { Location, Zone, Prevalence } = require('./../models');
+const { awsClients } = require('./../utils');
+const { insidePolygon } = require('geolocation-utils');
 
 module.exports = {
     /**
@@ -26,7 +27,7 @@ module.exports = {
      */
     async registerLocation(req, res) {
         try {
-            const {userID} = req;
+            const { userID } = req;
             const payload = {
                 id: userID,
                 imei: req.body.imei,
@@ -37,12 +38,48 @@ module.exports = {
             // logs requests
             console.log(payload);
             await awsClients.writeToKinesis(payload);
-            res.status(201).send({
-                success: true,
-                message: 'Successfully registered.',
+            var i, j;
+            zoneslist = [];
+            Zone.findAll().then(async (zones) => {
+                for (j = 0; j < zones.length; j++) {
+                    var poly = (zones[j].polygon);
+                    rst = false;
+                    if (poly != null)
+                        rst = insidePolygon(req.body.position, poly);
+                    if (rst) {
+                        await Prevalence.findOne({
+                            where: {
+                                idZone: zones[j].id
+                            },
+                            include: [{
+                                model: Zone,
+                            }],
+                            order: [['createdAt', 'DESC']]
+                        }).then(prevalence => {
+                            if (prevalence) {
+                                prevalence.Zone.polygon = null;
+                                zoneslist.push(prevalence);
+                            }
+                        });
+                    }
+                    if (j == zones.length - 1) {
+                        console.log("zoneslist");
+                        console.log(JSON.stringify({
+                            success: true,
+                            message: 'Successfully registered.',
+                            zoneslist: zoneslist,
+                        }));
+                        res.status(201).send({
+                            success: true,
+                            message: 'Successfully registered.',
+                            zoneslist: zoneslist,
+                        });
+                    }
+                }
             });
+
         } catch (error) {
-            res.status(401).send({error});
+            res.status(401).send({ error });
         }
     },
     /**
@@ -81,7 +118,7 @@ module.exports = {
      *     }
      */
     getUserLocations(req, res) {
-        const {idUser} = req.params;
+        const { idUser } = req.params;
         Location.findAll({
             idUser,
         })
