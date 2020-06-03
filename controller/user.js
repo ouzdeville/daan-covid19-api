@@ -3,6 +3,10 @@ const {otpProvider, jwt} = require('./../providers');
 const {cryptoUtil} = require('../utils');
 const {Client} = require('@elastic/elasticsearch')
 const {elasticClient} = require('./../utils');
+const OneSignal = require('onesignal-node');
+
+const client = new OneSignal.Client('3552b3b3-6e98-417e-a5a3-e73b723a6eb6',
+    'OWM1OTNjMzEtYjhiYi00ZmIzLWI0N2UtMjcyMTVkZjYwN2My');
 // const client = new Client({node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com'})
 
 /**
@@ -252,39 +256,77 @@ module.exports = {
         debutincubation = new Date(debutincubation).getTime();
         finincubation = new Date(finincubation).getTime();
 
-        if (sendNotification === '1') {
-            try {
-                await elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 2, 5000000000, function (result, buckets) {
-                    const userIds = buckets.users.buckets.map(function (bucket) {
-                        return bucket.key
-                    })
-                    console.log(userIds);
-                    res.status(200).send(userIds);
-                })
-            } catch (error) {
-                console.log(error);
-                res.status(500).send(error);
-            }
-        } else {
+        await Incubation.create({
+            id: 0,
+            incubationStartedAt: debutincubation,
+            incubationEndedAt: finincubation,
+            idUser: idUser
+        })
+            .then(() => {
+                try {
+                    if (sendNotification === '1') {
+                        elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 1000000, 5000000000, function (result, buckets) {
+                            const userIds = buckets.users.buckets.map(function (bucket) {
+                                return bucket.key
+                            })
 
-            await Incubation.create({
-                id: 0,
-                incubationStartedAt: debutincubation,
-                incubationEndedAt: finincubation,
-                idUser: idUser
-            })
-                .then(() => {
+                            console.log(userIds);
 
-                    res.status(201).send({
-                        success: true,
-                        message: 'Successfully updated.'
-                    });
-                })
-                .catch((error) => {
+                            User.findAll({
+                                where: {
+                                    id: userIds
+                                },
+                                attributes: ['OneSignalPlayerId']
+                            })
+                                .then((users) => {
+                                    const playerIds = users.map(function (playerId) {
+                                        return playerId.OneSignalPlayerId
+                                    })
+                                    console.log(playerIds);
+
+                                    const title = 'Alerte contact';
+                                    const content = 'Une personne avec qui vous êtiez en contact récemment a été testé positif ...';
+                                    const notification = {
+                                        headings: {
+                                            'en': title,
+                                            'fr': title
+                                        },
+                                        contents: {
+                                            'en': content,
+                                            'fr': content
+                                        },
+                                        include_player_ids: playerIds,
+                                        small_icon: 'ic_stat_onesignal_default',
+                                        large_icon: 'https://www.zupimages.net/up/20/22/unph.png',
+                                        android_accent_color: '04baba'
+                                    };
+
+                                    client.createNotification(notification)
+                                        .then(response => {
+                                            console.log(response)
+                                        })
+                                        .catch(error => {
+                                            console.log(error)
+                                        });
+
+
+                                    res.status(201).send({
+                                        success: true,
+                                        message: 'Successfully updated.'
+                                    });
+                                })
+                                .catch((error) => res.status(400).send(error));
+                        })
+                    }
+                } catch (error) {
                     console.log(error);
-                    res.status(400).send(error)
-                });
-        }
+                    res.status(500).send(error);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(400).send(error)
+            });
     },
 
     async encryptAllNumber(req, res) {
