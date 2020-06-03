@@ -249,16 +249,22 @@ module.exports = {
      */
     async signaler(req, res) {
         let {debutincubation, finincubation, idUser, sendNotification} = req.body;
+        debutincubation = new Date(debutincubation).getTime();
+        finincubation = new Date(finincubation).getTime();
 
         if (sendNotification === '1') {
-            await elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 2, 1000, function (result, buckets) {
-                const userIds = buckets.users.buckets.map(function (bucket) {
-                    return bucket.key
+            try {
+                await elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 2, 5000000000, function (result, buckets) {
+                    const userIds = buckets.users.buckets.map(function (bucket) {
+                        return bucket.key
+                    })
+                    console.log(userIds);
+                    res.status(200).send(userIds);
                 })
-
-                console.log(userIds);
-                res.status(200).send(userIds);
-            })
+            } catch (error) {
+                console.log(error);
+                res.status(500).send(error);
+            }
         } else {
 
             await Incubation.create({
