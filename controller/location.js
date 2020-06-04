@@ -20,10 +20,37 @@ module.exports = {
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 201 Created
-     *     {
-     *         "success": true,
-     *          "message": "Successfully created."
-     *     }
+     *           {
+     *           "success": true,
+     *           "message": "Successfully registered.",
+     *           "zoneslist": [
+     *               {
+     *                   "id": 2690822,
+     *                   "idZone": "77baa645-1143-48ca-b899-85c3230372e6",
+     *                   "date": "2020-06-03",
+     *                   "numberOfConfirmedCases": 269,
+     *                   "numberOfSupectedCases": 0,
+     *                   "numberOfContactsCases": 0,
+     *                   "numberOfRecoveredCases": 0,
+     *                   "createdAt": "2020-06-03T01:00:59.521Z",
+     *                   "updatedAt": "2020-06-03T01:00:59.521Z",
+     *                   "Zone": {
+     *                       "id": "77baa645-1143-48ca-b899-85c3230372e6",
+     *                       "name": "DAKAR-OUEST",
+     *                       "description": null,
+     *                       "idParent": null,
+     *                       "type": "DISTRICT",
+     *                       "longitude": null,
+     *                       "latitude": null,
+     *                       "men": 122039,
+     *                       "women": 129360,
+     *                       "area": 36410.1003234787,
+     *                       "createdAt": "2020-05-07T18:00:00.326Z",
+     *                       "updatedAt": "2020-05-21T20:35:16.007Z"
+     *                   }
+     *               }
+     *           ]
+     *       }
      */
     async registerLocation(req, res) {
         try {
@@ -36,7 +63,7 @@ module.exports = {
                 status: req.body.status || 'unknown'
             };
             // logs requests
-            console.log(payload);
+            //console.log(payload);
             await awsClients.writeToKinesis(payload);
             var i, j;
             zoneslist = [];
@@ -63,12 +90,12 @@ module.exports = {
                         });
                     }
                     if (j == zones.length - 1) {
-                        console.log("zoneslist");
-                        console.log(JSON.stringify({
+                        //console.log("zoneslist");
+                        /*console.log(JSON.stringify({
                             success: true,
                             message: 'Successfully registered.',
                             zoneslist: zoneslist,
-                        }));
+                        }));*/
                         res.status(201).send({
                             success: true,
                             message: 'Successfully registered.',
