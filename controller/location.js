@@ -63,7 +63,7 @@ module.exports = {
                 status: req.body.status || 'unknown'
             };
             // logs requests
-            console.log(payload);
+            //console.log(payload);
             await awsClients.writeToKinesis(payload);
             var i, j;
             zoneslist = [];
@@ -90,12 +90,12 @@ module.exports = {
                         });
                     }
                     if (j == zones.length - 1) {
-                        console.log("zoneslist");
-                        console.log(JSON.stringify({
+                        //console.log("zoneslist");
+                        /*console.log(JSON.stringify({
                             success: true,
                             message: 'Successfully registered.',
                             zoneslist: zoneslist,
-                        }));
+                        }));*/
                         res.status(201).send({
                             success: true,
                             message: 'Successfully registered.',
