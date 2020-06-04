@@ -263,8 +263,8 @@ module.exports = {
             idUser: idUser
         })
             .then(() => {
-                try {
-                    if (sendNotification === '1') {
+                if (sendNotification === '1') {
+                    try {
                         elasticClient.getUserContactsNew(idUser, debutincubation, finincubation, 1000000, 5000000000, function (result, buckets) {
                             const userIds = buckets.users.buckets.map(function (bucket) {
                                 return bucket.key
@@ -308,20 +308,19 @@ module.exports = {
                                         .catch(error => {
                                             console.log(error)
                                         });
-
-
-                                    res.status(201).send({
-                                        success: true,
-                                        message: 'Successfully updated.'
-                                    });
                                 })
                                 .catch((error) => res.status(400).send(error));
                         })
+                    } catch (error) {
+                        console.log(error);
+                        res.status(500).send(error);
                     }
-                } catch (error) {
-                    console.log(error);
-                    res.status(500).send(error);
                 }
+
+                res.status(201).send({
+                    success: true,
+                    message: 'Successfully updated.'
+                });
             })
             .catch((error) => {
                 console.log(error);
