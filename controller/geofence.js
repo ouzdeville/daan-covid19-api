@@ -104,7 +104,7 @@ module.exports = {
 
 
     /**
-     * @api {get} /geofence/:id a GeoZone
+     * @api {get} /geofence/:id Get a GeoZone
      * @apiHeader {String} authorization User unique token
      * @apiName getGeofence
      * @apiGroup Geofence
