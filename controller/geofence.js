@@ -10,8 +10,8 @@ module.exports = {
      * @apiParam {Number} idUser numTel or IdUser
      * @apiParam {Date} start Date début 
      * @apiParam {Date} end Date fin 
-     * @apiParam {String} polygon in the format lon,lat;lon,lat;lon,lat;lon,lat
-     * @apiParam {idParent} Id zone parent
+     * @apiParam {Json} polygon in the format lon,lat;lon,lat;lon,lat;lon,lat
+     * @apiParam {String} description description du Geofencing
      *
      *
      * @apiSuccess (Success 201) {Boolean} success If it works ot not
@@ -31,7 +31,8 @@ module.exports = {
         const data = {
             idUser: req.body.idUser,
             start: req.body.start,
-            end: req.body.end
+            end: req.body.end,
+            description:req.body.description
         };
         sphone = cryptoUtil.getSID(idUser, process.env.JWT_SECRET);
         if (sphone !== "") {
