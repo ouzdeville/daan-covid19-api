@@ -10,7 +10,7 @@ module.exports = {
      * @apiParam {Number} idUser numTel or IdUser
      * @apiParam {Date} start Date début 
      * @apiParam {Date} end Date fin 
-     * @apiParam {String} polygon in the format lat,lon;lat,lon;lat,lon;lat,lon
+     * @apiParam {String} polygon in the format lon,lat;lon,lat;lon,lat;lon,lat
      * @apiParam {idParent} Id zone parent
      *
      *
@@ -47,11 +47,11 @@ module.exports = {
         }
         console.log("ID:" + idUser);
 
-        //lat,lon;lat,lon;lat,lon;lat,lon
+        //lon,lat;lon,lat;lon,lat;lon,lat
         const spolygone = req.body.polygon + '';
 
-        data.poly = spolygone.split(";").map(function (latlon) {
-            return latlon.split(",").map(e => parseFloat(e))
+        data.poly = spolygone.split(";").map(function (lonlat) {
+            return lonlat.split(",").map(e => parseFloat(e))
         });
 
         Geofence.create(data)
