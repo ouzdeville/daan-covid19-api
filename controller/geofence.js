@@ -8,10 +8,10 @@ module.exports = {
      * @apiName createGeofence
      * @apiGroup Geofence
      * @apiParam {Number} idUser numTel or IdUser
-     * @apiParam {Date} start Date début 
-     * @apiParam {Date} end Date fin 
+     * @apiParam {Date} start Date  
+     * @apiParam {Date} end Date 
      * @apiParam {Json} polygon in the format lon,lat;lon,lat;lon,lat;lon,lat
-     * @apiParam {String} description description du Geofencing
+     * @apiParam {String} description Geofencing description
      *
      *
      * @apiSuccess (Success 201) {Boolean} success If it works ot not
@@ -67,7 +67,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /geofences zones list
+     * @api {get} /geofences All geofencing zones
      * @apiHeader {String} authorization User unique token
      * @apiName getGeofences
      * @apiGroup Geofence
@@ -104,7 +104,7 @@ module.exports = {
 
 
     /**
-     * @api {get} /geofence/:id zone list
+     * @api {get} /geofence/:id a GeoZone
      * @apiHeader {String} authorization User unique token
      * @apiName getGeofence
      * @apiGroup Geofence
@@ -199,7 +199,7 @@ module.exports = {
 
 
     /**
-     * @api {get} /geofence/user/:id zone list
+     * @api {get} /geofence/user/:id Geofencing list
      * @apiHeader {String} authorization User unique token
      * @apiName getGeofence
      * @apiGroup Geofence
