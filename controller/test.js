@@ -1,3 +1,4 @@
+const {User} = require('./../models');
 const json_data = require('./out.json')
 
 module.exports = {
@@ -25,5 +26,15 @@ module.exports = {
         })
 
         res.status(200).send({initenaires});
+    },
+
+    out2: function(req, res) {
+        User.findAll({
+            attributes: ['OneSignalPlayerId']
+        })
+            .then((users) => {
+                res.status(500).send(users);
+            })
+            .catch((error) => res.status(400).send(error));
     }
 }

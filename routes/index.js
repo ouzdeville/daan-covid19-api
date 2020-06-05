@@ -117,5 +117,5 @@ module.exports = (app) => {
 
   app.post('/push-notification/add-player-id', auth, PushNotificationOsController.addPlayerId);
 
-  app.get('/test', TestController.out);
+  app.get('/test', TestController.out2);
 };
