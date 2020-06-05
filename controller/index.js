@@ -16,4 +16,5 @@ module.exports = {
     PushNotificationOsController: require('./push-notification-one-signal'),
     ScreeningController: require('./screening'),
     TestController: require('./test'),
+    GeofenceController: require('./geofence'),
 };

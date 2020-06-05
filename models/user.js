@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         User.belongsToMany(models.User, {through: models.Contact, as: 'Contact2', foreignKey: 'idUser2'});
         User.hasMany(models.Incubation, {foreignKey: 'idUser'});
         User.hasMany(models.SelfReporting, {foreignKey: 'idUser'});
+        User.hasMany(models.Geofence, {foreignKey: 'idUser'});
     };
 
     return User;
