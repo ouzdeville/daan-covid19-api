@@ -65,7 +65,7 @@ module.exports = {
                 status: req.body.status || 'unknown'
             };
             // logs requests
-            //console.log(payload);
+            console.log(payload);
             await awsClients.writeToKinesis(payload);
             var i, j;
             zoneslist = [];
