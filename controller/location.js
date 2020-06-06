@@ -1,6 +1,8 @@
-const { Location, Zone, Prevalence } = require('./../models');
+const { Location, Zone, Prevalence,Geofence } = require('./../models');
 const { awsClients } = require('./../utils');
 const { insidePolygon } = require('geolocation-utils');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
     /**
@@ -67,7 +69,7 @@ module.exports = {
             await awsClients.writeToKinesis(payload);
             var i, j;
             zoneslist = [];
-            Zone.findAll().then(async (zones) => {
+            await Zone.findAll().then(async (zones) => {
                 for (j = 0; j < zones.length; j++) {
                     var poly = (zones[j].polygon);
                     rst = false;
@@ -103,6 +105,54 @@ module.exports = {
                         });
                     }
                 }
+            });
+
+        //Mettre à jour geofence lasttime
+        await Geofence.update(
+            {
+                lasttime: req.body.timestamp,
+            },
+            {
+                where: {
+                    idUser: userID,
+                    start:{
+                        [Op.lte]: req.body.timestamp,
+                    },
+                    end:{
+                        [Op.gte]: req.body.timestamp,
+                    }
+                }
+            });
+        //si est sortie de geofence alors new entree on exit 
+        await Geofence.findAll(
+            {
+                where: {
+                    idUser: userID,
+                    start:{
+                        [Op.lte]: req.body.timestamp,
+                    },
+                    end:{
+                        [Op.gte]: req.body.timestamp,
+                    }
+                }
+            }).then((zones) => {
+                zones.forEach(zone => {
+                    var poly = (zone.poly);
+                    const exitdata = {
+                        idGeofence: zone.id,
+                        current_date: req.body.timestamp,
+                        position: req.body.position,
+                        notif: false
+                    };
+                    //poly=JSON.parse(poly);
+                    rst = false;
+                    //console.log(poly);
+                    if (poly != null)
+                        rst = insidePolygon(req.body.position, poly);
+                    if (rst) {
+                        ExitZone.create(exitdata)
+                    }
+                });
             });
 
         } catch (error) {
