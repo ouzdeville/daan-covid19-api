@@ -1,5 +1,6 @@
 const { Geofence, User, ExitZone } = require('./../models');
 const { insidePolygon } = require('geolocation-utils');
+const { cryptoUtil } = require('../utils');
 
 module.exports = {
     /**
@@ -219,7 +220,7 @@ module.exports = {
      *     }
      */
     async getGeofenceUser(req, res) { 
-        const { id } = req.params;
+        let { id } = req.params;
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
         if (sphone !== "") {
             await User.findAll({
