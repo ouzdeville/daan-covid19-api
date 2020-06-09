@@ -35,7 +35,7 @@ module.exports = {
             end: req.body.end,
             description:req.body.description
         };
-        sphone = cryptoUtil.getSID(idUser, process.env.JWT_SECRET);
+        sphone = cryptoUtil.getSID(data.idUser, process.env.JWT_SECRET);
         if (sphone !== "") {
             await User.findAll({
                 where: {
@@ -43,11 +43,11 @@ module.exports = {
                 },
             }).then((users) => {
                 if (users && users.length) {
-                    idUser = users[0].id;
+                    data.idUser = users[0].id;
                 }
             });
         }
-        console.log("ID:" + idUser);
+        console.log("ID:" + data.idUser);
 
         //lon,lat;lon,lat;lon,lat;lon,lat
         const spolygone = req.body.polygon + '';
