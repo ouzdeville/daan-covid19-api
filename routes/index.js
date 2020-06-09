@@ -44,6 +44,7 @@ module.exports = (app) => {
   app.get('/user/refresh_token', auth, UserController.refreshToken);
   app.post('/user/verify_code', auth, UserController.verifyCode);
   app.post('/location', auth, LocationController.registerLocation);
+  app.get('/user/decrypt/:id', auth, UserController.decryptNumber);
 
   //app.post('/location', ElasticCallController.registerLocation);
   // app.post('/user/signaler', auth, UserController.signaler);

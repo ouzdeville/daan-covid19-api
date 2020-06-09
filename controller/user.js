@@ -1,8 +1,8 @@
-const {User, Incubation, SelfReporting,} = require('./../models');
-const {otpProvider, jwt} = require('./../providers');
-const {cryptoUtil} = require('../utils');
-const {Client} = require('@elastic/elasticsearch')
-const {elasticClient} = require('./../utils');
+const { User, Incubation, SelfReporting, } = require('./../models');
+const { otpProvider, jwt } = require('./../providers');
+const { cryptoUtil } = require('../utils');
+const { Client } = require('@elastic/elasticsearch')
+const { elasticClient } = require('./../utils');
 const OneSignal = require('onesignal-node');
 
 const client = new OneSignal.Client('3552b3b3-6e98-417e-a5a3-e73b723a6eb6',
@@ -60,7 +60,7 @@ module.exports = {
             }
             const otp = await otpProvider.generateOTP(req.body.phone);
             sphone = cryptoUtil.getSID(req.body.phone, process.env.JWT_SECRET);
-            const token = jwt.sign({phone: sphone});
+            const token = jwt.sign({ phone: sphone });
             const exist = await User.findAll({
                 where: {
                     phone: sphone,
@@ -121,9 +121,9 @@ module.exports = {
                 phone: req.phone,
             });
             if (verification) {
-                res.send({success: true, message: 'Successfully verified.'});
+                res.send({ success: true, message: 'Successfully verified.' });
             }
-            res.status(401).send({message: 'verification error'});
+            res.status(401).send({ message: 'verification error' });
         } catch (error) {
             res.status(500).send(error)
         }
@@ -157,7 +157,7 @@ module.exports = {
      */
     async refreshToken(req, res) {
         sphone = cryptoUtil.getSID(req.phone, process.env.JWT_SECRET);
-        const token = jwt.sign({phone: sphone});
+        const token = jwt.sign({ phone: sphone });
         res.status(201).send({
             success: true,
             message: 'Successfully created.',
@@ -177,7 +177,7 @@ module.exports = {
      * @param  {} res
      */
     getContact(req, res) {
-        const {idUser} = req.params;
+        const { idUser } = req.params;
         User.findOne({
             where: {
                 id: idUser
@@ -252,7 +252,7 @@ module.exports = {
      *     }
      */
     async signaler(req, res) {
-        let {debutincubation, finincubation, idUser, sendNotification} = req.body;
+        let { debutincubation, finincubation, idUser, sendNotification } = req.body;
         debutincubation = new Date(debutincubation).getTime();
         finincubation = new Date(finincubation).getTime();
 
@@ -335,7 +335,7 @@ module.exports = {
                 if (user.phone.includes("221")) {
 
                     User.update(
-                        {phone: cryptoUtil.getSID(user.phone, process.env.JWT_SECRET)},
+                        { phone: cryptoUtil.getSID(user.phone, process.env.JWT_SECRET) },
                         {
                             where: {
                                 id: user.id,
@@ -375,7 +375,49 @@ module.exports = {
                         err.message || "Some error occurred while retrieving users."
                 });
             });
-    }
-    ,
-}
-;
+    },
+
+
+    /**
+     * @api {get} /user/decrypt/:id Get User Phone 
+     * @apiName decryptNumber
+     * @apiGroup User
+     *
+     *
+     * @apiSuccess (Success 200) {Object} result User
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *          "success": true,
+     *           "code": 99,
+     *           "users": {
+     *               "phone": "+22177",
+     *               "active": "active",
+     *               "id": "181fcc26-666e-4775-b9b4-5ac188db9cb9",
+     *               "OneSignalPlayerId": null,
+     *               "createdAt": "2020-06-02T14:28:23.802Z",
+     *               "updatedAt": "2020-06-02T14:28:46.555Z"
+     *           }
+     *       }
+     */
+    async decryptNumber(req, res) {
+        let id = req.params.id;
+        await User.findOne({
+            where: {
+                id: id,
+            },
+        }).then((user) => {
+            if (user) {
+                user.phone= cryptoUtil.getIdFromSID(user.phone, process.env.JWT_SECRET);
+                
+            }
+            res.status(200).send({
+                success: true,
+                code: 99,
+                user: user
+            });
+            
+        });
+    },
+};

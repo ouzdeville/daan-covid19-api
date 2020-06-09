@@ -9,7 +9,8 @@ const {
     PrevalenceController, DailyReportController,
     RiskFactorController, ElasticCallController,
     PushNotificationController, ScreeningController,
-    PushNotificationOsController, BackOfficeUserController
+    PushNotificationOsController, BackOfficeUserController,
+    GeofenceController
 } = require('./../controller');
 
 const { boAuth } = require('./../middlewares');
@@ -26,6 +27,7 @@ router.get('/bo-user/:id/change-statut', boAuth, BackOfficeUserController.change
 // End Users
 router.get('/user', boAuth, UserController.get);
 router.get('/users', boAuth, UserController.getAllUsers);
+router.get('/user/decrypt/:id', boAuth, UserController.decryptNumber);
 
 //router.post('/location', ElasticCallController.registerLocation);
 router.get('/location/:idUser', boAuth, LocationController.getUserLocations);
@@ -108,5 +110,11 @@ router.post('/screening', boAuth, ScreeningController.create);
 router.get('/screening', boAuth, ScreeningController.getAll);
 router.get('/screening/:id', boAuth, ScreeningController.get);
 router.get('/screening/by-self-reporting/:idSelfReporting', boAuth, ScreeningController.getAllBySelfReporting);
+
+//Route Geofencing
+router.post('/geofence', boAuth, GeofenceController.createGeofence);
+router.get('/geofences', boAuth, GeofenceController.getGeofences);
+router.get('/geofence/user/:id',boAuth, GeofenceController.getGeofenceUser);
+router.get('/geofence/:id', boAuth, GeofenceController.getGeofence);
 
 module.exports = router;
