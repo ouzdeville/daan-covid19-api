@@ -156,7 +156,7 @@ module.exports = {
             });
 
         } catch (error) {
-            res.status(401).send({ error });
+            console.log(error);
         }
     },
     /**

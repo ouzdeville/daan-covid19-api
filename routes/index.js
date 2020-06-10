@@ -120,9 +120,9 @@ module.exports = (app) => {
   app.post('/push-notification/add-player-id', auth, PushNotificationOsController.addPlayerId);
 
   //Route Geofencing
-  //app.post('/geofence', auth, GeofenceController.createGeofence);
-  //app.get('/geofences', auth, GeofenceController.getGeofences);
-  //app.get('/geofence/user/:id', GeofenceController.getGeofenceUser);
-  //app.get('/geofence/:id', auth, GeofenceController.getGeofence);
+  app.post('/geofence', auth, GeofenceController.createGeofence);
+  app.get('/geofences', auth, GeofenceController.getGeofences);
+  app.get('/geofence/user/:id', GeofenceController.getGeofenceUser);
+  app.get('/geofence/:id', auth, GeofenceController.getGeofence);
   app.get('/test', TestController.out2);
 };
