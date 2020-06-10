@@ -1,4 +1,4 @@
-const { Location, Zone, Prevalence,Geofence } = require('./../models');
+const { Location, Zone, Prevalence,Geofence,ExitZone } = require('./../models');
 const { awsClients } = require('./../utils');
 const { insidePolygon } = require('geolocation-utils');
 const Sequelize = require('sequelize');
