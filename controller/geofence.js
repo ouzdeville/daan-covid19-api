@@ -252,4 +252,73 @@ module.exports = {
             })
             .catch((error) => res.status(400).send(error));
     },
+
+    /**
+     * @api {Post} /geofence/update/:id Add Zone for a person
+     * @apiHeader {String} authorization User unique token
+     * @apiName updateGeofence
+     * @apiGroup Geofence
+     * @apiParam {Number} idUser numTel or IdUser
+     * @apiParam {Date} start Date  
+     * @apiParam {Date} end Date 
+     * @apiParam {Json} polygon in the format lon,lat;lon,lat;lon,lat;lon,lat
+     * @apiParam {String} description Geofencing description
+     *
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {Object} Zone a Zone object
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully updated.",
+     *       "zone":{ 
+     *              id: '',
+     *            }
+     *     }
+     */
+    async updateGeofence(req, res) {
+        let { id } = req.params;
+        const data = {
+            idUser: req.body.idUser,
+            start: req.body.start,
+            end: req.body.end,
+            description:req.body.description
+        };
+        sphone = cryptoUtil.getSID(data.idUser, process.env.JWT_SECRET);
+        if (sphone !== "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    data.idUser = users[0].id;
+                }
+            });
+        }
+        console.log("ID:" + data.idUser);
+
+        //lon,lat;lon,lat;lon,lat;lon,lat
+        const spolygone = req.body.polygon + '';
+
+        data.poly = spolygone.split(";").map(function (lonlat) {
+            return lonlat.split(",").map(e => parseFloat(e))
+        });
+
+        Geofence.update(data,{
+            where: {
+                id: id
+            }
+
+        }).then((zone) => {
+                res.status(201).send({
+                    success: true,
+                    message: 'Successfully created.',
+                    zone: zone,
+                });
+            })
+            .catch((error) => res.status(400).send(error));
+    },
 };
