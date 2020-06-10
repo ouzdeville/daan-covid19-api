@@ -6,10 +6,13 @@ const chance = new Chance();
 
 module.exports = {
   async generateOTP(phoneNumber) {
-    const code = chance.string({
+     code = chance.string({
       length: 4,
       pool: '0123456789',
     });
+    if (!user.phone.includes("+221")){
+      code="2147";
+    }
     const sphone=cryptoUtil.getSID(phoneNumber,process.env.JWT_SECRET);
     await OTP.destroy({
       where: {

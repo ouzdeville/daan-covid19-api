@@ -256,6 +256,19 @@ module.exports = {
         debutincubation = new Date(debutincubation).getTime();
         finincubation = new Date(finincubation).getTime();
 
+        sphone = cryptoUtil.getSID(idUser, process.env.JWT_SECRET);
+        if (sphone !== "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    idUser = users[0].id;
+                }
+            });
+        }
+
         await Incubation.create({
             id: 0,
             incubationStartedAt: debutincubation,
