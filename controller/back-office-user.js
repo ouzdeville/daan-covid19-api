@@ -13,6 +13,7 @@ module.exports = {
      * @apiParam {String} email email
      * @apiParam {String} password password
      * @apiParam {String} role role (superadmin, admin, decideur or daancovid19)
+     * @apiParam {String} phone
      *
      * @apiSuccess (Success 201) {Boolean} success If it works ot not (true)
      * @apiSuccess (Success 201) {String} message Response message
@@ -44,6 +45,7 @@ module.exports = {
      *             "email": "cheikh.camara@.com",
      *             "password": "$2b$10$hAH5oD/JxpqlYK4pEX931e5lx36ZvAPO0.muHyXXMcPw9NTDtXUZ6",
      *             "role": "superadmin",
+     *             "phone": "+22177",
      *             "createdById": 5,
      *             "updatedAt": "2020-05-19T20:55:32.697Z",
      *             "createdAt": "2020-05-19T20:55:32.697Z"
@@ -75,6 +77,7 @@ module.exports = {
      *             "email": "cheikh.camara@.com",
      *             "password": "$2b$10$hAH5oD/JxpqlYK4pEX931e5lx36ZvAPO0.muHyXXMcPw9NTDtXUZ6",
      *             "role": "superadmin",
+     *             "phone": "+22177",
      *             "createdById": 5,
      *             "updatedAt": "2020-05-19T20:55:32.697Z",
      *             "createdAt": "2020-05-19T20:55:32.697Z"
@@ -106,15 +109,16 @@ module.exports = {
      */
     create(req, res) {
         const cryptedPassword = bcrypt.hashSync(req.body.password, saltRounds);
-
+        console.log("creation", req.body);
         const data = {
             userName: req.body.userName,
             email: req.body.email,
             password: cryptedPassword,
             role: req.body.role,
+            phone: req.body.phone,
             createdById: req.boUserID
         };
-
+        console.log("creation", req.body);
         BackOfficeUser.create(data)
             .then((user) => {
                 res.status(201).send({
@@ -303,6 +307,7 @@ module.exports = {
      *           "email": "sidya.camara@gmail.com",
      *           "role": "superadmin",
      *           "actif": true,
+     *           "phone": "+22177",
      *           "createdAt": "2020-05-19T13:57:27.417Z",
      *           "CreatedBy": null
      *         },
@@ -312,6 +317,7 @@ module.exports = {
      *           "email": "cheikh.camara@gsietechnology.com",
      *           "role": "superadmin",
      *           "actif": true,
+     *           "phone": "+221765760976",
      *           "createdAt": "2020-05-19T20:50:25.023Z",
      *           "CreatedBy": {
      *             "id": 5,
@@ -324,7 +330,7 @@ module.exports = {
      */
     getAll(req, res) {
         BackOfficeUser.findAll({
-            attributes: ['id', 'userName', 'email', 'role', 'actif', 'createdAt'],
+            attributes: ['id', 'userName', 'email', 'role', 'actif', 'phone', 'createdAt'],
             include: [{
                 model: BackOfficeUser,
                 as: 'CreatedBy',
@@ -364,6 +370,7 @@ module.exports = {
      *         "email": "cheikh.camara@gsietechnology.com",
      *         "role": "superadmin",
      *         "actif": true,
+     *         "phone": "+221775760976",
      *         "createdAt": "2020-05-19T20:50:25.023Z",
      *         "CreatedBy": {
      *           "id": 5,
@@ -377,7 +384,7 @@ module.exports = {
         const {id} = req.params;
 
         BackOfficeUser.findOne({
-            attributes: ['id', 'userName', 'email', 'role', 'actif', 'createdAt'],
+            attributes: ['id', 'userName', 'email', 'role', 'actif', 'phone', 'createdAt'],
             include: [{
                 model: BackOfficeUser,
                 as: 'CreatedBy',
@@ -418,6 +425,7 @@ module.exports = {
      *         "email": "cheikh.camara@gsietechnology.com",
      *         "role": "superadmin",
      *         "actif": false,
+     *         "phone": "+221775760976",
      *         "createdAt": "2020-05-19T20:50:25.023Z",
      *         "CreatedBy": {
      *           "id": 5,
@@ -431,7 +439,7 @@ module.exports = {
         const {id} = req.params;
 
         BackOfficeUser.findOne({
-            attributes: ['id', 'userName', 'email', 'role', 'actif', 'createdAt'],
+            attributes: ['id', 'userName', 'email', 'role', 'actif', 'phone', 'createdAt'],
             include: [{
                 model: BackOfficeUser,
                 as: 'CreatedBy',
@@ -492,12 +500,14 @@ module.exports = {
             data = {
                 userName: req.body.userName,
                 email: req.body.email,
+                phone: req.body.phone
             }
         } else {
             data = {
                 userName: req.body.userName,
                 email: req.body.email,
                 role: req.body.role,
+                phone: req.body.phone
             }
         }
 

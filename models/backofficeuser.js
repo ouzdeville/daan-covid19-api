@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: true,
         },
+        phone: {
+            type: DataTypes.STRING,
+        },
         createdById: {
             type: DataTypes.INTEGER,
         }
