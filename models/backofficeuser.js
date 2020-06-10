@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         BackOfficeUser.belongsTo(models.BackOfficeUser, {
             as: 'CreatedBy', foreignKey: 'createdById'
         });
+        BackOfficeUser.hasMany(models.Geofence, {foreignKey: 'createdById'});
     };
 
     return BackOfficeUser;

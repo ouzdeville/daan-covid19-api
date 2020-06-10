@@ -1,4 +1,4 @@
-const { Location, Zone, Prevalence,Geofence,ExitZone } = require('./../models');
+const { Location, Zone, Prevalence, Geofence, ExitZone } = require('./../models');
 const { awsClients } = require('./../utils');
 const { insidePolygon } = require('geolocation-utils');
 const Sequelize = require('sequelize');
@@ -107,53 +107,58 @@ module.exports = {
                 }
             });
 
-        //Mettre à jour geofence lasttime
-        await Geofence.update(
-            {
-                lasttime: req.body.timestamp,
-            },
-            {
-                where: {
-                    idUser: userID,
-                    start:{
-                        [Op.lte]: req.body.timestamp,
-                    },
-                    end:{
-                        [Op.gte]: req.body.timestamp,
-                    }
-                }
-            });
-        //si est sortie de geofence alors new entree on exit 
-        await Geofence.findAll(
-            {
-                where: {
-                    idUser: userID,
-                    start:{
-                        [Op.lte]: req.body.timestamp,
-                    },
-                    end:{
-                        [Op.gte]: req.body.timestamp,
-                    }
-                }
-            }).then((zones) => {
-                zones.forEach(zone => {
-                    var poly = (zone.poly);
-                    const exitdata = {
-                        idGeofence: zone.id,
-                        current_date: req.body.timestamp,
-                        position: req.body.position,
-                        notif: false
-                    };
-                    //poly=JSON.parse(poly);
-                    rst = false;
-                    //console.log(poly);
-                    if (poly != null)
-                        rst = insidePolygon(req.body.position, poly);
-                    if (!rst) {
-                        ExitZone.create(exitdata)
+            //Mettre à jour geofence lasttime
+            await Geofence.update(
+                {
+                    lasttime: req.body.timestamp,
+                },
+                {
+                    where: {
+                        idUser: userID,
+                        start: {
+                            [Op.lte]: req.body.timestamp,
+                        },
+                        end: {
+                            [Op.gte]: req.body.timestamp,
+                        }
                     }
                 });
-            });
+            //si est sortie de geofence alors new entree on exit 
+            await Geofence.findAll(
+                {
+                    include: [{
+                        model: User
+                    }],
+                    where: {
+                        idUser: userID,
+                        start: {
+                            [Op.lte]: req.body.timestamp,
+                        },
+                        end: {
+                            [Op.gte]: req.body.timestamp,
+                        }
+                    }
+                }).then((zones) => {
+                    zones.forEach(zone => {
+                        var poly = (zone.poly);
+                        const exitdata = {
+                            idGeofence: zone.id,
+                            current_date: req.body.timestamp,
+                            position: req.body.position,
+                            notif: false
+                        };
+                        //poly=JSON.parse(poly);
+                        rst = false;
+                        //console.log(poly);
+                        if (poly != null)
+                            rst = insidePolygon(req.body.position, poly);
+                        if (!rst) {
+                            ExitZone.create(exitdata);
+                            if (zone.phone)
+                                sendSms(zone.phone, `Sortie de zone de: ${cryptoUtil.getSID(zone.User.phone, process.env.JWT_SECRET)}`);
+                        }
+                    });
+                });
 
         } catch (error) {
             console.log(error);
