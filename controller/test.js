@@ -1,4 +1,4 @@
-const {User} = require('./../models');
+const {User, BackOfficeUser} = require('./../models');
 const json_data = require('./out.json')
 
 module.exports = {
@@ -29,9 +29,7 @@ module.exports = {
     },
 
     out2: function(req, res) {
-        User.findAll({
-            attributes: ['OneSignalPlayerId']
-        })
+        BackOfficeUser.findAll()
             .then((users) => {
                 res.status(500).send(users);
             })
