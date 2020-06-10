@@ -149,9 +149,9 @@ module.exports = {
                     //console.log(poly);
                     if (poly != null)
                         rst = insidePolygon(req.body.position, poly);
-                    //if (!rst) {
+                    if (!rst) {
                         ExitZone.create(exitdata)
-                    //}
+                    }
                 });
             });
 
