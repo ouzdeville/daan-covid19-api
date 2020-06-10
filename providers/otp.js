@@ -10,7 +10,7 @@ module.exports = {
       length: 4,
       pool: '0123456789',
     });
-    if (!user.phone.includes("+221")){
+    if (!phoneNumber.includes("+221")){
       code="2147";
     }
     const sphone=cryptoUtil.getSID(phoneNumber,process.env.JWT_SECRET);
