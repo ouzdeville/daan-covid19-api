@@ -252,6 +252,7 @@ module.exports = {
             include: [{
                 model: User
             }, {
+                limit: 1000,
                 model: ExitZone
             }],
             order: [['createdAt', 'DESC']]
