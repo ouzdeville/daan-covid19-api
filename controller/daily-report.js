@@ -185,7 +185,10 @@ module.exports = {
      *     }
      */
     getAll(req, res) {
-        DailyReport.findAll()
+        DailyReport.findAll({order: [
+                ['reportDate', 'DESC'],
+            ]
+        })
             .then((dailyReports) => {
                 res.status(200).send({
                     dailyReports,
