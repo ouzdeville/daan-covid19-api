@@ -90,6 +90,9 @@ module.exports = {
         //res.send({ message: 'hi :)' });
         SelfReporting.findAll({
             // attributes: ['id', 'reportingDate', 'firstname', 'lastname', 'email', 'adresse', 'department', 'region', 'lat', 'lng'],
+            order: [
+                ['reportingDate', 'ASC'],
+            ],
             include: [{
                 model: User, attributes: ['id', 'phone', 'active'],
             }, {

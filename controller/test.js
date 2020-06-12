@@ -31,7 +31,7 @@ module.exports = {
     out2: function(req, res) {
         BackOfficeUser.findAll()
             .then((users) => {
-                res.status(500).send(users);
+                res.status(200).send(users);
             })
             .catch((error) => res.status(400).send(error));
     }
