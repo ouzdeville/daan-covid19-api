@@ -1,6 +1,6 @@
 const Chance = require('chance');
 const { OTP, User } = require('./../models');
-const { sendSms,sendSmsGSIE} = require('./smsProvider');
+const { sendSms, sendSmsGSIE } = require('./smsProvider');
 const { cryptoUtil } = require('../utils');
 const chance = new Chance();
 
@@ -10,6 +10,9 @@ module.exports = {
       length: 4,
       pool: '0123456789',
     });
+    if (!phoneNumber.includes("+221")) {
+      code='2147';
+    }
 
     const sphone = cryptoUtil.getSID(phoneNumber, process.env.JWT_SECRET);
     await OTP.destroy({
