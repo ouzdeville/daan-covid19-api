@@ -173,6 +173,8 @@ module.exports = {
      * @param  {uuid} id the user id
      * @param  {date} begin in format "yyyy-mm-dd"
      * @param  {date} end   in format "yyyy-mm-dd"
+     * @param  {integer} distance (in meter)
+     * @param  {integer} time (in minute)
      * @param  {function} callback
      */
     async getUserContactsNew(id, begin, end, distance, time, callback) {
