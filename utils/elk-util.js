@@ -1,4 +1,4 @@
-const { Client } = require('@elastic/elasticsearch')
+const {Client} = require('@elastic/elasticsearch')
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
@@ -11,10 +11,10 @@ const client = new Client({
 const indexlocation = "dc19_"
 const indexzone = "dc19zone"
 var uuid = require('uuid');
-/** 
- * 
+/**
+ *
  * Daancovid ELK Client
- * 
+ *
  */
 module.exports = {
 
@@ -25,13 +25,13 @@ module.exports = {
      * @param  {date} end   in format "yyyy-mm-dd"
      * @param  {function} callback
      */
-    async getUserContacts(id, begin, end, distance,time, callback) {
+    async getUserContacts(id, begin, end, distance, time, callback) {
         console.log("getUserContacts");
         try {
-            const { body } = await client.search({
+            const {body} = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-                body: { 
+                body: {
                     "query": {
                         "bool": {
                             "must": [
@@ -71,7 +71,7 @@ module.exports = {
             hits = body.hits.hits;
             var result = [];
             var itemsProcessed = 0;
-            deltatime=time*60000
+            deltatime = time * 60000
             for (var hit of hits) {
                 //hits.forEach(async (hit) => {
                 console.log("My new Position:" + id);
@@ -83,7 +83,7 @@ module.exports = {
                 end1 = hit._source.created_date + deltatime;
                 console.log("5 min before" + begin1);
                 console.log("5 min after" + end1);
-                const { body } = await client.search({
+                const {body} = await client.search({
                     index: indexlocation,
                     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                     body: {
@@ -131,7 +131,7 @@ module.exports = {
                         },
                         "aggs": {
                             "contacts": {
-                                "terms": { "field": "id" }
+                                "terms": {"field": "id"}
                             }
                         },
                         "sort": [
@@ -151,7 +151,6 @@ module.exports = {
                     result.push(body.hits.hits[0]);
 
 
-
                 itemsProcessed++;
                 if (itemsProcessed === hits.length) {
                     //console.log("Results1:");
@@ -167,10 +166,6 @@ module.exports = {
         }
 
 
-
-
-
-
     },
 
     /**
@@ -180,9 +175,9 @@ module.exports = {
      * @param  {date} end   in format "yyyy-mm-dd"
      * @param  {function} callback
      */
-    async getUserContactsNew(id, begin, end, distance,time, callback) {
+    async getUserContactsNew(id, begin, end, distance, time, callback) {
         try {
-            const { body } = await client.search({
+            const {body} = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -254,7 +249,7 @@ module.exports = {
                     }
                 }
             };
-            deltatime=time*60000;
+            deltatime = time * 60000;
             for (var hit of hits) {
                 source = hit._source;
                 begin1 = hit._source.created_date - deltatime;
@@ -262,25 +257,26 @@ module.exports = {
 
                 elem = {
                     "bool": {
-                        "must": [{
-                            "range": {
-                                "created_date": {
-                                    "gte": begin1,
-                                    "lte": end1,
-                                    "format": "epoch_second"
+                        "must": [
+                            {
+                                "range": {
+                                    "created_date": {
+                                        "gte": begin1,
+                                        "lte": end1,
+                                        "format": "epoch_second"
+                                    }
                                 }
                             }
-                        },
-                        {
-                            "geo_distance": {
-                                "distance": distance + "m",
+                        ],
+                        "filter" : {
+                            "geo_distance" : {
+                                "distance" : distance + "m",
                                 "position": {
                                     "lat": source.position.lat,
                                     "lon": source.position.lon
                                 }
                             }
                         }
-                        ]
                     }
                 };
                 requete.query.bool.must.dis_max.queries.push(elem);
@@ -289,7 +285,7 @@ module.exports = {
                 if (itemsProcessed === hits.length) {
                     //console.log("Results1:");
                     //console.log(result);
-                    const { body } = await client.search({
+                    const {body} = await client.search({
                         index: indexlocation,
                         // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                         body: requete
@@ -305,14 +301,9 @@ module.exports = {
             //});
 
 
-
         } catch (error) {
             throw (error);
         }
-
-
-
-
 
 
     },
@@ -326,7 +317,7 @@ module.exports = {
     async getUserTrace(id, begin, end, callback) {
         try {
             // Let's search!
-            const { body } = await client.search({
+            const {body} = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -377,7 +368,7 @@ module.exports = {
     /**
      * Find the all contacts at a spescific time
      * @param  {} id of the user
-     * @param  {} timestamp of the contacts 
+     * @param  {} timestamp of the contacts
      * @param  {} latitude the GPS latitude
      * @param  {} longitude the GPS longitude
      * @param  {function} callback th callback funtion to call on data after
@@ -390,7 +381,7 @@ module.exports = {
             }
             begin1 = timestamp - 1300;
             end1 = timestamp + 1300;
-            const { body } = await client.search({
+            const {body} = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -462,7 +453,7 @@ module.exports = {
             var location = [parseFloat(longitude), parseFloat(latitude)];
             location = [location, location];
             //console.log(location);
-            const { body } = await client.search({
+            const {body} = await client.search({
                 index: indexzone,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -523,7 +514,7 @@ module.exports = {
      */
     async getZones(callback) {
         try {
-            const { body } = await client.search({
+            const {body} = await client.search({
                 index: indexzone,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -562,13 +553,13 @@ module.exports = {
     },
 
     /**
-     * Get All GPS position 
+     * Get All GPS position
      * @param  {function} callback th callback funtion to call on data after
      */
     async getAllTrace(callback) {
         try {
             // Let's search!
-            const { body } = await client.search({
+            const {body} = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {

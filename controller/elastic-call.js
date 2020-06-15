@@ -105,8 +105,6 @@ module.exports = {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 var i, j;
                 zoneslist = [];
-                let initenaires = [];
-                let initenaire = [];
                 Zone.findAll().then((zones) => {
                     for (j = 0; j < zones.length; j++) {
                         area = {
