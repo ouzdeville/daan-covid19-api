@@ -265,7 +265,7 @@ module.exports = {
                                     "created_date": {
                                         "gte": begin1,
                                         "lte": end1,
-                                        "format": "epoch_second"
+                                        "format": "epoch_millis"
                                     }
                                 }
                             }
