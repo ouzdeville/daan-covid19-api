@@ -29,47 +29,48 @@ module.exports = {
      *     }
      */
     async createGeofence(req, res) {
-            const data = {
-                idUser: req.body.idUser,
-                start: req.body.start,
-                end: req.body.end,
-                description: req.body.description
-            };
-            sphone = cryptoUtil.getSID(data.idUser, process.env.JWT_SECRET);
-            if (sphone !== "") {
-                await User.findAll({
-                    where: {
-                        phone: sphone,
-                    },
-                }).then((users) => {
-                    if (users && users.length) {
-                        data.idUser = users[0].id;
-                    }
-                });
-            }
-            console.log("ID:" + data.idUser);
-
-            //lon,lat;lon,lat;lon,lat;lon,lat
-            const spolygone = req.body.polygon + '';
-
-            data.poly = spolygone.split(";").map(function (lonlat) {
-                return lonlat.split(",").map(e => parseFloat(e))
+        const data = {
+            idUser: req.body.idUser,
+            start: req.body.start,
+            end: req.body.end,
+            description: req.body.description,
+            createdById: req.idAdmin
+        };
+        sphone = cryptoUtil.getSID(data.idUser, process.env.JWT_SECRET);
+        if (sphone !== "") {
+            await User.findAll({
+                where: {
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    data.idUser = users[0].id;
+                }
             });
+        }
+        console.log("ID:" + data.idUser);
 
-            Geofence.create(data)
-                .then((zone) => {
-                    res.status(201).send({
-                        success: true,
-                        message: 'Successfully created.',
-                        zone: zone,
-                    });
-                }).catch((error) => {
-                    console.log(error);
-                    res.status(500).send({
-                        success: false,
-                        code: -1,
-                    });
+        //lon,lat;lon,lat;lon,lat;lon,lat
+        const spolygone = req.body.polygon + '';
+
+        data.poly = spolygone.split(";").map(function (lonlat) {
+            return lonlat.split(",").map(e => parseFloat(e))
+        });
+
+        Geofence.create(data)
+            .then((zone) => {
+                res.status(201).send({
+                    success: true,
+                    message: 'Successfully created.',
+                    zone: zone,
                 });
+            }).catch((error) => {
+                console.log(error);
+                res.status(500).send({
+                    success: false,
+                    code: -1,
+                });
+            });
 
     },
 
@@ -156,29 +157,7 @@ module.exports = {
             .catch((error) => res.status(400).send(error));
     },
 
-    /**
-     * @api {get} /geofence/inside/:latitude/:longitude Inside zone
-     * @apiHeader {String} authorization User unique token
-     * @apiName isInGeofence
-     * @apiGroup Geofence
-     *
-     * @apiParam {Number} latitude GPS latitude
-     * @apiParam {Number} longitude GPS longitude
-     *
-     * @apiSuccess (Success 200) {Boolean} success If it works ot not
-     * @apiSuccess (Success 200) {Object} result Location objects
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *       "success": true,
-     *       "result":{
-     * 
-     *       }
-     *          
-     *       
-     *     }
-     */
+
     async isInGeofence(req, res) {
         let area = [];
         let { latitude, longitude } = req.params;
@@ -267,7 +246,7 @@ module.exports = {
                 res.status(200).send({
                     success: false,
                     code: -1,
-                    zones:[]
+                    zones: []
                 });
             });
     },
@@ -298,51 +277,151 @@ module.exports = {
      *     }
      */
     async updateGeofence(req, res) {
-            let { id } = req.params;
-            const data = {
-                idUser: req.body.idUser,
-                start: req.body.start,
-                end: req.body.end,
-                description: req.body.description
-            };
-            sphone = cryptoUtil.getSID(data.idUser, process.env.JWT_SECRET);
-            if (sphone !== "") {
-                await User.findAll({
-                    where: {
-                        phone: sphone,
-                    },
-                }).then((users) => {
-                    if (users && users.length) {
-                        data.idUser = users[0].id;
-                    }
-                });
-            }
-            console.log("ID:" + data.idUser);
-
-            //lon,lat;lon,lat;lon,lat;lon,lat
-            const spolygone = req.body.polygon + '';
-
-            data.poly = spolygone.split(";").map(function (lonlat) {
-                return lonlat.split(",").map(e => parseFloat(e))
-            });
-
-            Geofence.update(data, {
+        let { id } = req.params;
+        const data = {
+            idUser: req.body.idUser,
+            start: req.body.start,
+            end: req.body.end,
+            description: req.body.description
+        };
+        sphone = cryptoUtil.getSID(data.idUser, process.env.JWT_SECRET);
+        if (sphone !== "") {
+            await User.findAll({
                 where: {
-                    id: id
+                    phone: sphone,
+                },
+            }).then((users) => {
+                if (users && users.length) {
+                    data.idUser = users[0].id;
                 }
+            });
+        }
+        console.log("ID:" + data.idUser);
 
-            }).then((zone) => {
-                res.status(201).send({
-                    success: true,
-                    message: 'Successfully created.',
-                    zone: zone,
+        //lon,lat;lon,lat;lon,lat;lon,lat
+        const spolygone = req.body.polygon + '';
+
+        data.poly = spolygone.split(";").map(function (lonlat) {
+            return lonlat.split(",").map(e => parseFloat(e))
+        });
+
+        Geofence.update(data, {
+            where: {
+                id: id
+            }
+
+        }).then((zone) => {
+            res.status(201).send({
+                success: true,
+                message: 'Successfully created.',
+                zone: zone,
+            });
+        }).catch((error) => {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+        });
+    },
+
+    /**
+     * @api {Get} /geofence/notif All Exit notification
+     * @apiHeader {String} authorization User unique token
+     * @apiName GetNotif
+     * @apiGroup Geofence
+     * @apiParam {Number} idAdmin 
+     *
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {Object} Zone a Zone object
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully updated.",
+     *       "zone":{ 
+     *              id: '',
+     *            }
+     *     }
+     */
+    async getNotif(req, res) {
+
+        
+        
+        Geofence.findAll({
+            where: {
+               createdById: req.idAdmin
+            },
+            include: [ {
+                limit: 1000,
+                model: ExitZone,
+                where: {
+                    notif: false
+                }
+            }],
+            order: [['createdAt', 'DESC']]
+        })
+            .then((zones) => {
+                res.status(200).send({
+                    zones,
                 });
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 console.log(error);
-                res.status(500).send({
+                res.status(200).send({
                     success: false,
                     code: -1,
+                    zones: []
                 });
             });
+
+    },
+
+
+    /**
+     * @api {Get} /geofence/updatenotif/:idExit Add Zone for a person
+     * @apiHeader {String} authorization User unique token
+     * @apiName updateExitZone
+     * @apiGroup Geofence
+     * @apiParam {Number} id ExitZone
+     *
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     * @apiSuccess (Success 201) {Object} Zone a Zone object
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully updated.",
+     *       "zone":{ 
+     *              id: '',
+     *            }
+     *     }
+     */
+    async updateExitZone(req, res) {
+
+        let { idExit } = req.params;
+        ExitZone.update(data, {
+            where: {
+                id: idExit,
+                notif: true
+            }
+
+        }).then((zone) => {
+            res.status(201).send({
+                success: true,
+                message: 'Successfully updated.',
+                zone: zone,
+            });
+        }).catch((error) => {
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+        });
     },
 };
