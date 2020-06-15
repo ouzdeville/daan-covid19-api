@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     notif: DataTypes.BOOLEAN
   }, {});
   ExitZone.associate = function(models) {
-    ExitZone.belongsTo(models.User, {foreignKey: 'idGeofence'});
+    ExitZone.belongsTo(models.Geofence, {foreignKey: 'idGeofence'});
   };
   return ExitZone;
 };

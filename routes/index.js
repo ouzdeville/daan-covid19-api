@@ -123,6 +123,8 @@ module.exports = (app) => {
   app.post('/geofence', auth, GeofenceController.createGeofence);
   app.get('/geofences', auth, GeofenceController.getGeofences);
   app.get('/geofence/user/:id', GeofenceController.getGeofenceUser);
+  app.get('/geofence/notif', GeofenceController.getNotif);
+  app.get('/geofence/updatenotif/:idExit', GeofenceController.updateExitZone);
   app.get('/geofence/:id', auth, GeofenceController.getGeofence);
   app.get('/test', TestController.out2);
 };
