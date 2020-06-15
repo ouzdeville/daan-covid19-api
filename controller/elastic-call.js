@@ -336,7 +336,6 @@ module.exports = {
                 res.status(200).send({
                     success: true,
                     code: 99,
-                    test: 110,
                     resust: result,
                     buckets: buckets,
                 });
