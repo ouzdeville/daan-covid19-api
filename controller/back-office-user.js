@@ -469,6 +469,7 @@ module.exports = {
      *
      * @apiParam {String} userName userName
      * @apiParam {String} email email
+     * @apiParam {String} phone phone
      * @apiParam {String} role role (a user can't update his own role)
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not (true)
