@@ -34,7 +34,7 @@ module.exports = {
             start: req.body.start,
             end: req.body.end,
             description: req.body.description,
-            createdById: req.idAdmin
+            createdById: req.boUserID
         };
         sphone = cryptoUtil.getSID(data.idUser, process.env.JWT_SECRET);
         if (sphone !== "") {
