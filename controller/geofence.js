@@ -421,6 +421,7 @@ module.exports = {
             res.status(500).send({
                 success: false,
                 code: -1,
+                error:error
             });
         });
     },
