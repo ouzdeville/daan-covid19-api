@@ -255,7 +255,7 @@ module.exports = {
             deltatime = time * 60000;
             for (var hit of hits) {
                 source = hit._source;
-                begin1 = hit._source.created_date - deltatime;
+                begin1 = (hit._source.created_date - deltatime)>0?(hit._source.created_date - deltatime):0;
                 end1 = hit._source.created_date + deltatime;
                 console.log("hit._source.created_date:"+hit._source.created_date);
                 elem = {
