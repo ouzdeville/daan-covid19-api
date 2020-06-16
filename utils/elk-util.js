@@ -257,7 +257,7 @@ module.exports = {
                 source = hit._source;
                 begin1 = (hit._source.created_date - deltatime)>0?(hit._source.created_date - deltatime):0;
                 end1 = (hit._source.created_date + deltatime)>0?(hit._source.created_date + deltatime):hit._source.created_date;
-                console.log("hit._source.created_date:"+hit._source.created_date);
+                //console.log("hit._source.created_date:"+hit._source.created_date);
                 elem = {
                     "bool": {
                         "must": [
@@ -306,7 +306,7 @@ module.exports = {
 
 
         } catch (error) {
-            throw (JSON.stringify(error.body));
+            throw (JSON.stringify(error));
         }
 
 
