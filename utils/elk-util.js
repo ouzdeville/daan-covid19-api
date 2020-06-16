@@ -264,8 +264,8 @@ module.exports = {
                             {
                                 "range": {
                                     "created_date": {
-                                        "gte": hit._source.created_date - deltatime,
-                                        "lte": hit._source.created_date + deltatime,
+                                        "gte": begin1,
+                                        "lte": end1,
                                         "format": "epoch_millis",
                                         "time_zone": "+01:00"
                                     }
