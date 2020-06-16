@@ -125,11 +125,7 @@ module.exports = (app) => {
   app.get('/geofences', auth, GeofenceController.getGeofences);
   app.get('/geofence/user/:id', GeofenceController.getGeofenceUser);
   app.get('/geofence/notif', GeofenceController.getNotif);
-  app.get('/geofence/updatenotif/:idExit', GeofenceController.updateExitZone);
+  app.get('/geofence/updatenotif/:idGeofence', GeofenceController.updateExitZone);
   app.get('/geofence/:id', auth, GeofenceController.getGeofence);
   app.get('/test', TestController.out2);
-
-  
-  app.get('/bo-user', BackOfficeUserController.getAll);
-  app.post('/bo-user/:id', BackOfficeUserController.update);
 };

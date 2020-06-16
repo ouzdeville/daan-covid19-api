@@ -116,7 +116,7 @@ router.post('/geofence', boAuth, GeofenceController.createGeofence);
 router.get('/geofences', boAuth, GeofenceController.getGeofences);
 router.get('/geofence/user/:id',boAuth, GeofenceController.getGeofenceUser);
 router.get('/geofence/notif',boAuth, GeofenceController.getNotif);
-router.get('/geofence/updatenotif/:idExit',boAuth, GeofenceController.updateExitZone);
+router.get('/geofence/updatenotif/:idGeofence',boAuth, GeofenceController.updateExitZone);
 router.get('/geofence/:id', boAuth, GeofenceController.getGeofence);
 
 module.exports = router;

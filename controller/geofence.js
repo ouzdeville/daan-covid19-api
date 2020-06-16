@@ -381,7 +381,7 @@ module.exports = {
 
 
     /**
-     * @api {Get} /geofence/updatenotif/:idExit Add Zone for a person
+     * @api {Get} /geofence/updatenotif/:idGeofence Add Zone for a person
      * @apiHeader {String} authorization User unique token
      * @apiName updateExitZone
      * @apiGroup Geofence
@@ -403,18 +403,18 @@ module.exports = {
      */
     async updateExitZone(req, res) {
 
-        let { idExit } = req.params;
-        ExitZone.update(data, {
+        let { idGeofence } = req.params;
+        ExitZone.update({notif: true}, {
             where: {
-                id: idExit,
-                notif: true
+                idGeofence: idGeofence,
+                notif: false
             }
 
         }).then((zone) => {
             res.status(201).send({
                 success: true,
                 message: 'Successfully updated.',
-                zone: zone,
+                result: zone,
             });
         }).catch((error) => {
             console.log(error);
