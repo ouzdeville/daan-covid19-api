@@ -1,8 +1,7 @@
 const { Client } = require('@elastic/elasticsearch')
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
-//my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
-    node:process.env.ELK_URL,
+    node:process.env.ELK_URL || 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com',
     //auth: {
     //    username: 'elastic',
     //    password: 'A6JlhI1Yqt1Y2l0rtFE7ANSZ'
