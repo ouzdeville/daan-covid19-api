@@ -314,8 +314,8 @@ module.exports = {
             let end = req.params.end;
             let distance = req.params.distance;
             let time = req.params.time;
-            begin = new Date(begin).getTime();
-            end = new Date(end).getTime();
+            //begin = new Date(begin).getTime();
+            //end = new Date(end).getTime();
             sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
             if (sphone !== "") {
                 await User.findAll({
