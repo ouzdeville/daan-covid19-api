@@ -183,7 +183,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
-                    "size": 1,
+                    "size": 5,
                     "query": {
                         "bool": {
                             "must": [
@@ -306,7 +306,7 @@ module.exports = {
 
 
         } catch (error) {
-            throw (error);
+            throw (JSON.stringify(error));
         }
 
 
