@@ -351,7 +351,7 @@ module.exports = {
         
         Geofence.findAll({
             where: {
-               createdById: req.idAdmin
+               createdById: req.boUserID
             },
             include: [ {
                 limit: 1,
