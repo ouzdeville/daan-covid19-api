@@ -185,7 +185,7 @@ module.exports = {
 
         // pour prendre en compte le dernier jour
         if (endHour === 0 && endMinute === 0 && endSecond ===0) {
-            end += 24 * 60 * 60 * 1000;
+            //end += 24 * 60 * 60 * 1000;
         }
 
         try {
