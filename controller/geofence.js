@@ -355,7 +355,7 @@ module.exports = {
                createdById: req.idAdmin
             },
             include: [ {
-                limit: 1000,
+                limit: 1,
                 model: ExitZone,
                 where: {
                     notif: false

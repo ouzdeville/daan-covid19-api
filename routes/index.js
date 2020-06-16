@@ -8,7 +8,8 @@ const {
   PrevalenceController, DailyReportController,
   ElasticCallController, RiskFactorController,
   PushNotificationOsController,
-  GeofenceController
+  GeofenceController,
+  BackOfficeUserController
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
@@ -127,4 +128,8 @@ module.exports = (app) => {
   app.get('/geofence/updatenotif/:idExit', GeofenceController.updateExitZone);
   app.get('/geofence/:id', auth, GeofenceController.getGeofence);
   app.get('/test', TestController.out2);
+
+  
+  app.get('/bo-user', BackOfficeUserController.getAll);
+  app.post('/bo-user/:id', BackOfficeUserController.update);
 };
