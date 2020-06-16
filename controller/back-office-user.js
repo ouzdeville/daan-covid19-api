@@ -524,7 +524,8 @@ module.exports = {
             })
             .catch((error) => res.status(400).send({
                 succes: false,
-                message: "An error occured when updating the user"
+                message: "An error occured when updating the user",
+                error
             }));
     },
 }
