@@ -220,11 +220,9 @@ module.exports = {
                 }
             });
 
-
-            hits = body.hits.hits;
-            var result = [];
-            var itemsProcessed = 0;
-            requete = {
+            let hits = body.hits.hits;
+            let itemsProcessed = 0;
+            let requete = {
                 "size": 10000,
                 "query": {
                     "bool": {
@@ -252,64 +250,64 @@ module.exports = {
                     }
                 }
             };
-            deltatime = time * 60000;
-            for (var hit of hits) {
-                source = hit._source;
-                begin1 = (hit._source.created_date - deltatime) > 0 ? (hit._source.created_date - deltatime) : 0;
-                end1 = (hit._source.created_date + deltatime) > 0 ? (hit._source.created_date + deltatime) : hit._source.created_date;
-                //console.log("hit._source.created_date:"+hit._source.created_date);
-                elem = {
-                    "bool": {
-                        "filter": [
-                            {
-                                "geo_distance": {
-                                    "distance": distance + "m",
-                                    "position": {
-                                        "lat": source.position.lat,
-                                        "lon": source.position.lon
+
+            let deltatime = time * 60000;
+
+            if (hits.length === 0) {
+                callback([], []);
+            } else {
+                for (var hit of hits) {
+                    source = hit._source;
+                    begin1 = (hit._source.created_date - deltatime) > 0 ? (hit._source.created_date - deltatime) : 0;
+                    end1 = (hit._source.created_date + deltatime) > 0 ? (hit._source.created_date + deltatime) : hit._source.created_date;
+                    //console.log("hit._source.created_date:"+hit._source.created_date);
+                    elem = {
+                        "bool": {
+                            "filter": [
+                                {
+                                    "geo_distance": {
+                                        "distance": distance + "m",
+                                        "position": {
+                                            "lat": source.position.lat,
+                                            "lon": source.position.lon
+                                        }
+                                    }
+                                },
+                                {
+                                    "range": {
+                                        "created_date": {
+                                            "gte": begin1,
+                                            "lte": end1,
+                                            "format": "epoch_millis",
+                                            "time_zone": "+00:00"
+                                        }
                                     }
                                 }
-                            },
-                            {
-                                "range": {
-                                    "created_date": {
-                                        "gte": begin1,
-                                        "lte": end1,
-                                        "format": "epoch_millis",
-                                        "time_zone": "+00:00"
-                                    }
-                                }
-                            }
-                        ]
+                            ]
+                        }
+                    };
+                    requete.query.bool.must.dis_max.queries.push(elem);
+
+                    itemsProcessed++;
+                    if (itemsProcessed === hits.length) {
+                        //console.log("Results1:");
+                        //console.log(result);
+                        const { body } = await client.search({
+                            index: indexlocation,
+                            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                            body: requete
+                        });
+                        //var myJSON = JSON.stringify(body);
+                        hits = body.hits.hits;
+                        //console.log("Result of request");
+                        //console.log(myJSON);
+                        callback(hits, body.aggregations);
                     }
-                };
-                requete.query.bool.must.dis_max.queries.push(elem);
-
-                itemsProcessed++;
-                if (itemsProcessed === hits.length) {
-                    //console.log("Results1:");
-                    //console.log(result);
-                    const { body } = await client.search({
-                        index: indexlocation,
-                        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-                        body: requete
-
-                    });
-                    //var myJSON = JSON.stringify(body);
-                    hits = body.hits.hits;
-                    //console.log("Result of request");
-                    //console.log(myJSON);
-                    callback(hits, body.aggregations);
                 }
             }
-            //});
-
-
         } catch (error) {
             throw (JSON.stringify(error));
         }
-
-
     },
     /**
      * Get All GPS position of a user from begin to end
