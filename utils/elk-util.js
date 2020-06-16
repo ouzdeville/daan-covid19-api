@@ -171,13 +171,23 @@ module.exports = {
     /**
      * Get the contacts of all users
      * @param  {uuid} id the user id
-     * @param  {date} begin in format "yyyy-mm-dd"
-     * @param  {date} end   in format "yyyy-mm-dd"
+     * @param  {integer} begin unix time
+     * @param  {integer} end unix time
      * @param  {integer} distance (in meter)
      * @param  {integer} time (in minute)
      * @param  {function} callback
      */
     async getUserContactsNew(id, begin, end, distance, time, callback) {
+        const endDate = new Date(end);
+        const endHour = endDate.getHours()
+        const endMinute = endDate.getMinutes()
+        const endSecond = endDate.getSeconds()
+
+        // pour prendre en compte le dernier jour
+        if (endHour === 0 && endMinute === 0 && endSecond ===0) {
+            end += 24 * 60 * 60 * 1000;
+        }
+
         try {
             const {body} = await client.search({
                 index: indexlocation,
