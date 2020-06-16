@@ -330,7 +330,6 @@ module.exports = {
      * @apiHeader {String} authorization User unique token
      * @apiName GetNotif
      * @apiGroup Geofence
-     * @apiParam {Number} idAdmin 
      *
      *
      * @apiSuccess (Success 201) {Boolean} success If it works ot not
@@ -373,7 +372,8 @@ module.exports = {
                 res.status(200).send({
                     success: false,
                     code: -1,
-                    zones: []
+                    zones: [],
+                    error
                 });
             });
 
