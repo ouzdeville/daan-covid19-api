@@ -306,7 +306,7 @@ module.exports = {
 
 
         } catch (error) {
-            throw (JSON.stringify(error));
+            throw (JSON.stringify(error.body));
         }
 
 
