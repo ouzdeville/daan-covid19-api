@@ -1,4 +1,4 @@
-const {Client} = require('@elastic/elasticsearch')
+const { Client } = require('@elastic/elasticsearch')
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
 const client = new Client({
@@ -28,7 +28,7 @@ module.exports = {
     async getUserContacts(id, begin, end, distance, time, callback) {
         console.log("getUserContacts");
         try {
-            const {body} = await client.search({
+            const { body } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -83,7 +83,7 @@ module.exports = {
                 end1 = hit._source.created_date + deltatime;
                 console.log("5 min before" + begin1);
                 console.log("5 min after" + end1);
-                const {body} = await client.search({
+                const { body } = await client.search({
                     index: indexlocation,
                     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                     body: {
@@ -131,7 +131,7 @@ module.exports = {
                         },
                         "aggs": {
                             "contacts": {
-                                "terms": {"field": "id"}
+                                "terms": { "field": "id" }
                             }
                         },
                         "sort": [
@@ -179,11 +179,11 @@ module.exports = {
      */
     async getUserContactsNew(id, begin, end, distance, time, callback) {
         try {
-            const {body} = await client.search({
+            const { body } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
-                    "size": 10000,
+                    "size": 5000,
                     "query": {
                         "bool": {
                             "must": [
@@ -255,12 +255,21 @@ module.exports = {
             deltatime = time * 60000;
             for (var hit of hits) {
                 source = hit._source;
-                begin1 = (hit._source.created_date - deltatime)>0?(hit._source.created_date - deltatime):0;
-                end1 = (hit._source.created_date + deltatime)>0?(hit._source.created_date + deltatime):hit._source.created_date;
+                begin1 = (hit._source.created_date - deltatime) > 0 ? (hit._source.created_date - deltatime) : 0;
+                end1 = (hit._source.created_date + deltatime) > 0 ? (hit._source.created_date + deltatime) : hit._source.created_date;
                 //console.log("hit._source.created_date:"+hit._source.created_date);
                 elem = {
                     "bool": {
-                        "must": [
+                        "filter": [
+                            {
+                                "geo_distance": {
+                                    "distance": distance + "m",
+                                    "position": {
+                                        "lat": source.position.lat,
+                                        "lon": source.position.lon
+                                    }
+                                }
+                            },
                             {
                                 "range": {
                                     "created_date": {
@@ -271,16 +280,7 @@ module.exports = {
                                     }
                                 }
                             }
-                        ],
-                        "filter" : {
-                            "geo_distance" : {
-                                "distance" : distance + "m",
-                                "position": {
-                                    "lat": source.position.lat,
-                                    "lon": source.position.lon
-                                }
-                            }
-                        }
+                        ]
                     }
                 };
                 requete.query.bool.must.dis_max.queries.push(elem);
@@ -289,7 +289,7 @@ module.exports = {
                 if (itemsProcessed === hits.length) {
                     //console.log("Results1:");
                     //console.log(result);
-                    const {body} = await client.search({
+                    const { body } = await client.search({
                         index: indexlocation,
                         // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                         body: requete
@@ -321,7 +321,7 @@ module.exports = {
     async getUserTrace(id, begin, end, callback) {
         try {
             // Let's search!
-            const {body} = await client.search({
+            const { body } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -385,7 +385,7 @@ module.exports = {
             }
             begin1 = timestamp - 1300;
             end1 = timestamp + 1300;
-            const {body} = await client.search({
+            const { body } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -457,7 +457,7 @@ module.exports = {
             var location = [parseFloat(longitude), parseFloat(latitude)];
             location = [location, location];
             //console.log(location);
-            const {body} = await client.search({
+            const { body } = await client.search({
                 index: indexzone,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -518,7 +518,7 @@ module.exports = {
      */
     async getZones(callback) {
         try {
-            const {body} = await client.search({
+            const { body } = await client.search({
                 index: indexzone,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
@@ -563,7 +563,7 @@ module.exports = {
     async getAllTrace(callback) {
         try {
             // Let's search!
-            const {body} = await client.search({
+            const { body } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
