@@ -200,7 +200,8 @@ module.exports = {
                                         "created_date": {
                                             "gte": begin,
                                             "lte": end,
-                                            "format": "epoch_millis"
+                                            "format": "yyyy-MM-dd",
+                                            "time_zone": "+00:00"
                                         }
                                     }
                                 }
@@ -263,9 +264,10 @@ module.exports = {
                             {
                                 "range": {
                                     "created_date": {
-                                        "gte": begin1,
-                                        "lte": end1,
-                                        "format": "epoch_millis"
+                                        "gte": hit._source.created_date - deltatime,
+                                        "lte": hit._source.created_date + deltatime,
+                                        "format": "epoch_millis",
+                                        "time_zone": "+01:00"
                                     }
                                 }
                             }
