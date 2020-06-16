@@ -178,16 +178,6 @@ module.exports = {
      * @param  {function} callback
      */
     async getUserContactsNew(id, begin, end, distance, time, callback) {
-        const endDate = new Date(end);
-        const endHour = endDate.getHours()
-        const endMinute = endDate.getMinutes()
-        const endSecond = endDate.getSeconds()
-
-        // pour prendre en compte le dernier jour
-        if (endHour === 0 && endMinute === 0 && endSecond ===0) {
-            //end += 24 * 60 * 60 * 1000;
-        }
-
         try {
             const { body } = await client.search({
                 index: indexlocation,
@@ -286,7 +276,7 @@ module.exports = {
                                         "gte": begin1,
                                         "lte": end1,
                                         "format": "epoch_millis",
-                                        "time_zone": "+01:00"
+                                        "time_zone": "+00:00"
                                     }
                                 }
                             }
