@@ -417,7 +417,7 @@ module.exports = {
      * @apiSuccess (Created 201) {String} CreatedBy.email email
      *
      * @apiSuccessExample Success-Response
-     *     HTTP/1.1 200 OK
+     *     HTTP/1.1 201 Created
      *     {
      *       {
      *         "id": 9,
@@ -455,7 +455,7 @@ module.exports = {
                     {where: {id: id}}
                 )
                     .then((user2) => {
-                        res.status(201).send(user);
+                        res.status(201).send(user2);
                     })
                     .catch((error) => res.status(400).send(error));
             })
