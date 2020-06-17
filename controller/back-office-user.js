@@ -454,8 +454,9 @@ module.exports = {
                     {actif: !user.actif},
                     {where: {id: id}}
                 )
-                    .then((user2) => {
-                        res.status(201).send(user2);
+                    .then((n) => {
+                        user.actif = !user.actif
+                        res.status(201).send(user);
                     })
                     .catch((error) => res.status(400).send(error));
             })
