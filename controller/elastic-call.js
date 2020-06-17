@@ -84,7 +84,7 @@ module.exports = {
      *     }
      */
     async getUserTrace(req, res) {
-        console.log("getUserTrace");
+        console.log("#ELK_"+"getUserTrace");
         let id = req.params.id;
         let begin = req.params.begin;
         let end = req.params.end;
@@ -308,7 +308,7 @@ module.exports = {
      */
     async getUserContacts(req, res) {
         try {
-            console.log("GetUserContacts");
+            console.log("#ELK_GetUserContacts");
             let id = req.params.id;
             let begin = req.params.begin;
             let end = req.params.end;
@@ -341,7 +341,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log(error);
+            console.log("#ELK_"+error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -416,7 +416,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log(error);
+            console.log("#ELK_"+error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -438,7 +438,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log(error);
+            console.log("#ELK_"+error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -553,7 +553,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            console.log(error);
+            console.log("#ELK_"+error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -598,7 +598,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log(error);
+            console.log("#ELK_"+error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -617,7 +617,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log(error);
+            console.log("#ELK_"+error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -663,7 +663,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log(error);
+            console.log("#ELK_"+error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -672,7 +672,7 @@ module.exports = {
     },
 
     async getAllTrace(req, res) {
-        console.log("getALLTrace");
+        console.log("#ELK_"+"getALLTrace");
         // Let's search!
         try {
             await elasticClient.getAllTrace(function (result) {
