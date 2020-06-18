@@ -65,6 +65,7 @@ module.exports = {
                 status: req.body.status || 'unknown'
             };
             // logs requests
+            console.log('---------> New Location / User ID : ', userID, ' Position : ', req.body.position);
             console.log("#ELK_"+payload);
             await awsClients.writeToKinesis(payload);
             var i, j;
