@@ -16,14 +16,14 @@ module.exports = {
       secretAccessKey: process.env.AWS_KINESIS_SECRET,
       region: process.env.AWS_KINESIS_REGION,
     });
-    return new AWS.Kinesis({ region: 'us-east-1' });
+    return new AWS.Kinesis({ region: process.env.AWS_KINESIS_REGION });
   },
 
   async writeToKinesis(data) {
     const recordParams = {
       Data: JSON.stringify(data),
-      StreamName: 'danncovid19-data-stream',
-      PartitionKey: 'partition-1',
+      StreamName: process.env.AWS_KINESIS_STREAM_NAME,
+      PartitionKey: process.env.AWS_KINESIS_PARTITION_KEY,
     };
     return await this._kinesis().putRecord(recordParams).promise();
   }
