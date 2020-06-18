@@ -150,6 +150,7 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *     {
      *       "success": true,
+     *       "userId": "1",
      *       "userName": "sidya",
      *       "email": "cheikh.camara@gsietechnology.com",
      *       "role": "superadmin",
@@ -180,6 +181,7 @@ module.exports = {
                     const token = jwt.sign({boUserID: user.id});
                     res.status(200).send({
                         success: true,
+                        userId: user.id,
                         userName: user.userName,
                         email: user.email,
                         role: user.role,
