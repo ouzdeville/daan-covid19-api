@@ -5,7 +5,7 @@ module.exports = {
     AWS.config.update({
       accessKeyId: process.env.AWS_SNS_ACCESS_KEY,
       secretAccessKey: process.env.AWS_SNS_SECRET,
-      region: 'us-east-1',
+      region: process.env.AWS_SNS_REGION,
     });
     return new AWS.SNS();
   },
@@ -14,7 +14,7 @@ module.exports = {
     AWS.config.update({
       accessKeyId: process.env.AWS_KINESIS_ACCESS_KEY,
       secretAccessKey: process.env.AWS_KINESIS_SECRET,
-      region: 'us-east-1',
+      region: process.env.AWS_KINESIS_REGION,
     });
     return new AWS.Kinesis({ region: 'us-east-1' });
   },
