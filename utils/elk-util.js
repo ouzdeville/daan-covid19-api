@@ -7,7 +7,7 @@ const client = new Client({
     //    password: 'A6JlhI1Yqt1Y2l0rtFE7ANSZ'
     //}
 });
-const indexlocation = "dc19_"
+const indexlocation = process.env.INDEX_LOCATION || "dc19_";
 const indexzone = "dc19zone"
 var uuid = require('uuid');
 /**
