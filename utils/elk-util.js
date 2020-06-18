@@ -7,7 +7,7 @@ const client = new Client({
     //    password: 'A6JlhI1Yqt1Y2l0rtFE7ANSZ'
     //}
 });
-const indexlocation = process.env.INDEX_LOCATION || "dc19_";
+const indexlocation = process.env.INDEX_LOCATION;
 const indexzone = "dc19zone"
 var uuid = require('uuid');
 /**
@@ -318,6 +318,7 @@ module.exports = {
     async getUserTrace(id, begin, end, callback) {
         try {
             // Let's search!
+            console.log('----------------> ', indexlocation)
             const { body } = await client.search({
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
