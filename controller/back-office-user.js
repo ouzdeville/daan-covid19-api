@@ -275,10 +275,18 @@ module.exports = {
                     });
                 }
             }).catch(err => {
-                res.status(400).send(errorMessage);
+                res.status(400).send({
+                    succes: false,
+                    message: "Une erreur est survenue lors de la modification du mot de passe",
+                    error: err
+                });
             })
         }).catch(err => {
-            res.status(400).send(errorMessage);
+            res.status(400).send({
+                succes: false,
+                message: "Une erreur est survenue lors de la modification du mot de passe",
+                error: err
+            });
         });
     },
 
