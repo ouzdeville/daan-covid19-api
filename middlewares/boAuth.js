@@ -10,13 +10,14 @@ module.exports = async (req, res, next) => {
     const user = await BackOfficeUser.findOne({
       where: {
         id: decodedToken.boUserID,
+        actif: true
       },
     });
 
     req.userName = user.userName;
 
     if (!user) {
-      res.status(401).send({error: 'invalid token.'});
+      res.status(401).send({error: 'utilisateur introuvable.'});
       return;
     }
     next();
