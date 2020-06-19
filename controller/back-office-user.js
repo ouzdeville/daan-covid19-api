@@ -173,7 +173,8 @@ module.exports = {
 
         BackOfficeUser.findOne({
             where: {
-                userName: userName
+                userName: userName,
+                actif: true
             }
         }).then((user) => {
             bcrypt.compare(password, user.password).then(function (result) {
