@@ -2,7 +2,7 @@ const multer = require('multer');
 
 const {
   UserController, LocationController,
-  ZoneController, TestController,
+  ZoneController,
   BarrierGestureController, SelfReportingController,
   GreenNumberController, SymptomController,
   PrevalenceController, DailyReportController,
@@ -127,5 +127,4 @@ module.exports = (app) => {
   app.get('/geofence/notif', GeofenceController.getNotif);
   app.get('/geofence/updatenotif/:idGeofence', GeofenceController.updateExitZone);
   app.get('/geofence/:id', auth, GeofenceController.getGeofence);
-  app.get('/test', TestController.out2);
 };
