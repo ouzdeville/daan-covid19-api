@@ -49,14 +49,14 @@ module.exports = (app) => {
 
   //app.post('/location', ElasticCallController.registerLocation);
   // app.post('/user/signaler', auth, UserController.signaler);
-  app.get('/zones', auth, ZoneController.getZones);
+  app.get('/zones', ZoneController.getZones);
   app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/user/inside/:latitude/:longitude', auth, ZoneController.isInAZone);
   //app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
 
   // Route Prevalence
   app.get('/prevalences', auth, PrevalenceController.getAll);
-  app.get('/prevalence', auth, PrevalenceController.getprevalenceNow);
+  app.get('/prevalence', PrevalenceController.getprevalenceNow);
   app.get('/prevalence/run', PrevalenceController.runPrevalence);
   app.get('/prevalence/rungps', PrevalenceController.updateGPS);
   app.get('/prevalence/runPolygone', PrevalenceController.runPolygon);

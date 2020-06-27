@@ -272,7 +272,7 @@ module.exports = {
 
     async runPrevalence(req, res) {
         try {
-            await prevalenceCron.prevalenceCompute();
+            await prevalenceCron.prevalenceComputeV2();
 
 
             res.status(200).send({
