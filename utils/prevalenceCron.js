@@ -120,7 +120,7 @@ module.exports = {
                             date: await moment().format("YYYY-MM-DD")
                         };
                         const data = {
-                            name: district.attributes.NAME.toUpperCase().split(' ').join('-'),
+                            name: module.exports.removeAccents(district.attributes.NAME).toUpperCase().split(' ').join('-'),
                             men: district.attributes.Homme,
                             women: district.attributes.Femme,
                             type: "DISTRICT"
@@ -130,7 +130,7 @@ module.exports = {
 
                         await Zone.findAll({
                             where: {
-                                name: district.attributes.NAME.toUpperCase().split(' ').join('-'),
+                                name: module.exports.removeAccents(district.attributes.NAME).toUpperCase().split(' ').join('-'),
                             },
                         }).then(async (zones) => {
 
@@ -184,5 +184,18 @@ module.exports = {
         });
         job.start();
     },
+
+    removeAccents(str) {
+        let accents = 'ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+        let accentsOut = "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
+        str = str.split('');
+        str.forEach((letter, index) => {
+          let i = accents.indexOf(letter);
+          if (i != -1) {
+            str[index] = accentsOut[i];
+          }
+        })
+        return str.join('');
+      }
 
 }

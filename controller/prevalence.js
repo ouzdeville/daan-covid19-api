@@ -314,7 +314,8 @@ module.exports = {
                     },
                     {
                         where: {
-                            name: district.attributes.NAME
+                            name: district.attributes.NAME,
+                            type: "DISTRICT"
                         }
                     });
 
