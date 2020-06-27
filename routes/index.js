@@ -8,11 +8,11 @@ const {
   PrevalenceController, DailyReportController,
   ElasticCallController, RiskFactorController,
   PushNotificationOsController,
-  GeofenceController,
-  BackOfficeUserController
+  GeofenceController
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
+const { auth_non_active } = require('./../middlewares');
 
 DIR='./pdf/';
 
@@ -43,7 +43,7 @@ module.exports = (app) => {
   app.post('/user', UserController.create);
   app.get('/user', auth, UserController.get);
   app.get('/user/refresh_token', auth, UserController.refreshToken);
-  app.post('/user/verify_code', auth, UserController.verifyCode);
+  app.post('/user/verify_code', auth_non_active, UserController.verifyCode);
   app.post('/location', auth, LocationController.registerLocation);
   app.get('/user/decrypt/:id', auth, UserController.decryptNumber);
 
