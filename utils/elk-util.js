@@ -182,7 +182,7 @@ module.exports = {
                 index: indexlocation,
                 // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                 body: {
-                    "size": 5000,
+                    "size": 1024,
                     "query": {
                         "bool": {
                             "must": [

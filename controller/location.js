@@ -1,4 +1,4 @@
-const { Location, Zone, Prevalence, Geofence, ExitZone ,User} = require('./../models');
+const { Location, Zone, Prevalence, Geofence, ExitZone, User, BackOfficeUser } = require('./../models');
 const { awsClients } = require('./../utils');
 const { insidePolygon } = require('geolocation-utils');
 const Sequelize = require('sequelize');
@@ -66,7 +66,7 @@ module.exports = {
             };
             // logs requests
             console.log('---------> New Location / User ID : ', userID, ' Position : ', req.body.position);
-            console.log("#ELK_"+payload);
+            console.log("#ELK_" + payload);
             await awsClients.writeToKinesis(payload);
             var i, j;
             zoneslist = [];
@@ -129,6 +129,12 @@ module.exports = {
                 {
                     include: [{
                         model: User
+                    }, {
+                        model: BackOfficeUser
+                    }, {
+                        limit: 1,
+                        model: ExitZone,
+                        order: [['createdAt', 'DESC']]
                     }],
                     where: {
                         idUser: userID,
@@ -139,11 +145,11 @@ module.exports = {
                             [Op.gte]: req.body.timestamp,
                         }
                     }
-                }).then((zones) => {
-                    zones.forEach(zone => {
-                        var poly = (zone.poly);
+                }).then((geofences) => {
+                    geofences.forEach(geofence => {
+                        var poly = (geofence.poly);
                         const exitdata = {
-                            idGeofence: zone.id,
+                            idGeofence: geofence.id,
                             current_date: req.body.timestamp,
                             position: req.body.position,
                             notif: false
@@ -155,8 +161,12 @@ module.exports = {
                             rst = insidePolygon(req.body.position, poly);
                         if (!rst) {
                             ExitZone.create(exitdata);
-                            if (zone.phone)
-                                sendSms(zone.phone, `Sortie de zone de: ${cryptoUtil.getSID(zone.User.phone, process.env.JWT_SECRET)}`);
+                            var sentsms = true;
+                            if (0 < geofence.ExitZone.length) {
+                                sentsms= (geofence.ExitZone[0].current_date)+900000 < req.body.timestamp
+                            }
+                            if (geofence.BackOfficeUser.phone && sentsms)
+                                sendSms(geofence.BackOfficeUser.phone, `Sortie de zone de: ${cryptoUtil.getSID(geofence.User.phone, process.env.JWT_SECRET)}`);
                         }
                     });
                 });
