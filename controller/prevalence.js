@@ -3,6 +3,8 @@ const { prevalenceCron } = require('./../utils');
 const moment = require('moment');
 const fs = require('fs');
 const turf = require('@turf/turf');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
     /**
@@ -302,7 +304,7 @@ module.exports = {
      *     }
      */
 
-    async updateGPS(req, res) {
+    async updateGpsCenterOfDistrict(req, res) {
         try {
             var districtsgps = await require('./../init_data/districts-sn.json');
             for (var district of districtsgps) {
@@ -332,6 +334,90 @@ module.exports = {
         });
     },
 
+    
+
+    /**
+     * @api {get} /prevalence/runPolygonCommune  Update district polygone GPS
+     * @apiName runPolygone
+     * @apiGroup Prevalence
+     *
+     * @apiSuccess (Success 200) {String} message
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "message":
+     *     }
+     */
+    async runPolygonCommune(req, res) {
+        try {
+            let districtsgps = JSON.parse(fs.readFileSync('./init_data/Communes.geojson', 'utf8'));
+            console.log('districtsgps.features.length');
+            var region={type: "REGION",name:""};
+            var departement={type: "DEPARTEMENT",name:""};
+            var arondissement={type: "ARRONDISSEMENT",name:""};
+            var commune={type: "COMMUNE",name:""};
+            //supprimer tous les élment de type concerné
+            await Zone.destroy({
+                where: {
+                    type: {
+                        [Op.or]: ["REGION", "DEPARTEMENT","ARRONDISSEMENT","COMMUNE"]
+                      }
+                }
+              });
+            for (var district of districtsgps.features) {
+                let polygon = district.geometry.coordinates[0];
+                commune.polygon=polygon;
+               
+                commune.name=module.exports.removeAccents(district.properties.ogr_CCRCA);
+
+                if(region.name!=module.exports.removeAccents(district.properties.ogr_REG)){
+                    region.name=module.exports.removeAccents(district.properties.ogr_REG);
+                    await Zone.create(region).then((c_region) => {
+                        
+                        region.name = c_region.dataValues.name;
+                        
+                        departement.idParent=c_region.dataValues.id;
+                    });
+                }
+                if(departement.name!=module.exports.removeAccents(district.properties.ogr_DEPT)){
+                    departement.name=module.exports.removeAccents(district.properties.ogr_DEPT);
+                    
+                    await Zone.create(departement).then((c_departement) => {
+                        departement.name = c_departement.dataValues.name;
+                        
+                        arondissement.idParent=c_departement.dataValues.id;
+                    });
+                }
+               if(arondissement.name!=module.exports.removeAccents(district.properties.ogr_CAV)){
+                    arondissement.name=module.exports.removeAccents(district.properties.ogr_CAV);
+                    
+                    await Zone.create(arondissement).then((c_arondissement) => {
+                        arondissement.name = c_arondissement.dataValues.name;
+                        
+                        commune.idParent=c_arondissement.dataValues.id;
+                    });
+                }
+                
+                //var tpolygon = turf.polygon([polygon]);
+                //var area = turf.area(tpolygon);
+                //commune.area=area;
+                 await Zone.create(commune);
+                 console.log(region.name+"/"+departement.name+"/"+arondissement.name+"/"+commune.name);
+                
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(400).send(error)
+        }
+
+        res.status(200).send({
+            success: true,
+            code: 99,
+            message: "Refresh done",
+        });
+    },
+
     /**
      * @api {get} /prevalence/runPolygone  Update district polygone GPS
      * @apiName runPolygone
@@ -345,7 +431,7 @@ module.exports = {
      *       "message":
      *     }
      */
-    async runPolygon(req, res) {
+    async  runPolygonDistrict(req, res) {
         try {
             let districtsgps = JSON.parse(fs.readFileSync('./init_data/Districts.geojson', 'utf8'));
             console.log('districtsgps.features.length');
@@ -448,5 +534,18 @@ module.exports = {
             code: 99,
             message: "Refresh done",
         });
-    }
+    },
+    removeAccents(str) {
+        //console.log(str);
+        let accents = 'ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+        let accentsOut = "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
+        str = str.split('');
+        str.forEach((letter, index) => {
+          let i = accents.indexOf(letter);
+          if (i != -1) {
+            str[index] = accentsOut[i];
+          }
+        })
+        return str.join('').toUpperCase().split(' ').join('-');
+      }
 };

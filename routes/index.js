@@ -50,6 +50,7 @@ module.exports = (app) => {
   //app.post('/location', ElasticCallController.registerLocation);
   // app.post('/user/signaler', auth, UserController.signaler);
   app.get('/zones', ZoneController.getZones);
+  app.get('/zones/:type', ZoneController.getZonesbyType);
   app.get('/zone/:id', auth, ZoneController.getZone);
   app.get('/user/inside/:latitude/:longitude', auth, ZoneController.isInAZone);
   //app.get('/contact/users/:idUser', auth, ContactController.getIncubContact);
@@ -58,8 +59,9 @@ module.exports = (app) => {
   app.get('/prevalences', auth, PrevalenceController.getAll);
   app.get('/prevalence', PrevalenceController.getprevalenceNow);
   app.get('/prevalence/run', PrevalenceController.runPrevalence);
-  app.get('/prevalence/rungps', PrevalenceController.updateGPS);
-  app.get('/prevalence/runPolygone', PrevalenceController.runPolygon);
+  app.get('/prevalence/rungps', PrevalenceController.updateGpsCenterOfDistrict);
+  app.get('/prevalence/runPolygone', PrevalenceController.runPolygonDistrict);
+  app.get('/prevalence/runPolygoneCommune', PrevalenceController.runPolygonCommune);
   app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 
   // Route Daily Report

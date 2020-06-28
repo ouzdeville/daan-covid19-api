@@ -282,4 +282,40 @@ module.exports = {
     },
 
 
+    /**
+     * @api {get} /zones/:type zones list by Type
+     * @apiHeader {String} authorization User unique token
+     * @apiName getZones
+     * @apiGroup Zone
+     *
+     * @apiParam {String} type "REGION", "DEPARTEMENT","ARRONDISSEMENT","COMMUNE" or "DISTRICT"
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} resust Location objects
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "result":[
+     *           ]
+     *          
+     *       
+     *     }
+     */
+    getZonesbyType(req, res) {
+        var { type } = req.params;
+        type=type.toUpperCase();
+        Zone.findAll({
+            where: {
+                type: type
+            }
+        })
+            .then((zones) => {
+                res.status(200).send({
+                    zones,
+                });
+            })
+            .catch((error) => res.status(400).send(error));
+    },
+
 };
