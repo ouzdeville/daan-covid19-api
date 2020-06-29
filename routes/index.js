@@ -8,7 +8,8 @@ const {
   PrevalenceController, DailyReportController,
   ElasticCallController, RiskFactorController,
   PushNotificationOsController,
-  GeofenceController
+  GeofenceController,
+  GeocodingController,
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
@@ -129,4 +130,6 @@ module.exports = (app) => {
   app.get('/geofence/notif', GeofenceController.getNotif);
   app.get('/geofence/updatenotif/:idGeofence', GeofenceController.updateExitZone);
   app.get('/geofence/:id', auth, GeofenceController.getGeofence);
+
+  app.get('/geocoding/:q', GeocodingController.geosearch);
 };
