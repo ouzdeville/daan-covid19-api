@@ -447,7 +447,7 @@ module.exports = {
                         });
                         //var myJSON = JSON.stringify(body);
                         hits = body.hits.hits;
-                        hits.last_created_date = last_created_date;
+                        body.aggregations.last_created_date = last_created_date;
                         //console.log("Result of request");
                         //console.log(myJSON);
                         callback(hits, body.aggregations);
