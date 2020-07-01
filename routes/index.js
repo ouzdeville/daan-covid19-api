@@ -88,6 +88,7 @@ module.exports = (app) => {
 
   //elastic search
   app.get('/user/contact/:id/:begin/:end/:distance/:time', auth, ElasticCallController.getUserContacts);
+  app.get('/user/scrollcontact/:id/:begin/:end/:distance/:time/:last_created_date', auth, ElasticCallController.ScrollUserContacts);
   app.get('/user/trace/all', ElasticCallController.getAllTrace);
   app.get('/user/trace/:id/:begin/:end', auth, ElasticCallController.getUserTrace);
   app.post('/user/contact/position', auth, ElasticCallController.getContactsAtPositionAndDate);

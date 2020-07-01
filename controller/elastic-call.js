@@ -350,6 +350,122 @@ module.exports = {
     },
 
     /**
+     * @api {get} /user/contact/:id/:begin/:end/:distance/:time/:last_created_date Get all contacts after last_ceated_date
+     * @apiHeader {String} authorization User unique token
+     * @apiName getUserContacts
+     * @apiGroup Contact
+     *
+     * @apiParam {Number} id User id
+     * @apiParam {Date} begin date in format "yyyy-mm-dd"
+     * @apiParam {Date} end date in format "yyyy-mm-dd"
+     * @apiParam {Number} distance Number in meters
+     * @apiParam {Number} time Number + or - time intervale 
+     * * @apiParam {Number} last_created_date last value of created_date for scrolling
+     *
+     * @apiSuccess (Success 200) {Boolean} success If it works ot not
+     * @apiSuccess (Success 200) {Object} resust Location objects
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "success": true,
+     *       "resust":[
+     *              {
+     *                  "_index": "dc19",
+     *                  "_type": "_doc",
+     *                   "_id": "uYT5mXEB0m4T_0Lwe8LZ",
+     *                   "_score": null,
+     *                   "_source": {
+     *                       "imei": "",
+     *                       "position": {
+     *                           "lat": 14.750403052963359,
+     *                           "lon": -17.37935504970754
+     *                       },
+     *                       "status": "unknown",
+     *                       "id": "dc0fc6c9-425d-4a23-89e1-ff238542a02e",
+     *                       "created_date": 1586782662538
+     *                   },
+     *                   "sort": [
+     *                       1586782662538
+     *                   ]
+     *               }
+     *           ]
+     *          "buckets": {
+     *           "users": {
+     *               "doc_count_error_upper_bound": 0,
+     *               "sum_other_doc_count": 0,
+     *               "buckets": [
+     *                   {
+     *                       "key": "ad1581a1-6af0-4814-8a53-56825777f40a",
+     *                       "doc_count": 29
+     *                   },
+     *                   {
+     *                       "key": "08795296-b702-4768-899b-f3e54bd3eed0",
+     *                       "doc_count": 12
+     *                   },
+     *                   {
+     *                       "key": "50665aa1-44fb-4a5c-a3eb-ecf70bb58cdf",
+     *                       "doc_count": 2
+     *                   },
+     *                   {
+     *                       "key": "08ba4fd2-ab07-4294-93e6-f649adee6cab",
+     *                       "doc_count": 1
+     *                   }
+     *               ]
+     *           }
+     *       }
+     *          
+     *       
+     *     }
+     */
+    async ScrollUserContacts(req, res) {
+        try {
+            console.log("#ELK_ScrollUserContacts");
+            let id = req.params.id;
+            let begin = req.params.begin;
+            let end = req.params.end;
+            let distance = req.params.distance;
+            let time = req.params.time;
+            let last_created_date= req.params.last_created_date;
+            //begin = new Date(begin).getTime();
+            //end = new Date(end).getTime();
+            sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
+            if (sphone !== "") {
+                await User.findAll({
+                    where: {
+                        phone: sphone,
+                    },
+                }).then((users) => {
+                    if (users && users.length) {
+                        id = users[0].id;
+                    }
+                });
+            }
+            //Let's search!
+            //console.log("begin:" + begin);
+            //console.log("end:" + end);
+            await elasticClient.getUserContactsSearch_after(id, begin, end, distance, time,last_created_date, function (result, buckets) {
+                console.log(buckets);
+                res.status(200).send({
+                    success: true,
+                    code: 99,
+                    resust: result,
+                    buckets: buckets,
+                });
+            });
+        } catch (error) {
+            console.log("#ELK_"+error);
+            res.status(500).send({
+                success: false,
+                code: -1,
+            });
+        }
+    },
+
+
+
+
+    /**
      * @api {post} /user/contact/position Get contacts at a Position
      * @apiHeader {String} authorization User unique token
      * @apiName getContactsAtPosition

@@ -1,7 +1,7 @@
 const { Client } = require('@elastic/elasticsearch')
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 const client = new Client({
-    node:process.env.ELK_URL || 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com',
+    node: process.env.ELK_URL || 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com',
     //auth: {
     //    username: 'elastic',
     //    password: 'A6JlhI1Yqt1Y2l0rtFE7ANSZ'
@@ -221,6 +221,7 @@ module.exports = {
 
             let hits = body.hits.hits;
             let itemsProcessed = 0;
+            let last_created_date = 0;
             let requete = {
                 "size": 10000,
                 "query": {
@@ -256,6 +257,7 @@ module.exports = {
                 callback([], []);
             } else {
                 for (var hit of hits) {
+                    last_created_date = hit._source.created_date;
                     source = hit._source;
                     begin1 = (hit._source.created_date - deltatime) > 0 ? (hit._source.created_date - deltatime) : 0;
                     end1 = (hit._source.created_date + deltatime) > 0 ? (hit._source.created_date + deltatime) : hit._source.created_date;
@@ -298,6 +300,154 @@ module.exports = {
                         });
                         //var myJSON = JSON.stringify(body);
                         hits = body.hits.hits;
+                        body.aggregations.last_created_date = last_created_date;
+                        //console.log("Result of request");
+                        //console.log(myJSON);
+                        callback(hits, body.aggregations);
+                    }
+                }
+            }
+        } catch (error) {
+            throw (JSON.stringify(error));
+        }
+    },
+
+
+    /**
+     * Get the contacts of all users search_after
+     * @param  {uuid} id the user id
+     * @param  {integer} begin unix time
+     * @param  {integer} end unix time
+     * @param  {integer} distance (in meter)
+     * @param  {integer} time (in minute)
+     * @param  {function} callback
+     */
+    async getUserContactsSearch_after(id, begin, end, distance, time, last_created_date, callback) {
+        try {
+            const { body } = await client.search({
+                index: indexlocation,
+                // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                body: {
+                    "size": 1024,
+                    "query": {
+                        "bool": {
+                            "must": [
+                                {
+                                    "term": {
+                                        "id": {
+                                            "value": id,
+                                            "boost": 1.0
+                                        }
+                                    }
+                                },
+                                {
+                                    "range": {
+                                        "created_date": {
+                                            "gte": begin,
+                                            "lte": end,
+                                            "format": "yyyy-MM-dd",
+                                            "time_zone": "+00:00"
+                                        }
+                                    }
+                                }
+                            ],
+                            "adjust_pure_negative": true,
+                            "boost": 1.0
+                        }
+                    },
+                    "sort": [
+                        {
+                            "created_date": {
+                                "order": "asc"
+                            }
+                        }
+                    ],
+                    "search_after": [last_created_date]
+                }
+            });
+
+            let last_created_date = 0;
+            let hits = body.hits.hits;
+            let itemsProcessed = 0;
+            let requete = {
+                "size": 10000,
+                "query": {
+                    "bool": {
+                        "must_not": {
+                            "term": {
+                                "id": {
+                                    "value": id,
+                                    "boost": 1.0
+                                }
+                            }
+                        },
+                        "must": {
+                            "dis_max": {
+                                "queries": [],
+                                "tie_breaker": 1.0
+                            }
+                        }
+                    }
+                },
+                "aggs": {
+                    "users": {
+                        "terms": {
+                            "field": "id"
+                        }
+                    }
+                }
+            };
+
+            let deltatime = time * 60000;
+
+            if (hits.length === 0) {
+                callback([], []);
+            } else {
+                for (var hit of hits) {
+                    last_created_date = hit._source.created_date;
+                    source = hit._source;
+                    begin1 = (hit._source.created_date - deltatime) > 0 ? (hit._source.created_date - deltatime) : 0;
+                    end1 = (hit._source.created_date + deltatime) > 0 ? (hit._source.created_date + deltatime) : hit._source.created_date;
+                    //console.log("hit._source.created_date:"+hit._source.created_date);
+                    elem = {
+                        "bool": {
+                            "filter": [
+                                {
+                                    "geo_distance": {
+                                        "distance": distance + "m",
+                                        "position": {
+                                            "lat": source.position.lat,
+                                            "lon": source.position.lon
+                                        }
+                                    }
+                                },
+                                {
+                                    "range": {
+                                        "created_date": {
+                                            "gte": begin1,
+                                            "lte": end1,
+                                            "format": "epoch_millis",
+                                            "time_zone": "+00:00"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    };
+                    requete.query.bool.must.dis_max.queries.push(elem);
+
+                    itemsProcessed++;
+                    if (itemsProcessed === hits.length) {
+                        //console.log("Results1:");
+                        //console.log(result);
+                        const { body } = await client.search({
+                            index: indexlocation,
+                            // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                            body: requete
+                        });
+                        //var myJSON = JSON.stringify(body);
+                        hits = body.hits.hits;
+                        hits.last_created_date = last_created_date;
                         //console.log("Result of request");
                         //console.log(myJSON);
                         callback(hits, body.aggregations);
@@ -340,7 +490,8 @@ module.exports = {
                                         "created_date": {
                                             "gte": begin,
                                             "lte": end,
-                                            "format": "yyyy-MM-dd"
+                                            "format": "yyyy-MM-dd",
+                                            "time_zone": "+00:00"
                                         }
                                     }
                                 }
@@ -400,7 +551,8 @@ module.exports = {
                                         "created_date": {
                                             "gte": begin1,
                                             "lte": end1,
-                                            "format": "epoch_millis"
+                                            "format": "epoch_millis",
+                                            "time_zone": "+00:00"
                                         }
                                     }
                                 }
