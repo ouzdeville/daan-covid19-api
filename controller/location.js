@@ -70,7 +70,11 @@ module.exports = {
             await awsClients.writeToKinesis(payload);
             var i, j;
             zoneslist = [];
-            await Zone.findAll().then(async (zones) => {
+            await Zone.findAll({
+                where: {
+                    type: "DISTRICT"
+                }
+            }).then(async (zones) => {
                 for (j = 0; j < zones.length; j++) {
                     var poly = (zones[j].polygon);
                     rst = false;

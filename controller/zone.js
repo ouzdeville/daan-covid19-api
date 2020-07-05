@@ -264,7 +264,11 @@ module.exports = {
              longitude: parseFloat(longitude)
             }
         //console.log(location);
-        Zone.findAll().then((zones) => {
+        Zone.findAll({
+            where: {
+                type: "DISTRICT"
+            }
+        }).then((zones) => {
             zones.forEach(zone => {
                 var poly = (zone.polygon);
                 //poly=JSON.parse(poly);

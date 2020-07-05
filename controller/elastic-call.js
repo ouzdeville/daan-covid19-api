@@ -105,7 +105,11 @@ module.exports = {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
                 var i, j;
                 zoneslist = [];
-                Zone.findAll().then((zones) => {
+                Zone.findAll({
+                    where: {
+                        type: "DISTRICT"
+                    }
+                }).then((zones) => {
                     for (j = 0; j < zones.length; j++) {
                         area = {
                             id: zones[j].id,
@@ -197,7 +201,11 @@ module.exports = {
                 let i, j;
                 let zoneslist = [];
 
-                Zone.findAll().then((zones) => {
+                Zone.findAll({
+                    where: {
+                        type: "DISTRICT"
+                    }
+                }).then((zones) => {
                     for (j = 0; j < zones.length; j++) {
                         let area = {
                             id: zones[j].id,
@@ -350,7 +358,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /user/contact/:id/:begin/:end/:distance/:time/:last_created_date Get all contacts after last_ceated_date
+     * @api {get} /user/scrollcontact/:id/:begin/:end/:distance/:time/:last_created_date Get all contacts after last_ceated_date
      * @apiHeader {String} authorization User unique token
      * @apiName getUserContacts
      * @apiGroup Contact
@@ -458,6 +466,7 @@ module.exports = {
             res.status(500).send({
                 success: false,
                 code: -1,
+                error:error
             });
         }
     },
@@ -857,7 +866,11 @@ module.exports = {
                 let riskRate = 0;
                 const BETA = 1.75;
                 const ALPHA = 0.50;
-                Zone.findAll().then(async (zones) => {
+                Zone.findAll({
+                    where: {
+                        type: "DISTRICT"
+                    }
+                }).then(async (zones) => {
                     for (j = 0; j < zones.length; j++) {
 
                         let numberOfConfirmedCases = 0;

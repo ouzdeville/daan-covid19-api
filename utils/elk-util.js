@@ -320,9 +320,10 @@ module.exports = {
      * @param  {integer} end unix time
      * @param  {integer} distance (in meter)
      * @param  {integer} time (in minute)
+     * @param  {integer} last_created (in millis)
      * @param  {function} callback
      */
-    async getUserContactsSearch_after(id, begin, end, distance, time, last_created_date, callback) {
+    async getUserContactsSearch_after(id, begin, end, distance, time, last_created, callback) {
         try {
             const { body } = await client.search({
                 index: indexlocation,
@@ -362,7 +363,7 @@ module.exports = {
                             }
                         }
                     ],
-                    "search_after": [last_created_date]
+                    "search_after": [last_created]
                 }
             });
 
