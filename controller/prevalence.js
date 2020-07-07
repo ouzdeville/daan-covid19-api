@@ -132,7 +132,7 @@ module.exports = {
     },
 
     /**
-     * @api {get} /prevalence Get all actual prevalences
+     * @api {get} /prevalence Get all actual prevalences for districts
      * @apiName GetPrevalence
      * @apiGroup Prevalence
      *
@@ -178,7 +178,11 @@ module.exports = {
      */
     async getprevalenceNow(req, res) {
         let now = await moment().format("YYYY-MM-DD")
-        const { count } = await Zone.findAndCountAll();
+        const { count } = await Zone.findAndCountAll({
+            where: {
+                type: "DISTRICT"
+            }
+        });
         Prevalence.findAll({
             limit: count,
             where: {
@@ -186,6 +190,9 @@ module.exports = {
             },
             include: [{
                 model: Zone,
+                where: {
+                    type: "DISTRICT"
+                }
             }],
             order: [['createdAt', 'DESC']]
         })
@@ -196,6 +203,82 @@ module.exports = {
             })
             .catch((error) => res.status(400).send(error));
     },
+
+    /**
+     * @api {get} /prevalence/:type Get all actual prevalences by type of zone
+     * @apiName GetPrevalence
+     * @apiGroup Prevalence
+     * @apiParam {String} type "REGION", "DEPARTEMENT","ARRONDISSEMENT","COMMUNE" or "DISTRICT"
+     * @apiSuccess (Success 200) {Object[]} prevalences List of prevalences
+     * @apiSuccess (Success 200) {Number} prevalences.id Prevalence id
+     * @apiSuccess (Success 200) {Number} prevalences.idZone Zone id
+     * @apiSuccess (Success 200) {Date} prevalences.date date
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfConfirmedCases number of confirmed cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfSupectedCases number of supected cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfContactsCases number of contacts cases
+     * @apiSuccess (Success 200) {Number} prevalences.numberOfRecoveredCases number of recovered cases
+     * @apiSuccess (Success 200) {Date} prevalences.updatedAt Creation date
+     * @apiSuccess (Success 200) {Date} prevalences.createdAt Modification date
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "prevalences": [
+     *         {
+     *           "id": 5,
+     *           "idZone": "b967a828-7df4-459b-906d-f3ff4f8a05be",
+     *           "date": "2020-04-19",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-19T15:54:16.521Z",
+     *           "updatedAt": "2020-04-19T15:54:16.521Z"
+     *         },
+     *         {
+     *           "id": 6,
+     *           "idZone": "b967a828-7dp4-459b-906a-f3ffdf8a05be",
+     *           "date": "2020-04-19",
+     *           "numberOfConfirmedCases": 10,
+     *           "numberOfSupectedCases": 47,
+     *           "numberOfContactsCases": 8,
+     *           "numberOfRecoveredCases": 12,
+     *           "createdAt": "2020-04-20T22:55:41.419Z",
+     *           "updatedAt": "2020-04-20T22:55:41.419Z"
+     *         }
+     *       ]
+     *     }
+     */
+    async getprevalenceByTypeNow(req, res) {
+        var { type } = req.params;
+        type=type.toUpperCase();
+        let now = await moment().format("YYYY-MM-DD")
+        const { count } = await Zone.findAndCountAll({
+            where: {
+                type: type
+            }
+        });
+        Prevalence.findAll({
+            limit: count,
+            where: {
+                date: now,
+            },
+            include: [{
+                model: Zone,
+                where: {
+                    type: type
+                }
+            }],
+            order: [['createdAt', 'DESC']]
+        })
+            .then((prevalences) => {
+                res.status(200).send({
+                    prevalences,
+                });
+            })
+            .catch((error) => res.status(400).send(error));
+    },
+
     /**
      * @api {get} /prevalence/:idZone Get all prevalence by Zone
      * @apiName GetPrevalenceByZone
@@ -334,7 +417,7 @@ module.exports = {
         });
     },
 
-    
+
 
     /**
      * @api {get} /prevalence/runPolygonCommune  Update district polygone GPS
@@ -353,58 +436,58 @@ module.exports = {
         try {
             let districtsgps = JSON.parse(fs.readFileSync('./init_data/Communes.geojson', 'utf8'));
             console.log('districtsgps.features.length');
-            var region={type: "REGION",name:""};
-            var departement={type: "DEPARTEMENT",name:""};
-            var arondissement={type: "ARRONDISSEMENT",name:""};
-            var commune={type: "COMMUNE",name:""};
+            var region = { type: "REGION", name: "" };
+            var departement = { type: "DEPARTEMENT", name: "" };
+            var arondissement = { type: "ARRONDISSEMENT", name: "" };
+            var commune = { type: "COMMUNE", name: "" };
             //supprimer tous les élment de type concerné
             await Zone.destroy({
                 where: {
                     type: {
-                        [Op.or]: ["REGION", "DEPARTEMENT","ARRONDISSEMENT","COMMUNE"]
-                      }
+                        [Op.or]: ["REGION", "DEPARTEMENT", "ARRONDISSEMENT", "COMMUNE"]
+                    }
                 }
-              });
+            });
             for (var district of districtsgps.features) {
                 let polygon = district.geometry.coordinates[0];
-                commune.polygon=polygon;
-               
-                commune.name=module.exports.removeAccents(district.properties.ogr_CCRCA);
+                commune.polygon = polygon;
 
-                if(region.name!=module.exports.removeAccents(district.properties.ogr_REG)){
-                    region.name=module.exports.removeAccents(district.properties.ogr_REG);
+                commune.name = module.exports.removeAccents(district.properties.ogr_CCRCA);
+
+                if (region.name != module.exports.removeAccents(district.properties.ogr_REG)) {
+                    region.name = module.exports.removeAccents(district.properties.ogr_REG);
                     await Zone.create(region).then((c_region) => {
-                        
+
                         region.name = c_region.dataValues.name;
-                        
-                        departement.idParent=c_region.dataValues.id;
+
+                        departement.idParent = c_region.dataValues.id;
                     });
                 }
-                if(departement.name!=module.exports.removeAccents(district.properties.ogr_DEPT)){
-                    departement.name=module.exports.removeAccents(district.properties.ogr_DEPT);
-                    
+                if (departement.name != module.exports.removeAccents(district.properties.ogr_DEPT)) {
+                    departement.name = module.exports.removeAccents(district.properties.ogr_DEPT);
+
                     await Zone.create(departement).then((c_departement) => {
                         departement.name = c_departement.dataValues.name;
-                        
-                        arondissement.idParent=c_departement.dataValues.id;
+
+                        arondissement.idParent = c_departement.dataValues.id;
                     });
                 }
-               if(arondissement.name!=module.exports.removeAccents(district.properties.ogr_CAV)){
-                    arondissement.name=module.exports.removeAccents(district.properties.ogr_CAV);
-                    
+                if (arondissement.name != module.exports.removeAccents(district.properties.ogr_CAV)) {
+                    arondissement.name = module.exports.removeAccents(district.properties.ogr_CAV);
+
                     await Zone.create(arondissement).then((c_arondissement) => {
                         arondissement.name = c_arondissement.dataValues.name;
-                        
-                        commune.idParent=c_arondissement.dataValues.id;
+
+                        commune.idParent = c_arondissement.dataValues.id;
                     });
                 }
-                
+
                 //var tpolygon = turf.polygon([polygon]);
                 //var area = turf.area(tpolygon);
                 //commune.area=area;
-                 await Zone.create(commune);
-                 console.log(region.name+"/"+departement.name+"/"+arondissement.name+"/"+commune.name);
-                
+                await Zone.create(commune);
+                console.log(region.name + "/" + departement.name + "/" + arondissement.name + "/" + commune.name);
+
             }
         } catch (error) {
             console.error(error);
@@ -431,7 +514,7 @@ module.exports = {
      *       "message":
      *     }
      */
-    async  runPolygonDistrict(req, res) {
+    async runPolygonDistrict(req, res) {
         try {
             let districtsgps = JSON.parse(fs.readFileSync('./init_data/Districts.geojson', 'utf8'));
             console.log('districtsgps.features.length');
@@ -444,7 +527,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
-                            area:area,
+                            area: area,
                         },
                         {
                             where: {
@@ -456,7 +539,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: district.geometry.coordinates[1][0],
-                            area:area,
+                            area: area,
                         },
                         {
                             where: {
@@ -468,7 +551,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
-                            area:area,
+                            area: area,
                         },
                         {
                             where: {
@@ -480,7 +563,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
-                            area:area,
+                            area: area,
                         },
                         {
                             where: {
@@ -492,7 +575,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
-                            area:area,
+                            area: area,
                         },
                         {
                             where: {
@@ -504,7 +587,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
-                            area:area,
+                            area: area,
                         },
                         {
                             where: {
@@ -515,7 +598,7 @@ module.exports = {
                     await Zone.update(
                         {
                             polygon: polygon,
-                            area:area,
+                            area: area,
                         },
                         {
                             where: {
@@ -541,11 +624,11 @@ module.exports = {
         let accentsOut = "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
         str = str.split('');
         str.forEach((letter, index) => {
-          let i = accents.indexOf(letter);
-          if (i != -1) {
-            str[index] = accentsOut[i];
-          }
+            let i = accents.indexOf(letter);
+            if (i != -1) {
+                str[index] = accentsOut[i];
+            }
         })
         return str.join('').toUpperCase().split(' ').join('-');
-      }
+    }
 };

@@ -63,6 +63,7 @@ module.exports = (app) => {
   app.get('/prevalence/rungps', PrevalenceController.updateGpsCenterOfDistrict);
   app.get('/prevalence/runPolygone', PrevalenceController.runPolygonDistrict);
   app.get('/prevalence/runPolygoneCommune', PrevalenceController.runPolygonCommune);
+  app.get('/prevalences/:type', PrevalenceController.getprevalenceByTypeNow);
   app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 
   // Route Daily Report
