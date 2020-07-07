@@ -847,7 +847,7 @@ module.exports = {
         console.log(begin);
         console.log(end);
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
-        if (sphone != "") {
+        if (sphone !== "") {
             await User.findAll({
                 where: {
                     phone: sphone,
@@ -889,11 +889,11 @@ module.exports = {
                             zoneRiskLevel: 0,
                             riskRate: 0
                         };
-                        if (area.men != null)
+                        if (area.men !== null)
                             area.populationSize += area.men;
-                        if (area.women != null)
+                        if (area.women !== null)
                             area.populationSize += area.women;
-                        if (zones[j].area != null)
+                        if (zones[j].area !== null)
                             area.densite = area.populationSize / zones[j].area;
 
 
@@ -905,18 +905,16 @@ module.exports = {
                         }).then(prevalence => {
                             numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
 
-                            if (numberOfConfirmedCases != null)
+                            if (numberOfConfirmedCases !== null)
                                 area.numberOfConfirmedCases = numberOfConfirmedCases;
                             area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
-
-
                         });
 
                         for (i = 0; i < result.length; i++) {
                             var poly = (zones[j].polygon);
                             //poly=JSON.parse(poly);
                             rst = false;
-                            if (poly != null)
+                            if (poly !== null)
                                 rst = insidePolygon(result[i]._source.position, poly);
                             if (rst) {
 
@@ -934,7 +932,7 @@ module.exports = {
 
                         if (0 < area.duration)
                             zoneslist.push(area);
-                        if (j == zones.length - 1) {
+                        if (j === zones.length - 1) {
 
                             if (riskRate <= 0) {
                                 res.send({
@@ -960,7 +958,10 @@ module.exports = {
                         }
                     }
 
-
+                    res.status(22).send({
+                        success: false,
+                        code: -10,
+                    });
                 });
 
 
