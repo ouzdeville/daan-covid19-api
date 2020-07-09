@@ -872,18 +872,26 @@ module.exports = {
                     const ALPHA = 0.50;
                     Zone.findAll({
                         where: {
-                            type: "DISTRICT"
-                        }
+                            type: "DISTRICT",
+                            polygon: {
+                                [Op.not]: null
+                            }
+                        },
+                        // include: [{
+                        //     model: Prevalence,
+                        //     as: 'prevalences',
+                        // }],
                     }).then(async (zones) => {
                         for (j = 0; j < zones.length; j++) {
+                            let zone = zones[j];
                             let numberOfConfirmedCases = 0;
-                            area = {
-                                id: zones[j].id,
-                                name: zones[j].name,
-                                type: zones[j].type,
-                                men: zones[j].men,
-                                women: zones[j].women,
-                                area: zones[j].area,
+                            let area = {
+                                id: zone.id,
+                                name: zone.name,
+                                type: zone.type,
+                                men: zone.men,
+                                women: zone.women,
+                                area: zone.area,
                                 duration: 0,
                                 numberOfConfirmedCases: 0,
                                 populationSize: 1,
@@ -901,7 +909,7 @@ module.exports = {
 
                             await Prevalence.findOne({
                                 where: {
-                                    idZone: zones[j].id
+                                    idZone: zone.id
                                 },
                                 order: [['createdAt', 'DESC']]
                             }).then(prevalence => {
@@ -913,7 +921,7 @@ module.exports = {
                             });
 
                             //poly=JSON.parse(poly);
-                            var poly = (zones[j].polygon);
+                            var poly = zone.polygon;
 
                             if (poly !== null) {
                                 for (i = 0; i < result.length; i++) {
