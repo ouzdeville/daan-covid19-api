@@ -39,7 +39,7 @@ module.exports = {
             },
         }).then(async (zones) => {
             for (j = 0; j < zones.length; j++) {
-                var poly = (zones[j].polygon);
+                var poly = zones[j].polygon;
                 rst = false;
                 if (poly != null)
                     rst = insidePolygon(location, poly);

@@ -270,7 +270,7 @@ module.exports = {
             }
         }).then((zones) => {
             zones.forEach(zone => {
-                var poly = (zone.polygon);
+                var poly = zone.polygon;
                 //poly=JSON.parse(poly);
                 rst = false;
                 //console.log(poly);

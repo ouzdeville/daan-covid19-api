@@ -174,7 +174,7 @@ module.exports = {
             model: ExitZone
         }).then((zones) => {
             zones.forEach(zone => {
-                var poly = (zone.poly);
+                var poly = zone.poly;
                 //poly=JSON.parse(poly);
                 rst = false;
                 //console.log(poly);

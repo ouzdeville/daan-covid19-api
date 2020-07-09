@@ -76,7 +76,7 @@ module.exports = {
                 }
             }).then(async (zones) => {
                 for (j = 0; j < zones.length; j++) {
-                    var poly = (zones[j].polygon);
+                    var poly = zones[j].polygon;
                     rst = false;
                     if (poly != null)
                         rst = insidePolygon(req.body.position, poly);
@@ -151,7 +151,7 @@ module.exports = {
                     }
                 }).then((geofences) => {
                     geofences.forEach(geofence => {
-                        var poly = (geofence.poly);
+                        var poly = geofence.poly;
                         const exitdata = {
                             idGeofence: geofence.id,
                             current_date: req.body.timestamp,

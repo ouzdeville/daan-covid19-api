@@ -121,7 +121,7 @@ module.exports = {
                             source: [],
                         };
                         for (i = 0; i < result.length; i++) {
-                            var poly = (zones[j].polygon);
+                            var poly = zones[j].polygon;
 
                             rst = false;
 
@@ -214,7 +214,7 @@ module.exports = {
                             duration: 0
                         };
                         for (i = 0; i < result.length; i++) {
-                            let poly = (zones[j].polygon);
+                            let poly = zones[j].polygon;
                             //poly=JSON.parse(poly);
                             let rst = false;
 
@@ -1047,7 +1047,7 @@ module.exports = {
                         });
 
                         for (i = 0; i < result.length; i++) {
-                            var poly = (zones[j].polygon);
+                            var poly = zones[j].polygon;
                             //poly=JSON.parse(poly);
                             rst = false;
                             if (poly != null)
