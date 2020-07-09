@@ -859,100 +859,107 @@ module.exports = {
         console.log("ID:" + id);
         try {
             await elasticClient.getUserTrace(id, begin, end, function (result) {
-                var i, j;
-                zoneslist = [];
-                let riskRate = 0;
-                const BETA = 1.75;
-                const ALPHA = 0.50;
-                Zone.findAll({
-                    where: {
-                        type: "DISTRICT"
-                    }
-                }).then(async (zones) => {
-                    for (j = 0; j < zones.length; j++) {
-                        let numberOfConfirmedCases = 0;
-                        area = {
-                            id: zones[j].id,
-                            name: zones[j].name,
-                            type: zones[j].type,
-                            men: zones[j].men,
-                            women: zones[j].women,
-                            area: zones[j].area,
-                            duration: 0,
-                            numberOfConfirmedCases: 0,
-                            populationSize: 1,
-                            densite: 0,
-                            degreeOfExposure: 0,
-                            zoneRiskLevel: 0,
-                            riskRate: 0
-                        };
-                        if (area.men !== null)
-                            area.populationSize += area.men;
-                        if (area.women !== null)
-                            area.populationSize += area.women;
-                        if (area.area !== null)
-                            area.densite = area.populationSize / area.area;
+                if (result.length === 0) {
+                    res.send({
+                        riskLevel: "NO_EXPOSURE",
+                        zoneslist: []
+                    });
+                } else {
+                    var i, j;
+                    zoneslist = [];
+                    let riskRate = 0;
+                    const BETA = 1.75;
+                    const ALPHA = 0.50;
+                    Zone.findAll({
+                        where: {
+                            type: "DISTRICT"
+                        }
+                    }).then(async (zones) => {
+                        for (j = 0; j < zones.length; j++) {
+                            let numberOfConfirmedCases = 0;
+                            area = {
+                                id: zones[j].id,
+                                name: zones[j].name,
+                                type: zones[j].type,
+                                men: zones[j].men,
+                                women: zones[j].women,
+                                area: zones[j].area,
+                                duration: 0,
+                                numberOfConfirmedCases: 0,
+                                populationSize: 1,
+                                densite: 0,
+                                degreeOfExposure: 0,
+                                zoneRiskLevel: 0,
+                                riskRate: 0
+                            };
+                            if (area.men !== null)
+                                area.populationSize += area.men;
+                            if (area.women !== null)
+                                area.populationSize += area.women;
+                            if (area.area !== null)
+                                area.densite = area.populationSize / area.area;
 
-                        await Prevalence.findOne({
-                            where: {
-                                idZone: zones[j].id
-                            },
-                            order: [['createdAt', 'DESC']]
-                        }).then(prevalence => {
-                            numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
+                            await Prevalence.findOne({
+                                where: {
+                                    idZone: zones[j].id
+                                },
+                                order: [['createdAt', 'DESC']]
+                            }).then(prevalence => {
+                                numberOfConfirmedCases = prevalence.numberOfConfirmedCases;
 
-                            if (numberOfConfirmedCases !== null)
-                                area.numberOfConfirmedCases = numberOfConfirmedCases;
-                            area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
-                        });
+                                if (numberOfConfirmedCases !== null)
+                                    area.numberOfConfirmedCases = numberOfConfirmedCases;
+                                area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
+                            });
 
-                        //poly=JSON.parse(poly);
-                        var poly = (zones[j].polygon);
+                            //poly=JSON.parse(poly);
+                            var poly = (zones[j].polygon);
 
-                        if (poly !== null) {
-                            for (i = 0; i < result.length; i++) {
-                                let rst = insidePolygon(result[i]._source.position, poly);
+                            if (poly !== null) {
+                                for (i = 0; i < result.length; i++) {
+                                    let rst = insidePolygon(result[i]._source.position, poly);
 
-                                if (rst) {
-                                    area.duration += 5;
-                                    area.degreeOfExposure += area.densite * 5;
-                                    area.riskRate += area.zoneRiskLevel * area.densite * 5;
-                                    riskRate += area.zoneRiskLevel * area.densite * 5;
-                                    console.log(area.name + ":area.populationSize:" + area.populationSize);
-                                    console.log(area.name + ":area.zoneRiskLevel:" + area.zoneRiskLevel);
-                                    console.log(area.name + ":area.densite:" + area.densite);
-                                    console.log(area.name + ":riskRate:" + riskRate);
+                                    if (rst) {
+                                        area.duration += 5;
+                                        area.degreeOfExposure += area.densite * 5;
+                                        area.riskRate += area.zoneRiskLevel * area.densite * 5;
+                                        riskRate += area.zoneRiskLevel * area.densite * 5;
+                                        console.log(area.name + ":area.populationSize:" + area.populationSize);
+                                        console.log(area.name + ":area.zoneRiskLevel:" + area.zoneRiskLevel);
+                                        console.log(area.name + ":area.densite:" + area.densite);
+                                        console.log(area.name + ":riskRate:" + riskRate);
+                                    }
+                                }
+                            }
+
+                            if (0 < area.duration)
+                                zoneslist.push(area);
+                            if (j === zones.length - 1) {
+                                if (riskRate <= 0) {
+                                    res.send({
+                                        riskLevel: "NO_EXPOSURE",
+                                        zoneslist: zoneslist
+                                    });
+                                } else if (riskRate <= ALPHA) {
+                                    res.send({
+                                        riskLevel: "LOW_EXPOSURE",
+                                        zoneslist: zoneslist
+                                    });
+                                } else if (riskRate <= BETA) {
+                                    res.send({
+                                        riskLevel: "AVERAGE_EXPOSURE",
+                                        zoneslist: zoneslist
+                                    });
+                                } else {
+                                    res.send({
+                                        riskLevel: "HIGH_EXPOSURE",
+                                        zoneslist: zoneslist
+                                    });
                                 }
                             }
                         }
-
-                        if (0 < area.duration)
-                            zoneslist.push(area);
-                        if (j === zones.length - 1) {
-                            if (riskRate <= 0) {
-                                res.send({
-                                    riskLevel: "NO_EXPOSURE",
-                                    zoneslist: zoneslist
-                                });
-                            } else if (riskRate <= ALPHA) {
-                                res.send({
-                                    riskLevel: "LOW_EXPOSURE",
-                                    zoneslist: zoneslist
-                                });
-                            } else if (riskRate <= BETA) {
-                                res.send({
-                                    riskLevel: "AVERAGE_EXPOSURE",
-                                    zoneslist: zoneslist
-                                });
-                            } else {
-                                res.send({
-                                    riskLevel: "HIGH_EXPOSURE",
-                                    zoneslist: zoneslist
-                                });
-                            }
-                        }
-                    }
-                });
+                    });
+                }
             });
         } catch (error) {
             console.log(error);
