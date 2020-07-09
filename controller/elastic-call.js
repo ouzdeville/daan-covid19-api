@@ -1,11 +1,11 @@
-const { Incubation, User, Zone, Prevalence } = require('./../models');
+const {Incubation, User, Zone, Prevalence} = require('./../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const { Client } = require('@elastic/elasticsearch')
-const { elasticClient } = require('./../utils');
-const { jwt, smsProviders } = require('./../providers');
-const { cryptoUtil } = require('../utils');
-const { insidePolygon } = require('geolocation-utils');
+const {Client} = require('@elastic/elasticsearch')
+const {elasticClient} = require('./../utils');
+const {jwt, smsProviders} = require('./../providers');
+const {cryptoUtil} = require('../utils');
+const {insidePolygon} = require('geolocation-utils');
 const moment = require('moment');
 //node: 'https://search-test-r7znlu2wprxosxw75c5veftgki.us-east-1.es.amazonaws.com' bamtu
 //my host https://76fd57a0a1dd461ba279ef6aa16662b5.eu-west-2.aws.cloud.es.io:9243
@@ -84,7 +84,7 @@ module.exports = {
      *     }
      */
     async getUserTrace(req, res) {
-        console.log("#ELK_"+"getUserTrace");
+        console.log("#ELK_" + "getUserTrace");
         let id = req.params.id;
         let begin = req.params.begin;
         let end = req.params.end;
@@ -160,7 +160,7 @@ module.exports = {
     },
 
     async getUserTraceV2(req, res) {
-        let { id, begin, end } = req.params;
+        let {id, begin, end} = req.params;
         const sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
         if (sphone !== "") {
             await User.findAll({
@@ -256,7 +256,7 @@ module.exports = {
      * @apiParam {Date} begin date in format "yyyy-mm-dd"
      * @apiParam {Date} end date in format "yyyy-mm-dd"
      * @apiParam {Number} distance Number in meters
-     * @apiParam {Number} time Number + or - time intervale 
+     * @apiParam {Number} time Number + or - time intervale
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
      * @apiSuccess (Success 200) {Object} resust Location objects
@@ -349,7 +349,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -367,7 +367,7 @@ module.exports = {
      * @apiParam {Date} begin date in format "yyyy-mm-dd"
      * @apiParam {Date} end date in format "yyyy-mm-dd"
      * @apiParam {Number} distance Number in meters
-     * @apiParam {Number} time Number + or - time intervale 
+     * @apiParam {Number} time Number + or - time intervale
      * * @apiParam {Number} last_created_date last value of created_date for scrolling
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
@@ -434,7 +434,7 @@ module.exports = {
             let end = req.params.end;
             let distance = req.params.distance;
             let time = req.params.time;
-            let last_created_date= req.params.last_created_date;
+            let last_created_date = req.params.last_created_date;
             //begin = new Date(begin).getTime();
             //end = new Date(end).getTime();
             sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
@@ -452,7 +452,7 @@ module.exports = {
             //Let's search!
             //console.log("begin:" + begin);
             //console.log("end:" + end);
-            await elasticClient.getUserContactsSearch_after(id, begin, end, distance, time,last_created_date, function (result, buckets) {
+            await elasticClient.getUserContactsSearch_after(id, begin, end, distance, time, last_created_date, function (result, buckets) {
                 console.log(buckets);
                 res.status(200).send({
                     success: true,
@@ -462,16 +462,14 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
-                error:error
+                error: error
             });
         }
     },
-
-
 
 
     /**
@@ -518,7 +516,7 @@ module.exports = {
      *     }
      */
     async getContactsAtPositionAndDate(req, res) {
-        let { latitude, longitude, created_date, id } = req.body;
+        let {latitude, longitude, created_date, id} = req.body;
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
         if (sphone != "") {
             await User.findAll({
@@ -541,7 +539,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -552,7 +550,7 @@ module.exports = {
 
     async isInAZoneElastic(req, res) {
         let area = {};
-        const { latitude, longitude } = req.params;
+        const {latitude, longitude} = req.params;
         try {
             await elasticClient.isInAZoneElastic(latitude, longitude, function (result) {
                 console.log(result);
@@ -563,7 +561,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -581,7 +579,7 @@ module.exports = {
      * @apiParam {Date} begin date in format "yyyy-mm-dd"
      * @apiParam {Date} end date in format "yyyy-mm-dd"
      * @apiParam {Number} distance Number in meters
-     * @apiParam {Number} time Number + or - time intervale 
+     * @apiParam {Number} time Number + or - time intervale
      *
      * @apiSuccess (Success 200) {Boolean} success If it works ot not
      * @apiSuccess (Success 200) {Object} resust Location objects
@@ -616,7 +614,7 @@ module.exports = {
      *     }
      */
     async getIncubContact(req, res) {
-        let { idUser, begin, end } = req.params;
+        let {idUser, begin, end} = req.params;
         let distance = req.params.distance;
         let time = req.params.time;
         begin = new Date(begin).getTime();
@@ -678,7 +676,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -723,7 +721,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -742,7 +740,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -757,7 +755,7 @@ module.exports = {
         console.log(req.headers.authorization);
         lists.forEach((elem) => {
             ite++;
-            const token = jwt.sign({ phone: elem });
+            const token = jwt.sign({phone: elem});
             console.log(token);
             list.push(token);
             if (ite === lists.length)
@@ -768,7 +766,7 @@ module.exports = {
     },
 
     async registerLocation(req, res) {
-        const { userID } = req;
+        const {userID} = req;
         const payload = {
             id: userID, //SID
             imei: req.query.imei,
@@ -788,7 +786,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            console.log("#ELK_"+error);
+            console.log("#ELK_" + error);
             res.status(500).send({
                 success: false,
                 code: -1,
@@ -797,7 +795,7 @@ module.exports = {
     },
 
     async getAllTrace(req, res) {
-        console.log("#ELK_"+"getALLTrace");
+        console.log("#ELK_" + "getALLTrace");
         // Let's search!
         try {
             await elasticClient.getAllTrace(function (result) {
@@ -842,8 +840,8 @@ module.exports = {
     async getRiskLevel(req, res) {
         console.log("getRiskLevel");
         let id = req.params.id;
-        let end = await moment().format("YYYY-MM-DD");
         let begin = await moment().add(-14, 'days').format("YYYY-MM-DD");
+        let end = await moment().format("YYYY-MM-DD");
         console.log(begin);
         console.log(end);
         sphone = cryptoUtil.getSID(id, process.env.JWT_SECRET);
@@ -872,7 +870,6 @@ module.exports = {
                     }
                 }).then(async (zones) => {
                     for (j = 0; j < zones.length; j++) {
-
                         let numberOfConfirmedCases = 0;
                         area = {
                             id: zones[j].id,
@@ -893,9 +890,8 @@ module.exports = {
                             area.populationSize += area.men;
                         if (area.women !== null)
                             area.populationSize += area.women;
-                        if (zones[j].area !== null)
-                            area.densite = area.populationSize / zones[j].area;
-
+                        if (area.area !== null)
+                            area.densite = area.populationSize / area.area;
 
                         await Prevalence.findOne({
                             where: {
@@ -910,30 +906,29 @@ module.exports = {
                             area.zoneRiskLevel = area.numberOfConfirmedCases / area.populationSize;
                         });
 
-                        for (i = 0; i < result.length; i++) {
-                            var poly = (zones[j].polygon);
-                            //poly=JSON.parse(poly);
-                            rst = false;
-                            if (poly !== null)
-                                rst = insidePolygon(result[i]._source.position, poly);
-                            if (rst) {
+                        //poly=JSON.parse(poly);
+                        var poly = (zones[j].polygon);
 
-                                area.duration += 5;
-                                area.degreeOfExposure += (area.densite) * 5;
-                                area.riskRate += area.zoneRiskLevel * (area.densite) * 5;
-                                riskRate += area.zoneRiskLevel * (area.densite) * 5;
-                                console.log(zones[j].name + ":area.populationSize:" + area.populationSize);
-                                console.log(zones[j].name + ":area.zoneRiskLevel:" + area.zoneRiskLevel);
-                                console.log(zones[j].name + ":area.densite:" + area.densite);
-                                console.log(zones[j].name + ":riskRate:" + riskRate);
+                        if (poly !== null) {
+                            for (i = 0; i < result.length; i++) {
+                                let rst = insidePolygon(result[i]._source.position, poly);
+
+                                if (rst) {
+                                    area.duration += 5;
+                                    area.degreeOfExposure += area.densite * 5;
+                                    area.riskRate += area.zoneRiskLevel * area.densite * 5;
+                                    riskRate += area.zoneRiskLevel * area.densite * 5;
+                                    console.log(area.name + ":area.populationSize:" + area.populationSize);
+                                    console.log(area.name + ":area.zoneRiskLevel:" + area.zoneRiskLevel);
+                                    console.log(area.name + ":area.densite:" + area.densite);
+                                    console.log(area.name + ":riskRate:" + riskRate);
+                                }
                             }
-
                         }
 
                         if (0 < area.duration)
                             zoneslist.push(area);
                         if (j === zones.length - 1) {
-
                             if (riskRate <= 0) {
                                 res.send({
                                     riskLevel: "NO_EXPOSURE",
@@ -957,14 +952,7 @@ module.exports = {
                             }
                         }
                     }
-
-                    res.status(22).send({
-                        success: false,
-                        code: -10,
-                    });
                 });
-
-
             });
         } catch (error) {
             console.log(error);
