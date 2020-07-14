@@ -59,10 +59,12 @@ module.exports = (app) => {
   // Route Prevalence
   app.get('/prevalences', auth, PrevalenceController.getAll);
   app.get('/prevalence', PrevalenceController.getprevalenceNow);
-  app.get('/prevalence/run', PrevalenceController.runPrevalence);
-  app.get('/prevalence/rungps', PrevalenceController.updateGpsCenterOfDistrict);
-  app.get('/prevalence/runPolygone', PrevalenceController.runPolygonDistrict);
-  app.get('/prevalence/runPolygoneCommune', PrevalenceController.runPolygonCommune);
+  app.get('/prevalence/district/load', PrevalenceController.runPrevalence);// Load distict data from ministere website
+  app.get('/prevalence/district/loadcenter', PrevalenceController.updateGpsCenterOfDistrict);//compute the center of district
+  app.get('/prevalence/district/loadPolygone', PrevalenceController.runPolygonDistrict);
+  app.get('/prevalence/commune/runPolygone', PrevalenceController.runPolygonCommune);
+  app.get('/prevalence/departement/runPolygone', PrevalenceController.runPolygonDepartement);
+  app.get('/prevalence/region/runPolygone', PrevalenceController.runPolygonRegion);
   app.get('/prevalences/:type', PrevalenceController.getprevalenceByTypeNow);
   app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 

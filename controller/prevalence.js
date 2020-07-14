@@ -251,7 +251,7 @@ module.exports = {
      */
     async getprevalenceByTypeNow(req, res) {
         var { type } = req.params;
-        type=type.toUpperCase();
+        type = type.toUpperCase();
         let now = await moment().format("YYYY-MM-DD")
         const { count } = await Zone.findAndCountAll({
             where: {
@@ -440,6 +440,11 @@ module.exports = {
             var departement = { type: "DEPARTEMENT", name: "" };
             var arondissement = { type: "ARRONDISSEMENT", name: "" };
             var commune = { type: "COMMUNE", name: "" };
+            res.status(200).send({
+                success: true,
+                code: 99,
+                message: "Refresh done",
+            });
             //supprimer tous les élment de type concerné
             await Zone.destroy({
                 where: {
@@ -489,16 +494,16 @@ module.exports = {
                 console.log(region.name + "/" + departement.name + "/" + arondissement.name + "/" + commune.name);
 
             }
+
+            
+            module.exports.runPolygonDepartement(req,res);
+            module.exports.runPolygonRegion(req,res);
         } catch (error) {
             console.error(error);
             res.status(400).send(error)
         }
 
-        res.status(200).send({
-            success: true,
-            code: 99,
-            message: "Refresh done",
-        });
+        
     },
 
     /**
@@ -630,5 +635,99 @@ module.exports = {
             }
         })
         return str.join('').toUpperCase().split(' ').join('-');
+    },
+
+    async runPolygonDepartement(req, res) {
+        try {
+            let departements = JSON.parse(fs.readFileSync('./init_data/departements.geojson', 'utf8'));
+            console.log('departements.features.length');
+            
+            res.status(200).send({
+                success: true,
+                code: 99,
+                message: "Refresh done",
+            });
+            
+            for (var departement of departements.features) {
+                let polygon = departement.geometry.coordinates[0][0];
+                await Zone.update(
+                    {
+                        men: departement.properties.POP_HOM,
+                        women: departement.properties.POP_FEM,
+                        area: departement.properties.Surface,
+                        polygon : polygon
+                    },
+                    {
+                        where: {
+                            name: module.exports.removeAccents(departement.properties.NOM),
+                            type: "DEPARTEMENT"
+                        }
+                    });
+            }
+            module.exports.updateCommunePopulation();
+        } catch (error) {
+            console.error(error);
+            //res.status(400).send(error)
+        }
+
+        
+    },
+
+    async runPolygonRegion(req, res) {
+        try {
+            let regions = JSON.parse(fs.readFileSync('./init_data/regions.geojson', 'utf8'));
+            console.log('regions.features.length');
+            
+            res.status(200).send({
+                success: true,
+                code: 99,
+                message: "Refresh done",
+            });
+            
+            for (var region of regions.features) {
+                let polygon = region.geometry.coordinates[0][0];
+                await Zone.update(
+                    {
+                        men: region.properties.POP_HOM,
+                        women: region.properties.POP_FEM,
+                        area: region.properties.AREA,
+                        polygon : polygon
+                    },
+                    {
+                        where: {
+                            name: module.exports.removeAccents(region.properties.NOM),
+                            type: "REGION"
+                        }
+                    });
+            }
+        } catch (error) {
+            console.error(error);
+            //res.status(400).send(error)
+        }
+
+        
+    },
+
+
+    async updateCommunePopulation(){
+        let communes = JSON.parse(fs.readFileSync('./init_data/commune_pop.geojson', 'utf8'));
+            for (var commune of communes.communes) {
+                await Zone.update(
+                    {
+                        men: commune.TOTAL,
+                        women: 0,
+                        area: commune.SUP_HA,
+                    },
+                    {
+                        where: {
+                            name: module.exports.removeAccents(commune.CCRCA),
+                            type: "COMMUNE"
+                        }
+                    });
+
+            }
     }
+
+
+
 };
