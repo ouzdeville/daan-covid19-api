@@ -726,8 +726,35 @@ module.exports = {
                     });
 
             }
+    },
+
+
+    /**
+     * @api {post} /prevalence/excel upload Excel Prevalence
+     * @apiName storeExcelPrevalence
+     * @apiGroup Prevalence
+     *
+     * @apiParam {File} filename
+     *
+     * @apiSuccess (Success 201) {Boolean} success If it works ot not
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 201 Created
+     *     {
+     *       "success": true,
+     *       "message": "Successfully created."
+     *     }
+     */
+    storeExcelPrevalence(req, res) {
+        try {
+            return res.status(201).json({
+                message: 'File uploded successfully'
+            });
+        } catch (error) {
+            console.error(error);
+        }
+        let data = fs.readFileSync('./files/prevalence' + req.body.filename);
+        
     }
-
-
 
 };

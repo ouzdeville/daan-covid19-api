@@ -15,29 +15,19 @@ const {
 const { auth } = require('./../middlewares');
 const { auth_non_active } = require('./../middlewares');
 
-DIR='./pdf/';
+DIR='./files/prevalence';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
       cb(null, DIR);
   },
   filename: (req, file, cb) => {
-      const fileName = file.originalname.toLowerCase().split(' ').join('-');
+      const fileName = Date.now() + '-'+file.originalname.toLowerCase().split(' ').join('-');
       cb(null, fileName);
   }
 });
 
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-      if (file.mimetype === "application/pdf") {
-          cb(null, true);
-      } else {
-          cb(null, false);
-          return cb(new Error('Allowed only pdf file'));
-      }
-  }
-});
+const uploadExecel = multer({storage: storage});
 
 module.exports = (app) => {
   // End Users
@@ -65,6 +55,7 @@ module.exports = (app) => {
   app.get('/prevalence/commune/runPolygone', PrevalenceController.runPolygonCommune);
   app.get('/prevalence/departement/runPolygone', PrevalenceController.runPolygonDepartement);
   app.get('/prevalence/region/runPolygone', PrevalenceController.runPolygonRegion);
+  app.post('/prevalence/excel', uploadExecel.single('filename'), PrevalenceController.storeExcelPrevalence);
   app.get('/prevalences/:type', PrevalenceController.getprevalenceByTypeNow);
   app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);
 
