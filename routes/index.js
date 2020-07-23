@@ -10,6 +10,7 @@ const {
   PushNotificationOsController,
   GeofenceController,
   GeocodingController,
+  BluetoothController,
 } = require('./../controller');
 
 const { auth } = require('./../middlewares');
@@ -127,4 +128,9 @@ module.exports = (app) => {
   app.get('/geofence/:id', auth, GeofenceController.getGeofence);
 
   app.get('/geocoding/:q', GeocodingController.geosearch);
+
+  //Route Bluetooth
+  app.post('/encounter', auth, BluetoothController.createEncounter);
+  app.post('/encounters/bulk', auth, BluetoothController.createEncounterBulk);
+  app.get('/encounters/:timestamp', auth, BluetoothController.getEncountersAfter);
 };

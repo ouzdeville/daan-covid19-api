@@ -17,4 +17,5 @@ module.exports = {
     ScreeningController: require('./screening'),
     GeofenceController: require('./geofence'),
     GeocodingController: require('./geocoding'),
+    BluetoothController:require('./bluetooth'),
 };
