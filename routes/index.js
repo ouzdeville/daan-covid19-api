@@ -54,8 +54,8 @@ module.exports = (app) => {
   app.get('/prevalence/district/loadcenter', PrevalenceController.updateGpsCenterOfDistrict);//compute the center of district
   app.get('/prevalence/district/loadPolygone', PrevalenceController.runPolygonDistrict);
   app.get('/prevalence/commune/runPolygone', PrevalenceController.runPolygonCommune);
-  app.get('/prevalence/departement/runPolygone', PrevalenceController.runPolygonDepartement);
-  app.get('/prevalence/region/runPolygone', PrevalenceController.runPolygonRegion);
+  //app.get('/prevalence/departement/runPolygone', PrevalenceController.runPolygonDepartement);
+  //app.get('/prevalence/region/runPolygone', PrevalenceController.runPolygonRegion);
   app.post('/prevalence/excel', uploadExecel.single('filename'), PrevalenceController.storeExcelPrevalence);
   app.get('/prevalences/:type', PrevalenceController.getprevalenceByTypeNow);
   app.get('/prevalence/:idZone', auth, PrevalenceController.getByZone);

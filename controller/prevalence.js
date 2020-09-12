@@ -434,7 +434,7 @@ module.exports = {
      */
     async runPolygonCommune(req, res) {
         try {
-            let districtsgps = JSON.parse(fs.readFileSync('./init_data/Communes.geojson', 'utf8'));
+            let communesSource = JSON.parse(fs.readFileSync('./init_data/Communes.geojson', 'utf8'));
             console.log('districtsgps.features.length');
             var region = { type: "REGION", name: "" };
             var departement = { type: "DEPARTEMENT", name: "" };
@@ -453,44 +453,58 @@ module.exports = {
                     }
                 }
             });
-            for (var district of districtsgps.features) {
-                let polygon = district.geometry.coordinates[0];
+            for (var district of communesSource.features) {
+                let polygon = district.geometry.coordinates[0][0];
                 commune.polygon = polygon;
 
-                commune.name = module.exports.removeAccents(district.properties.ogr_CCRCA);
-
-                if (region.name != module.exports.removeAccents(district.properties.ogr_REG)) {
-                    region.name = module.exports.removeAccents(district.properties.ogr_REG);
+                commune.name = module.exports.removeAccents(district.properties.nom_com);
+                const c_region = await Zone.findOne({
+                    where: {
+                        name: module.exports.removeAccents(district.properties.nom_reg),
+                        type: "REGION"
+                    }
+                });
+                if (c_region === null) {
+                    region.name = module.exports.removeAccents(district.properties.nom_reg);
                     await Zone.create(region).then((c_region) => {
 
                         region.name = c_region.dataValues.name;
 
                         departement.idParent = c_region.dataValues.id;
                     });
+
+                } else {
+                    region.name = c_region.dataValues.name;
+                    departement.idParent = c_region.dataValues.id;
                 }
-                if (departement.name != module.exports.removeAccents(district.properties.ogr_DEPT)) {
-                    departement.name = module.exports.removeAccents(district.properties.ogr_DEPT);
+               
+                const c_departement = await Zone.findOne({
+                    where: {
+                        name: module.exports.removeAccents(district.properties.nom_dept),
+                        type: "DEPARTEMENT"
+                    }
+                });
+                if (c_departement === null) {
+                    departement.name = module.exports.removeAccents(district.properties.nom_dept);
 
                     await Zone.create(departement).then((c_departement) => {
                         departement.name = c_departement.dataValues.name;
-
-                        arondissement.idParent = c_departement.dataValues.id;
+                        commune.idParent = c_departement.dataValues.id;
                     });
-                }
-                if (arondissement.name != module.exports.removeAccents(district.properties.ogr_CAV)) {
-                    arondissement.name = module.exports.removeAccents(district.properties.ogr_CAV);
 
-                    await Zone.create(arondissement).then((c_arondissement) => {
-                        arondissement.name = c_arondissement.dataValues.name;
-
-                        commune.idParent = c_arondissement.dataValues.id;
-                    });
+                } else {
+                    departement.name = c_departement.dataValues.name;
+                    commune.idParent = c_departement.dataValues.id;
                 }
+                
+
 
                 //var tpolygon = turf.polygon([polygon]);
                 //var area = turf.area(tpolygon);
-                //commune.area=area;
-                await Zone.create(commune);
+                commune.area = district.properties.surface;
+                commune.men = district.properties.pop_hom,
+                    commune.women = district.properties.pop_fem,
+                    await Zone.create(commune);
                 console.log(region.name + "/" + departement.name + "/" + arondissement.name + "/" + commune.name);
 
             }
@@ -503,7 +517,7 @@ module.exports = {
             res.status(400).send(error)
         }
 
-        
+
     },
 
     /**
@@ -641,61 +655,57 @@ module.exports = {
         try {
             let departements = JSON.parse(fs.readFileSync('./init_data/departements.geojson', 'utf8'));
             console.log('departements.features.length');
+
             
-            res.status(200).send({
-                success: true,
-                code: 99,
-                message: "Refresh done",
-            });
-            
+
             for (var departement of departements.features) {
                 let polygon = departement.geometry.coordinates[0][0];
                 await Zone.update(
                     {
-                        men: departement.properties.POP_HOM,
-                        women: departement.properties.POP_FEM,
-                        area: departement.properties.Surface,
-                        polygon : polygon
+                        men: departement.properties.pop_hom,
+                        women: departement.properties.pop_fem,
+                        area: departement.properties.surface,
+                        polygon: polygon
                     },
                     {
                         where: {
-                            name: module.exports.removeAccents(departement.properties.NOM),
+                            name: module.exports.removeAccents(departement.properties.nom_dept),
                             type: "DEPARTEMENT"
                         }
                     });
             }
-            module.exports.updateCommunePopulation();
+            //module.exports.updateCommunePopulation();
         } catch (error) {
             console.error(error);
             //res.status(400).send(error)
         }
 
-        
+
     },
 
     async runPolygonRegion(req, res) {
         try {
             let regions = JSON.parse(fs.readFileSync('./init_data/regions.geojson', 'utf8'));
             console.log('regions.features.length');
-            
-            res.status(200).send({
+
+            /*res.status(200).send({
                 success: true,
                 code: 99,
                 message: "Refresh done",
-            });
-            
+            });*/
+
             for (var region of regions.features) {
                 let polygon = region.geometry.coordinates[0][0];
                 await Zone.update(
                     {
-                        men: region.properties.POP_HOM,
-                        women: region.properties.POP_FEM,
-                        area: region.properties.AREA,
-                        polygon : polygon
+                        men: region.properties.pop_hom,
+                        women: region.properties.pop_fem,
+                        area: region.properties.surface,
+                        polygon: polygon
                     },
                     {
                         where: {
-                            name: module.exports.removeAccents(region.properties.NOM),
+                            name: module.exports.removeAccents(region.properties.nom_reg),
                             type: "REGION"
                         }
                     });
@@ -705,27 +715,27 @@ module.exports = {
             //res.status(400).send(error)
         }
 
-        
+
     },
 
 
-    async updateCommunePopulation(){
+    async updateCommunePopulation() {
         let communes = JSON.parse(fs.readFileSync('./init_data/commune_pop.geojson', 'utf8'));
-            for (var commune of communes.communes) {
-                await Zone.update(
-                    {
-                        men: commune.TOTAL,
-                        women: 0,
-                        area: commune.SUP_HA,
-                    },
-                    {
-                        where: {
-                            name: module.exports.removeAccents(commune.CCRCA),
-                            type: "COMMUNE"
-                        }
-                    });
+        for (var commune of communes.communes) {
+            await Zone.update(
+                {
+                    men: commune.TOTAL,
+                    women: 0,
+                    area: commune.SUP_HA,
+                },
+                {
+                    where: {
+                        name: module.exports.removeAccents(commune.CCRCA),
+                        type: "COMMUNE"
+                    }
+                });
 
-            }
+        }
     },
 
 
@@ -754,7 +764,7 @@ module.exports = {
             console.error(error);
         }
         let data = fs.readFileSync('./files/prevalence' + req.body.filename);
-        
+
     }
 
 };
