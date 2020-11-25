@@ -1,5 +1,6 @@
 const { Location, Zone, Prevalence, Geofence, ExitZone, User, BackOfficeUser } = require('./../models');
 const { insidePolygon } = require('geolocation-utils');
+const readXlsxFile = require('read-excel-file/node');
 const fetch = require('node-fetch');
 module.exports = {
     async geosearch(req, res) {
@@ -65,6 +66,15 @@ module.exports = {
 
         // console.log(payload);
         return payload;
+    },
+
+    async updateInfectedCase() {
+        // File path.
+        readXlsxFile('./init_data/LISTE_INF_DAAN_COVID19.xlsx').then((rows) => {
+            // `rows` is an array of rows
+            // each row being an array of cells.
+            console.log(rows[1]);
+        });
     },
 
 };

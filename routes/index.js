@@ -127,7 +127,9 @@ module.exports = (app) => {
   app.get('/geofence/updatenotif/:idGeofence', GeofenceController.updateExitZone);
   app.get('/geofence/:id', auth, GeofenceController.getGeofence);
 
+  app.get('/geocoding/update', GeocodingController.updateInfectedCase);
   app.get('/geocoding/:q', GeocodingController.geosearch);
+
 
   //Route Bluetooth
   app.post('/encounter', auth, BluetoothController.createEncounter);

@@ -53,6 +53,7 @@
     "pg": "^8.0.0",
     "pg-hstore": "^2.3.3",
     "qs": "^6.9.3",
+    "read-excel-file": "^4.0.7",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.7",
     "sequelize": "^5.21.6",
